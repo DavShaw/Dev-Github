@@ -1,5 +1,5 @@
 print("1 - cual es mayor")
-print("2 - cual es menor")
+print("2 - cual es menorcito")
 print("")
 user_chose = int(input("Elige una opción: "))
 if user_chose == 1:
