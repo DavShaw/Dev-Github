@@ -5,18 +5,70 @@
 #########################################
               #Emoji zone#
 #########################################
+
+def show_bar(progress_symbol, part, total, long = 100):
+    import time
+
+    def progress_bar(progress_symbol, part, total, long = 100):
+        frac = part / total
+        completed = int(frac*long)
+        void = (long - completed)
+        bar = f"[{progress_symbol*completed}{' '*void}] {frac:.0%}"
+        return bar
+
+    for i in range(long+1):
+        time.sleep(0.1)
+        print("> Cargando datos",progress_bar(progress_symbol,i,total,long), end='\r')
+def verify_changing_icons(enemy,allow,deny):
+    print("Los íconos han sido cambiados a los siguientes:")
+    print(f"""
+    Enemigo: {enemy}
+    Área válida: {allow}
+    Área bloqueada: {deny}
+    
+    ¿Seguro que deseas estos íconos?
+    
+    1) Sí
+    2) No (Seleccionar nuevos íconos)
+
+    (Si ingresas una opción no válida se entenderá como un 'No')
+    """)
+
+    option = input("Elige una opción: ")
+    if option != "1":
+        change_emoji()
+
+
+
 def change_emoji():
     import time
-    print("\n\n¡Atento! El cambio de emojis es muy delicado :o")
-
+    print("\n\n¡Atento! El cambio de iconos es muy delicado :o\n\n(Puedes cancelar este proceso escribiendo '05002'.\nEn caso de haber escrito el código, la cancelación\nse hará efectiva después del último factor a cambiar)")
+    print("")
     enemy = input("Simbolo del enemigo: ")
     allow = input("Simnolo de área permitida al enemigo: ")
     deny = input("Simbolo de área denegada al enemigo: ")
+    if (enemy) == "05002":
+        enemy = "👻"
+        allow = "🟢"
+        deny = "🔴"
+        print("\nSe ha cancelado el proceso.\n\n")
+        return enemy,allow,deny
+    elif (allow) == "05002":
+        enemy = "👻"
+        allow = "🟢"
+        deny = "🔴"
+        print("\nSe ha cancelado el proceso.\n\n")
+        return enemy,allow,deny
+    if (deny) == "05002":
+        enemy = "👻"
+        allow = "🟢"
+        deny = "🔴"
+        print("\nSe ha cancelado el proceso.\n\n")
+        return enemy,allow,deny
+    verify_changing_icons(enemy,allow,deny)
     print("\n\n\n")
-    for i in range(1,6):
-        space = "\n"
-        time.sleep(1.5)
-        print(f"{space}Procesando ({i*20}%) {space}")
+    show_bar("|",0,100,100)
+    print("\n\n\n")
     return enemy,allow,deny
 
 """
@@ -229,6 +281,11 @@ def random():
     import random
     number = random.randint(1,2)
     return number
+
+def random_2(min,max): 
+    import random
+    number = random.randint(min,max)
+    return number
     #1 -> horizontal (y)
     #2 -> vertical (x)
 
@@ -423,10 +480,7 @@ if what_to_do == 1:
     icon_deny = "🔴"
     how_to_play()
     spacer(2)
-    ready = input("Presiona 'ENTER' para continuar...\n")
-    if ready != "{+g+.gwe+ñ{--,lpw-{wfkutyudavidad0258512515":
-        spacer(50)
-        pass
+    noting = input("Presiona 'ENTER' para continuar...\n")
 elif what_to_do == 2:
     icon_enemy = "👻"
     icon_allow = "🟢"
