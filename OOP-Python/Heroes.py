@@ -122,5 +122,5 @@ Karina.method_behavior_correr(True)
 Karina.method_behavior_inmortal()
 Karina.method_behavior_invisible(False)
 
+
 # - Reporte del objeto - #
-InformacionObjeto("Karina",Karina)
