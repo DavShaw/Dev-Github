@@ -65,5 +65,5 @@ You've entered: {information}
         information_new = "InvalidProccess"
         return information_new
 
-test = Encrypter("Nicolas")
+test = Encrypter("ElPP")
 print(test)
