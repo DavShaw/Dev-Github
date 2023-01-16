@@ -103,3 +103,14 @@ elif user_choose == "3":
 
 else:
     print("Debes elegir una de las anteriores opciones")
+
+
+
+def CorrectData(data):
+    new_data = []
+    for i in range(0,len(data)):
+        current_data = data[i]
+        current_data_len = len(current_data)
+        current_data = current_data[0][(current_data_len-1)]
+        new_data.append(current_data)
+    return new_data

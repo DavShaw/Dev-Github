@@ -47,23 +47,5 @@ def Encrypter(information):
         return information_new
     
     else:
-        characters_list_4_user = "a b c d e f g h i j k l m n o p q r s t v w x y z 0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J K L M N O P Q R S T V W X Y Z $ % & / > < , ; . : - _ { + @"
-        print(f"""
-Hey! There's a error. That looks like you have entered any character that isn't allowed.
-If the system detects any character don't register, the Encrypter will not work correctly
-
-Check here our allowed character list:
-
-================================
-{characters_list_4_user}
-================================
-
-You've entered: {information}
-
-        """)
-
-        information_new = "InvalidProccess"
+        information_new = "none"
         return information_new
-
-test = Encrypter("ElPP")
-print(test)

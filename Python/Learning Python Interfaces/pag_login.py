@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from login_admin import Encrypter, TakeFiles, JustUsers, CheckUserExist, CheckLogin
 import sys
 import os
 #======================================================================================================================#
@@ -12,20 +13,25 @@ def TakeFiles(file = "nothing"):
         return "> You must enter a path to find the file! - Debes especificar una ruta de archivo para obtenerlo <"
 
 
-
 def Login():
-    if (usuario.get() != "") and (clave.get() != ""):
-        if (usuario.get() == "DavSha") and (clave.get() == "king0246"):
-            messagebox.showinfo(title="Inicio de sesión", message=f"¡Bienvenido {usuario.get()}!\n\nHas iniciado sesión con éxito")
-            root.destroy()
-
-
+    user = str(usuario.get())
+    password = str(clave.get())
+    if (user != "") and (password != ""):
+        hidden_user = Encrypter(user)
+        hidden_password = Encrypter(password)
+        if CheckUserExist(hidden_user) == True:
+            if CheckLogin(hidden_user,hidden_password):
+                messagebox.showinfo(title="Acceso válido", message="¡Hey! Bienvenido al sistema")
+            else:
+                messagebox.showwarning(title="Acceso inválido", message="Credenciales inválidos")
+                usuario.delete(0,END)
+                clave.delete(0,END)
+                #root.destroy()
+                #root.quit()
         else:
-            messagebox.showerror(title="Inicio de sesión", message="¡Acceso denegado!\n\nClave y/o contraseña no válidos")
-            usuario.delete(0,END)
-            clave.delete(0,END)
+            messagebox.showwarning(title="Acceso inválido", message="Ésta cuenta no existe")
     else:
-        messagebox.showinfo(title="Inicio de sesión", message="¡Hey! Debes ingresar tus credenciales")
+        messagebox.showwarning(title="Acceso inválido", message="No puedes dejar los campos vacíos")
 #======================================================================================================================#
 
 
@@ -85,7 +91,7 @@ usuario.config(fg = "#262626", font = ("Times New Roman",14), justify = CENTER)
 img_clave = Label(MainFrame, image = system_img2, background = "#C2F1B7")
 img_clave.grid(row = 4, column = 0, padx = 0, pady = 25)
 #======================================#
-clave = Entry(MainFrame)
+clave = (Entry(MainFrame))
 clave.grid(row = 5, column = 0, padx = 0, pady = 0)
 clave.config(fg = "#262626", font = ("Times New Roman",14), justify = CENTER, show = "•")
 #======================================#
