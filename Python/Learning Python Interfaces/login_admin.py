@@ -1,17 +1,15 @@
 import sys
 import os
-
 characters_list = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$%&/><;.:-_+@"
 characters_encrypted = ['Stq', 'RS.', '1Bh', '>YD', '5Ug', '5/.', 'odt', 'XmL', 'cg>', '3hx', 'oIh', 'Ouc', 'few', '4ic', 'yGJ', '9z.', 'zPX', 'KU0', 'eVg', '9My', '8kA', '3rJ', 'XGr', '%2s', '02L', '$Ub', 'E:f', '&Lh', '30o', '2n.', '8qx', 'neQ', '1uS', '9Xt', '.53', 'p0s', 'hiS', 'GQe', '2Jt', '/48', 'ZiD', 'dKW', 'XOJ', 'vn0', 'lmv', 'Zhy', 'F_;', '7+i', '/dt', 'J0R', 'si3', 'W_q', 'P;R', 'U.-', ';C>', 'Gjo', 'clE', '+7r', 'VeL', 'rgv', 'y%j', '.J6', 'N>+', 'iEP', 'EAc', 'KrV', 'z8y', 'NsQ','/0v', 'TQA', '2vR', 'Arj', 'JN5', 's62', 'o9S']
-#add new characters:u and U
-def RandomNumber(amount = 3, limit = 35):
+
+def RandomNumber(amount = 3, limit = 75):
     import random
     togive = []
     for i in range(0,amount):
         temp = random.randint(0,limit)
         togive.append(temp)
     return togive
-
 
 def MakeEncryptedList():
     aux_list = []
@@ -24,7 +22,6 @@ def MakeEncryptedList():
     return aux_list
         
 def Encrypter(information):
-    
     #Verify if the string is allowed
     allowed = False
     for v1 in range(0,len(information)):
