@@ -23,6 +23,10 @@ def MakeEncryptedList():
         
 def Encrypter(information):
     #Verify if the string is allowed
+    space = " "
+    if space in information:
+        information_new = None
+        return information_new
     allowed = False
     for v1 in range(0,len(information)):
         if (information[v1]) in characters_list:
@@ -53,7 +57,7 @@ def Encrypter(information):
         ================================
         Ingresaste: {information}
         """)
-        information_new = "none"
+        information_new = None
         return information_new
 
 
@@ -88,15 +92,15 @@ def TakeFiles(file = "nothing"):
 
 
 def CheckLogin(user,password):
-    user_list = JustUsers()
-    UserAndPassword = user + "," + password
-    file = open(TakeFiles("data.txt"))
-    data_list = file.readlines()
-    data_list = CorrectData(data_list)
-    if (UserAndPassword) in (data_list):
-        return True
-    else: 
-        return False
+        user_list = JustUsers()
+        UserAndPassword = user + "," + password
+        file = open(TakeFiles("data.txt"))
+        data_list = file.readlines()
+        data_list = CorrectData(data_list)
+        if (UserAndPassword) in (data_list):
+            return True
+        else: 
+            return False
 
 
 def CorrectData(data):
@@ -109,3 +113,11 @@ def CorrectData(data):
             new_current_data += current_data[j]
         new_data.append(new_current_data)
     return new_data
+
+
+#==============================================================#
+#pag_main functions!
+
+
+
+#==============================================================#

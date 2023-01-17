@@ -1,8 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
 from login_admin import Encrypter, CheckUserExist, CheckLogin
-from pag_main import Start_pag_main
-import time
 import sys
 import os
 def Start_pag_login():    
@@ -25,9 +23,9 @@ def Start_pag_login():
             if CheckUserExist(hidden_user) == True:
                 if CheckLogin(hidden_user,hidden_password):
                     messagebox.showinfo(title="Acceso válido", message="Bienvenido al sistema...\n\nTe redireccionaremos en unos segundos a la\npágina principal del sistema")
-                    time.sleep(1)
                     root.destroy()
                     root.quit()
+                    from pag_main import Start_pag_main
                     Start_pag_main()
                 else:
                     messagebox.showwarning(title="Acceso inválido", message="Credenciales inválidos")
@@ -60,53 +58,50 @@ def Start_pag_login():
 
 
     #======================================================================================================================#
-    #Config zone of MainFrame (Login page)
-    MainFrame = Frame()
-    MainFrame.config(width = w, height = h)
-    MainFrame.pack(fill = "both", expand = True)
-    MainFrame.config(background = "#C2F1B7")
-    MainFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
+    #Config zone of LoginFrame (Login page)
+    bgcolor = "#FCEEA7"
+
+
+    LoginFrame = Frame()
+    LoginFrame.config(width = w, height = h)
+    LoginFrame.pack(fill = "both", expand = True)
+    LoginFrame.config(background = bgcolor)
+    LoginFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
     companylogo = PhotoImage(file = TakeFiles('img/logo_aux1.png'))
     system_img1 = PhotoImage(file = TakeFiles('img/user_logo_aux1.png'))
     system_img2 = PhotoImage(file = TakeFiles('img/password_logo_aux1.png'))
-    system_img3 = PhotoImage(file = TakeFiles('img/fondo_aux1.png'))
     message1 = "S I S T E M A  D E   V E N T A S"
-    companyname = "Multiadornos Maicao"
-
 
     #======================================#
     #Creating frame widgets (So important part)
 
     #======================================#
-    text_welcome = Label(MainFrame, text = message1, background = "#C2F1B7")
+    text_welcome = Label(LoginFrame, text = message1, background = bgcolor)
     text_welcome.grid(row = 0, column = 0, padx = 0, pady = 15)
-    text_welcome.config(fg = "#94998F", font = ("Times New Roman",18), bd = 12)
+    text_welcome.config(fg = "black", font = ("Times New Roman",18), bd = 12)
     #======================================#
-    img_logo = Label(MainFrame, image = companylogo, background = "#C2F1B7")
+    img_logo = Label(LoginFrame, image = companylogo, background = bgcolor)
     img_logo.grid(row = 1, column = 0, padx = 0, pady = 0)
     #======================================#
-    img_usuario = Label(MainFrame, image = system_img1, background = "#C2F1B7")
+    img_usuario = Label(LoginFrame, image = system_img1, background = bgcolor)
     img_usuario.grid(row = 2, column = 0, padx = 0, pady = 25)
     #======================================#
-    usuario = Entry(MainFrame)
+    usuario = Entry(LoginFrame)
     usuario.grid(row = 3, column = 0, padx = 0, pady = 0)
-    usuario.config(fg = "#262626", font = ("Times New Roman",14), justify = CENTER)
+    usuario.config(fg = "#262626", font = ("Times New Roman",14), justify = CENTER, background = "#E7E7E7")
     #======================================#
-    img_clave = Label(MainFrame, image = system_img2, background = "#C2F1B7")
+    img_clave = Label(LoginFrame, image = system_img2, background = bgcolor)
     img_clave.grid(row = 4, column = 0, padx = 0, pady = 25)
     #======================================#
-    clave = (Entry(MainFrame))
+    clave = (Entry(LoginFrame))
     clave.grid(row = 5, column = 0, padx = 0, pady = 0)
-    clave.config(fg = "#262626", font = ("Times New Roman",14), justify = CENTER, show = "•")
+    clave.config(fg = "#262626", font = ("Times New Roman",14), justify = CENTER, show = "•", background = "#E7E7E7")
     #======================================#
-    iniciar_sesion = Button(MainFrame)
+    iniciar_sesion = Button(LoginFrame)
     iniciar_sesion.grid(row = 6, column = 0, padx = 0, pady = 35)
-    iniciar_sesion.config(text = "Iniciar sesión", fg = "#000", font = ("Times New Roman", 15))
+    iniciar_sesion.config(text = "Iniciar sesión", fg = "#000", font = ("Times New Roman", 15), background = "#EAFFCF")
     iniciar_sesion.config(command = Login)
     #======================================#
     #======================================================================================================================#
     root.mainloop()
-
-
-Start_pag_login()
