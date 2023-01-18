@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-from login_admin import Encrypter, CheckUserExist, CheckLogin
+from login_admin import Encrypter, UserExist, LoginChecker
 import sys
 import os
 def Start_pag_login():    
@@ -20,8 +20,8 @@ def Start_pag_login():
         if (user != "") and (password != ""):
             hidden_user = Encrypter(user)
             hidden_password = Encrypter(password)
-            if CheckUserExist(hidden_user) == True:
-                if CheckLogin(hidden_user,hidden_password):
+            if UserExist(hidden_user) == True:
+                if LoginChecker(hidden_user,hidden_password):
                     messagebox.showinfo(title="Acceso válido", message="Bienvenido al sistema...\n\nTe redireccionaremos en unos segundos a la\npágina principal del sistema")
                     root.destroy()
                     root.quit()

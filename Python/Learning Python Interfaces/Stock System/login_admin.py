@@ -1,8 +1,12 @@
 import sys
 import os
+
+
+
+#============================================#
 characters_list = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$%&/><;.:-_+@"
 characters_encrypted = ['Stq', 'RS.', '1Bh', '>YD', '5Ug', '5/.', 'odt', 'XmL', 'cg>', '3hx', 'oIh', 'Ouc', 'few', '4ic', 'yGJ', '9z.', 'zPX', 'KU0', 'eVg', '9My', '8kA', '3rJ', 'XGr', '%2s', '02L', '$Ub', 'E:f', '&Lh', '30o', '2n.', '8qx', 'neQ', '1uS', '9Xt', '.53', 'p0s', 'hiS', 'GQe', '2Jt', '/48', 'ZiD', 'dKW', 'XOJ', 'vn0', 'lmv', 'Zhy', 'F_;', '7+i', '/dt', 'J0R', 'si3', 'W_q', 'P;R', 'U.-', ';C>', 'Gjo', 'clE', '+7r', 'VeL', 'rgv', 'y%j', '.J6', 'N>+', 'iEP', 'EAc', 'KrV', 'z8y', 'NsQ','/0v', 'TQA', '2vR', 'Arj', 'JN5', 's62', 'o9S']
-
+#E N C R Y P T E R   Z O N E
 def RandomNumber(amount = 3, limit = 75):
     import random
     togive = []
@@ -61,27 +65,8 @@ def Encrypter(information):
         return information_new
 
 
-def JustUsers(take_from = "data.txt"):
-    file_path = TakeFiles(take_from)
-    file = open(file_path,"r")
-    data_list = file.readlines()
-    user_data_list = []
-    for i in range(0,len(data_list)):
-        index_of_spliter = (data_list[i].index(","))
-        user_data = (data_list[i])
-        new_data = ""
-        for j in range(0,index_of_spliter):
-            new_data += user_data[j]
-        user_data_list.append(new_data)
-    return user_data_list
-
-def CheckUserExist(user):
-    user_list = JustUsers("data.txt")
-    exist = False
-    if user in user_list:
-        exist = True
-    return exist
-
+#===========================================================
+#D A T A   F I N D E R   Z O N E
 def TakeFiles(file = "nothing"):
     file = str(file)
     if (file != "nothing"):
@@ -89,35 +74,72 @@ def TakeFiles(file = "nothing"):
         return give
     else:
         return "> You must enter a path to find the file! - Debes especificar una ruta de archivo para obtenerlo <"
+    
 
 
-def CheckLogin(user,password):
-        user_list = JustUsers()
-        UserAndPassword = user + "," + password
-        file = open(TakeFiles("data.txt"))
-        data_list = file.readlines()
-        data_list = CorrectData(data_list)
-        if (UserAndPassword) in (data_list):
-            return True
-        else: 
-            return False
+#===========================================================
+#L O G I N   A D M I N I S T R A T O R   Z O N E
 
 
-def CorrectData(data):
+
+#New functions (With JSON list)
+def AccountRegister(user,password,safe = True):
+    if safe:
+        user = Encrypter(user)
+        password = Encrypter(password)
+    send_data = {'user':user,'password':password}
+    send_data = str(send_data)
+    file_path = TakeFiles("data.txt")
+    file = open(file_path,"a")
+    file.write(send_data)
+    file.write("\n")
+    file.close()
+    
+
+def DataTaker(take_from = "data.txt"):
+
+    def ChangeStrToDic(value):
+        import re
+        import json
+        value_as_dict = re.sub("'", '"', value)
+        value_as_dict = json.loads(value_as_dict)
+        return value_as_dict
+
+    file_path = TakeFiles(take_from)
+    file = open(file_path,"r")
+    data = file.readlines()
+    #Remove \n from lines
     new_data = []
     for i in range(0,len(data)):
-        current_data = data[i]
-        current_data_len = len(current_data)
-        new_current_data = ""
-        for j in range(0,len(current_data)-1,1):
-            new_current_data += current_data[j]
-        new_data.append(new_current_data)
+        temp_user = data[i]
+        temp_user2 = ""
+        for j in range(0,(len(temp_user)-1),1):
+            temp_user2 += temp_user[j]
+        temp_user2 = ChangeStrToDic(temp_user2)
+        new_data.append(temp_user2)
     return new_data
 
+def UserExist(user, giveindex = False):
+    data = DataTaker()
+    DoesUserExist = False
+    data_index = 0
+    for i in range(0,len(data)):
+        if (data[i]['user']) == user:
+            data_index = i
+            DoesUserExist = True
+    if giveindex == True:
+        return data_index
+    else:
+        return DoesUserExist
 
-#==============================================================#
-#pag_main functions!
-
-
-
-#==============================================================#
+def LoginChecker(user,password):
+    if not UserExist(user):
+        return False
+    if UserExist(user):
+        user_index = UserExist(user,True)
+        user_data = DataTaker()
+        user_data = user_data[user_index]
+        if (user_data['user'] == user) and (user_data['password'] == password):
+            return True
+        else:
+            return False
