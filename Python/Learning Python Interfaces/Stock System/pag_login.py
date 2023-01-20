@@ -1,19 +1,10 @@
 from tkinter import *
 from tkinter import messagebox
-from login_admin import Encrypter, UserExist, LoginChecker
+from functions_admin import Encrypter, UserExist, LoginChecker, TakeFiles
 import sys
 import os
 def Start_pag_login():    
     #======================================================================================================================#
-    def TakeFiles(file = "nothing"):
-        file = str(file)
-        if (file != "nothing"):
-            give = os.path.join(sys.path[0], f"{file}")
-            return give
-        else:
-            return "> You must enter a path to find the file! - Debes especificar una ruta de archivo para obtenerlo <"
-
-
     def Login():
         user = str(usuario.get())
         password = str(clave.get())

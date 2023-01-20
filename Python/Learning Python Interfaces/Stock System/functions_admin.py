@@ -1,20 +1,103 @@
 import sys
 import os
+import random
+import re
+import json
+
+
+
+
+
+
+
 
 
 
 #============================================#
+#G L O B A L   V A R I A B L E S
+
 characters_list = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$%&/><;.:-_+@"
 characters_encrypted = ['Stq', 'RS.', '1Bh', '>YD', '5Ug', '5/.', 'odt', 'XmL', 'cg>', '3hx', 'oIh', 'Ouc', 'few', '4ic', 'yGJ', '9z.', 'zPX', 'KU0', 'eVg', '9My', '8kA', '3rJ', 'XGr', '%2s', '02L', '$Ub', 'E:f', '&Lh', '30o', '2n.', '8qx', 'neQ', '1uS', '9Xt', '.53', 'p0s', 'hiS', 'GQe', '2Jt', '/48', 'ZiD', 'dKW', 'XOJ', 'vn0', 'lmv', 'Zhy', 'F_;', '7+i', '/dt', 'J0R', 'si3', 'W_q', 'P;R', 'U.-', ';C>', 'Gjo', 'clE', '+7r', 'VeL', 'rgv', 'y%j', '.J6', 'N>+', 'iEP', 'EAc', 'KrV', 'z8y', 'NsQ','/0v', 'TQA', '2vR', 'Arj', 'JN5', 's62', 'o9S']
-#E N C R Y P T E R   Z O N E
+ayuda_msg = ("""
+Parece que no entiendes mucho sobre esto... Te lo explicaré.
+Sólo rellena la información que se te pide, de forma correcta.\n
+----------------------------------------------------------------------------
+Nombre Producto »\n
+* Este será el nombre con el cual el producto será registrado.
+Te recomiendo usar el nombre exacto con el que habitualmente lo
+llamas. Eje: boton, guipiur, collar, cinta\n
+----------------------------------------------------------------------------
+Precio Producto »\n
+* Este será el costo del producto, así de simple.
+No uses ningún tipo de punto y/o coma, si el producto
+cuesta 4,999,52 pesos, escribe directamente 4999 o 5000\n
+----------------------------------------------------------------------------
+Medida Producto »\n
+* Es sencillamente el tipo de medida que usará este producto,
+si se trata de un cuello, cinta, tela, deberá ser de medida 'metro'\n
+    Te indicaré las medidas que admitimos.
+     * mts » metros
+     * und » unidad
+     * mllr » millar\n
+----------------------------------------------------------------------------
+Ref. Producto »\n
+* Simplemente es la referencia con la cual se identifica en el 
+inventario al producto.\n
+----------------------------------------------------------------------------
+Añadido por »\n
+* Sólo escribe tú nombre, persona la cual se encuentra editando el listado de
+productos. Hasta la fecha sólo permitimos los siguientes personales:\n
+    * Gloria
+    * Miguel
+    * Henrry
+    * Ana
+    * David\n
+        """)
+#============================================#
+
+
+
+
+
+
+
+
+#============================================#
+#N O   C L A S S I F I C A T I O N Z O N E
+
 def RandomNumber(amount = 3, limit = 75):
-    import random
     togive = []
     for i in range(0,amount):
         temp = random.randint(0,limit)
         togive.append(temp)
     return togive
+#----------------------------------------------#
+def TakeFiles(file = "nothing"):
+    file = str(file)
+    if (file != "nothing"):
+        give = os.path.join(sys.path[0], f"{file}")
+        return give
+    else:
+        return "> You must enter a file to find it <"
+#----------------------------------------------#
+def ChangeStrToDic(value):
+        value_as_dict = re.sub("'", '"', value)
+        value_as_dict = json.loads(value_as_dict)
+        return value_as_dict
+#============================================#
 
+
+
+
+
+
+
+
+
+
+#============================================#
+
+#E N C R Y P T E R   Z O N E
 def MakeEncryptedList():
     aux_list = []
     for i in range(0,len(characters_list)):
@@ -24,7 +107,7 @@ def MakeEncryptedList():
             aux2 = aux2 + characters_list[aux1[j]]
         aux_list.append(aux2)
     return aux_list
-        
+#----------------------------------------------#
 def Encrypter(information):
     #Verify if the string is allowed
     space = " "
@@ -37,7 +120,6 @@ def Encrypter(information):
             allowed = True
         else:
             allowed = False
-
     if allowed:
         information = str(information)
         information_split = []
@@ -63,26 +145,21 @@ def Encrypter(information):
         """)
         information_new = None
         return information_new
-
-
-#===========================================================
-#D A T A   F I N D E R   Z O N E
-def TakeFiles(file = "nothing"):
-    file = str(file)
-    if (file != "nothing"):
-        give = os.path.join(sys.path[0], f"{file}")
-        return give
-    else:
-        return "> You must enter a path to find the file! - Debes especificar una ruta de archivo para obtenerlo <"
-    
-
-
-#===========================================================
-#L O G I N   A D M I N I S T R A T O R   Z O N E
+#============================================#
 
 
 
-#New functions (With JSON list)
+
+
+
+
+
+
+
+
+#============================================#
+#L O G I N  Z O N E
+
 def AccountRegister(user,password,safe = True):
     if safe:
         user = Encrypter(user)
@@ -94,17 +171,8 @@ def AccountRegister(user,password,safe = True):
     file.write(send_data)
     file.write("\n")
     file.close()
-    
-
+#----------------------------------------------#
 def DataTaker(take_from = "data.txt"):
-
-    def ChangeStrToDic(value):
-        import re
-        import json
-        value_as_dict = re.sub("'", '"', value)
-        value_as_dict = json.loads(value_as_dict)
-        return value_as_dict
-
     file_path = TakeFiles(take_from)
     file = open(file_path,"r")
     data = file.readlines()
@@ -118,7 +186,7 @@ def DataTaker(take_from = "data.txt"):
         temp_user2 = ChangeStrToDic(temp_user2)
         new_data.append(temp_user2)
     return new_data
-
+#----------------------------------------------#
 def UserExist(user, giveindex = False):
     data = DataTaker()
     DoesUserExist = False
@@ -131,7 +199,7 @@ def UserExist(user, giveindex = False):
         return data_index
     else:
         return DoesUserExist
-
+#----------------------------------------------#
 def LoginChecker(user,password):
     if not UserExist(user):
         return False
@@ -143,3 +211,4 @@ def LoginChecker(user,password):
             return True
         else:
             return False
+#============================================#

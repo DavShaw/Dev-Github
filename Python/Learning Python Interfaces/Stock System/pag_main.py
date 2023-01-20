@@ -1,20 +1,26 @@
 from tkinter import *
-from login_admin import TakeFiles
+from functions_admin import TakeFiles
 
 def Start_pag_main():
 
     #=============================================#
-    def boton5():
-            root.destroy()
-            root.quit()
-            print("Sistema cerrado (Botón 5)")
-
+    def boton1():
+        root.destroy()
+        root.quit()
+        from pag_add_product import Start_pag_add_product
+        print("Cambiando a » Añadir productos")
+        Start_pag_add_product()
     def boton4():
             root.destroy()
             root.quit()
             from pag_login import Start_pag_login
             print("Cerrando sesión (Botón 4)")
             Start_pag_login()
+
+    def boton5():
+            root.destroy()
+            root.quit()
+            print("Sistema cerrado (Botón 5)")
     #=============================================#
         
 
@@ -32,9 +38,6 @@ def Start_pag_main():
     x = (s_w/2) - (w/2) 
     y = ((s_h/2)+200) - (h-2)
     root.geometry("%dx%d+%d+%d" % (w, h, x, y))
-    #======================================================================================================================#
-    def button_function():
-        pass
     #======================================================================================================================#
     #MenuFrame config
     bgcolor = "#A6C7F7"
@@ -65,7 +68,7 @@ def Start_pag_main():
     img_logo = Label(MenuFrame, image = companylogo, background = bgcolor)
     img_logo.grid(row = 1, column = 1, padx = 0, pady = 30)
 
-    button_1 = Button(MenuFrame, image=img_button_1, borderwidth=0, background= bgcolor)
+    button_1 = Button(MenuFrame, image=img_button_1, borderwidth=0, background= bgcolor, command=boton1)
     button_1.grid(row=2, column=0, padx=0, pady=30)
 
     button_2 = Button(MenuFrame, image=img_button_2, borderwidth=0, background= bgcolor)
@@ -79,14 +82,5 @@ def Start_pag_main():
 
     button_5 = Button(MenuFrame,image=img_button_5, borderwidth=0, background= bgcolor, command=boton5)
     button_5.grid(row=3, column=1, padx=0, pady=30)
-
-
-    
-
-
-
-
-
-
     #======================================================================================================================#
     root.mainloop()

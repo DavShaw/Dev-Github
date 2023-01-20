@@ -1,5 +1,5 @@
 import json
-from login_admin import TakeFiles, AccountRegister, DataTaker, UserExist, LoginChecker, Encrypter
+from functions_admin import TakeFiles, AccountRegister, DataTaker, UserExist, LoginChecker, Encrypter
 
 
 '''

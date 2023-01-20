@@ -45,7 +45,6 @@ de Multiadornos Maicao.
 =================================
 
 """)
-
 user_choose = input("Elige una opción: ")
 
 if user_choose == "1":
