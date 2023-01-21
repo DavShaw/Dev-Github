@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import sqlite3
-from functions_admin import TakeFiles, ayuda_msg
+from functions_admin import TakeFiles, CheckPrimaryKey, CheckRightInfo, ayuda_msg
 
 
 
@@ -10,16 +10,20 @@ def Start_pag_add_product():
     #=================================
     #D A T A B A S E   Z O N E
     try:
-        dbfile_path = TakeFiles("productos")
+        dbfile_path = TakeFiles("productos.db")
         DBConnector = sqlite3.connect(dbfile_path)
         DBCursor = DBConnector.cursor()
-        DBCursor.execute("create table productos (nombre VARCHAR(50), precio INTEGER, medida VARCHAR(50), referencia VARCHAR(50) PRIMARY KEY)")
+        #DBCursor.execute("CREATE TABLE PRODUCTOS (nombre text, precio float, medida text, referencia text PRIMARY KEY, agregadopor text)")
         DBConnector.close()
     except:
-        print("Ha ocurrido un error (Zona de DB)")
+        print("Hay un imprevisto en la zona de DB...")
+        import sys
+        print("Posiblemente el error sea: Tabla existente - Nombre no válido - Error de sintaxis")
+        print("Tipo de error:",sys.exc_info()[0])
     #=================================
 
     #=================================
+    #F U N C T I O N S   Z O N E
     def boton6():
         messagebox.showinfo(title="Ayuda", message=ayuda_msg)
     def boton7():
@@ -28,10 +32,27 @@ def Start_pag_add_product():
         from pag_main import Start_pag_main
         print("Cambiando a » Menú principal")
         Start_pag_main()
+
     def boton8():
-        resumen = f"{ProductName.get()}\n{ProductPrice.get()}\n{ProductMeasurement.get()}\n{ProductRef.get()}\n{ProductAddedBy.get()}"
-        messagebox.showinfo(title="Agregar datos", message=resumen)
-        pass
+        Right = True
+        if not (ProductPrice.get()).isdigit():
+            messagebox.showwarning(title="Alerta",message="El precio no puede ser diferente a un número")
+            Right = False
+        if Right:
+            nombre,precio,medida,referencia,agregadopor = (ProductName.get()),(float(ProductPrice.get())), (ProductMeasurement.get()), (ProductRef.get()), (ProductAddedBy.get())
+            if CheckRightInfo(nombre,precio,medida,referencia,agregadopor):
+                if not CheckPrimaryKey(referencia):
+                    dbfile_path = TakeFiles("productos.db")
+                    DBConnector = sqlite3.connect(dbfile_path)
+                    DBCursor = DBConnector.cursor()
+                    producttoadd = [(nombre,precio,medida,referencia,agregadopor)]
+                    DBCursor.executemany("INSERT INTO productos VALUES (?,?,?,?,?)", producttoadd)
+                    DBConnector.commit()
+                    DBConnector.close()
+                    text6.config(text=f"Último producto agregado:\n({referencia})", font=(font_type,15), fg="green")
+
+                else:
+                    messagebox.showerror(title="Agregar producto",message=f"Lo sentimos, pero la referencia ingresada ya existe (Referencia: {referencia})")
     #==================================
 
     #===========================================#
@@ -40,8 +61,8 @@ def Start_pag_add_product():
     root.title("Multiadornos Maicao")
     root.resizable(0,0)
     root.iconbitmap(TakeFiles('img/terminal.ico'))
-    w = 500
-    h = 450
+    w = 550
+    h = 460
     s_w = root.winfo_screenwidth()
     s_h = root.winfo_screenheight()
     x = (s_w/2) - (w/2) 
@@ -62,9 +83,9 @@ def Start_pag_add_product():
     ProductFrame.pack()
 
     companylogo = PhotoImage(file = TakeFiles('img/logo_aux1.png'))
-    img_button_6 = PhotoImage(file = TakeFiles('img/boton_6.png'))#65*26 (px)
-    img_button_7 = PhotoImage(file = TakeFiles('img/boton_7.png'))#65*26 (px)
-    img_button_8 = PhotoImage(file = TakeFiles('img/boton_8.png'))#65*26 (px)
+    img_button_6 = PhotoImage(file = TakeFiles('img/boton_7.png'))#65*26 (px)
+    img_button_7 = PhotoImage(file = TakeFiles('img/boton_8.png'))#65*26 (px)
+    img_button_8 = PhotoImage(file = TakeFiles('img/boton_9.png'))#65*26 (px)
     font_type = "Times New Roman"
 
     img_logo = Label(ProductFrame, image=companylogo, background=bgcolor)
@@ -81,6 +102,7 @@ def Start_pag_add_product():
     text2.grid(row=2, column=0, padx=0, pady=10, sticky="w")
     ProductPrice = Entry(ProductFrame, justify=CENTER, font=(font_type,10))
     ProductPrice.grid(row=2, column=1, padx=0, pady=10)
+    #ProductPrice.insert(END,0)
 
     text3 = Label(ProductFrame, text="Medida Producto »", font=(font_type,12), background=bgcolor)
     text3.grid(row=3, column=0, padx=0, pady=10, sticky="w")
@@ -106,6 +128,18 @@ def Start_pag_add_product():
     button_8 = Button(ProductFrame, text="Añadir", image=img_button_8, background=bgcolor, borderwidth=0, command=boton8)
     button_8.grid(row=4,column=2, padx=25, pady=10)
 
+    text6 = Label(ProductFrame, text="", font=(font_type,15), background=bgcolor)
+    text6.grid(row=6,column=1,padx=0,pady=15)
+
+    '''
+    Set default vaules for Entry (Tkinter)
+
+    ProductName.insert(END,"boton")
+    ProductPrice.insert(END,156)
+    ProductMeasurement.insert(END,"und")
+    ProductRef.insert(END,"12")
+    ProductAddedBy.insert(END,"David")
+    '''
     #===========================================#
 
 

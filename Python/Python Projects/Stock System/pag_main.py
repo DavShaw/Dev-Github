@@ -10,6 +10,12 @@ def Start_pag_main():
         from pag_add_product import Start_pag_add_product
         print("Cambiando a » Añadir productos")
         Start_pag_add_product()
+
+    def boton3():
+        print("Pulsando boton 3")
+        from functions_admin import ShowProducts
+        print(ShowProducts())
+
     def boton4():
             root.destroy()
             root.quit()
@@ -58,6 +64,7 @@ def Start_pag_main():
     img_button_3 = PhotoImage(file = TakeFiles('img/boton_3.png'))#120*42 (px)
     img_button_4 = PhotoImage(file = TakeFiles('img/boton_4.png'))#120*42 (px)
     img_button_5 = PhotoImage(file = TakeFiles('img/boton_5.png'))#120*42 (px)
+    img_button_6 = PhotoImage(file = TakeFiles('img/boton_6.png'))#120*42 (px)
     font_type = "Times New Roman"
 
 
@@ -68,19 +75,22 @@ def Start_pag_main():
     img_logo = Label(MenuFrame, image = companylogo, background = bgcolor)
     img_logo.grid(row = 1, column = 1, padx = 0, pady = 30)
 
-    button_1 = Button(MenuFrame, image=img_button_1, borderwidth=0, background= bgcolor, command=boton1)
+    button_1 = Button(MenuFrame, image=img_button_1, borderwidth=0, background= bgcolor, command=boton1) #Agregar productos
     button_1.grid(row=2, column=0, padx=0, pady=30)
 
-    button_2 = Button(MenuFrame, image=img_button_2, borderwidth=0, background= bgcolor)
+    button_2 = Button(MenuFrame, image=img_button_2, borderwidth=0, background= bgcolor) #Editar productos
     button_2.grid(row=2, column=1, padx=0, pady=30)
 
-    button_3 = Button(MenuFrame, image=img_button_3, borderwidth=0, background= bgcolor)
+    button_3 = Button(MenuFrame, image=img_button_3, borderwidth=0, background= bgcolor, command=boton3) #Ver productos
     button_3.grid(row=2, column=2, padx=0, pady=30)
 
-    button_4 = Button(MenuFrame, image=img_button_4, borderwidth=0, background= bgcolor, command=boton4)
+    button_4 = Button(MenuFrame, image=img_button_4, borderwidth=0, background= bgcolor) #Vender productos
     button_4.grid(row=3, column=0, padx=0, pady=30)
 
-    button_5 = Button(MenuFrame,image=img_button_5, borderwidth=0, background= bgcolor, command=boton5)
+    button_5 = Button(MenuFrame, image=img_button_5, borderwidth=0, background= bgcolor, command=boton4) #Cerrar sesión
     button_5.grid(row=3, column=1, padx=0, pady=30)
+
+    button_6 = Button(MenuFrame, image=img_button_6, borderwidth=0, background= bgcolor, command=boton5) #Cerrar sistema
+    button_6.grid(row=3, column=2, padx=0, pady=30)
     #======================================================================================================================#
     root.mainloop()

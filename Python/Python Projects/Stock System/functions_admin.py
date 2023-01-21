@@ -1,8 +1,10 @@
 import sys
 import os
 import random
+from tkinter import messagebox
 import re
 import json
+import sqlite3
 
 
 
@@ -38,7 +40,9 @@ si se trata de un cuello, cinta, tela, deberá ser de medida 'metro'\n
     Te indicaré las medidas que admitimos.
      * mts » metros
      * und » unidad
-     * mllr » millar\n
+     * pq » paquete
+     * grs » gruesa
+     * mill » millar\n
 ----------------------------------------------------------------------------
 Ref. Producto »\n
 * Simplemente es la referencia con la cual se identifica en el 
@@ -87,11 +91,83 @@ def ChangeStrToDic(value):
 #============================================#
 
 
+#============================================#
+#DATABASE ZONE
+
+def CheckPrimaryKey(vaule):
+    #Setting input as string
+    vaule = str(vaule)
+    ref_products = []
+    dbfile_path = TakeFiles("productos.db")
+    DBConnector = sqlite3.connect(dbfile_path)
+    DBCursor = DBConnector.cursor()
+    DBCursor.execute(f"SELECT * FROM productos")
+    all_products = DBCursor.fetchall()
+    DBConnector.commit()
+    DBConnector.close()
+    for i in range(0,len(all_products)):
+        ref_products.append(all_products[i][3])
+    if vaule in ref_products:
+        return True
+    return False
 
 
+def CheckRightInfo(nombre,precio,medida,referencia,agregadopor):
+    staff = ["Gloria", "Miguel", "Henrry", "Ana", "David"]
+    medidas = ["mts","metro","und","unidad","pq","paquete","mill","millar","grs","gruesa"]
 
+    #Checking if any entry is null
+    if (nombre == "") or (precio == "") or (medida == "") or (referencia == "") or (agregadopor == ""):
+        messagebox.showwarning(title="Alerta",message="No puedes dejar campos vacíos")
+        return False
+    #Checking if name entry is a digit (That cannot be)
+    if nombre.isdigit():
+        messagebox.showwarning(title="Alerta",message="El nombre del producto no puede ser un número")
+        return False
+    #Checking if price entry isn't a digit (float or int)
+    #if (precio != float):
+    #I got problems trying to check if the prices is a float... Nico, aiuda
+        #print(precio)
+        #messagebox.showwarning(title="Alerta",message=f"El precio no puede ser diferente a un número {type(precio)}")
+        #return False
+    #Checking if medida isn't register
+    if not (medida in medidas):
+        messagebox.showwarning(title="Alerta",message="La medida ingresada no está registrada (Revisa el botón de ayuda)")
+        return False
+    #Ref don't needs to be checked (Another function checks if ref exist)
+    #Checking if staff is register
+    #I got problems trying to check if the staff exist... So i'll take the Username from login pag (I need to unencryp username)
+    if not (agregadopor in staff):
+        messagebox.showwarning(title="Alerta",message="El personal ingresado no está registrado")
+        return False
+    return True
 
+def ShowProducts():
+    products = ""
+    dbfile_path = TakeFiles("productos.db")
+    DBConnector = sqlite3.connect(dbfile_path)
+    DBCursor = DBConnector.cursor()
+    DBCursor.execute(f"SELECT * FROM productos")
+    all_products = DBCursor.fetchall()
+    DBConnector.commit()
+    DBConnector.close()
+    for i in range(0,len(all_products)):
+        products += "=========================================="
+        products += "\n"
+        products += f"Nombre: {all_products[i][0]}"
+        products += "\n"
+        products += f"Precio: {all_products[i][1]}"
+        products += "\n"
+        products += f"Medida: {all_products[i][2]}"
+        products += "\n"
+        products += f"Referencia: {all_products[i][3]}"
+        products += "\n"
+        products += f"Agregado por: {all_products[i][4]}"
+        products += "\n"
+    products += f"\n\nProductos totales: {len(all_products)}"
+    return products
 
+#============================================#
 
 
 
