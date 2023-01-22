@@ -35,8 +35,11 @@ def Start_pag_show_products():
     img_logo.grid(row = 0, column = 0, padx = 0, pady = 30)
     
     show_products = ShowProducts()
-    ProductsPrinter = Label(ShowProductsFrame,text=show_products)
+    ProductsPrinter = Text(ShowProductsFrame)
     ProductsPrinter.grid(row=1,column=0,padx=0,pady=30)
+    ProductsPrinter.insert(INSERT,show_products)
+    ProductsPrinter.config(state="disable", background="black", fg="white")
+
     #======================================================================================================================#
     root.mainloop()
 

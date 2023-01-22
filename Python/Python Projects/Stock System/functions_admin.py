@@ -160,23 +160,23 @@ def ShowProducts():
     DBConnector.commit()
     DBConnector.close()
     for i in range(0,len(all_products)):
-        products += "=========================================="
-        products += "\n"
-        products += f"Nombre: {all_products[i][0]}"
-        products += "\n"
-        products += f"Precio: {all_products[i][1]}"
-        products += "\n"
-        products += f"Medida: {all_products[i][2]}"
-        products += "\n"
-        products += f"Cantidad: {all_products[i][3]}"
-        products += "\n"
-        products += f"Referencia: {all_products[i][4]}"
-        products += "\n"
-        products += f"Agregado por: {all_products[i][5]}"
-        products += "\n"
-        products += "=========================================="
-        products += "\n\n\n"
-    products += f"Productos totales: {len(all_products)}"
+        products += ("=======================")
+        products += ("\n")
+        products += (f"Nombre: {all_products[i][0]}")
+        products += ("\n")
+        products += (f"Precio: {all_products[i][1]}")
+        products += ("\n")
+        products += (f"Medida: {all_products[i][2]}")
+        products += ("\n")
+        products += (f"Cantidad: {all_products[i][3]}")
+        products += ("\n")
+        products += (f"Referencia: {all_products[i][4]}")
+        products += ("\n")
+        products += (f"Agregado por: {all_products[i][5]}")
+        products += ("\n")
+        products += ("=======================")
+        products += ("\n\n\n")
+    products += (f"Productos totales: {len(all_products)}")
     return products
 
 #============================================#
