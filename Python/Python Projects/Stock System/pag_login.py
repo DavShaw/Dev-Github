@@ -50,7 +50,7 @@ def Start_pag_login():
 
     #======================================================================================================================#
     #Config zone of LoginFrame (Login page)
-    bgcolor = "#FCEEA7"
+    bgcolor = "#A6C7F7"
 
 
     LoginFrame = Frame()
@@ -91,7 +91,7 @@ def Start_pag_login():
     #======================================#
     iniciar_sesion = Button(LoginFrame)
     iniciar_sesion.grid(row = 6, column = 0, padx = 0, pady = 35)
-    iniciar_sesion.config(text = "Iniciar sesión", fg = "#000", font = ("Times New Roman", 15), background = "#EAFFCF")
+    iniciar_sesion.config(text = "Iniciar sesión", fg = "#000", font = ("Times New Roman", 15), background = "#9dc3fa")
     iniciar_sesion.config(command = Login)
     #======================================#
     #======================================================================================================================#

@@ -20,7 +20,13 @@ import sqlite3
 
 characters_list = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$%&/><;.:-_+@"
 characters_encrypted = ['Stq', 'RS.', '1Bh', '>YD', '5Ug', '5/.', 'odt', 'XmL', 'cg>', '3hx', 'oIh', 'Ouc', 'few', '4ic', 'yGJ', '9z.', 'zPX', 'KU0', 'eVg', '9My', '8kA', '3rJ', 'XGr', '%2s', '02L', '$Ub', 'E:f', '&Lh', '30o', '2n.', '8qx', 'neQ', '1uS', '9Xt', '.53', 'p0s', 'hiS', 'GQe', '2Jt', '/48', 'ZiD', 'dKW', 'XOJ', 'vn0', 'lmv', 'Zhy', 'F_;', '7+i', '/dt', 'J0R', 'si3', 'W_q', 'P;R', 'U.-', ';C>', 'Gjo', 'clE', '+7r', 'VeL', 'rgv', 'y%j', '.J6', 'N>+', 'iEP', 'EAc', 'KrV', 'z8y', 'NsQ','/0v', 'TQA', '2vR', 'Arj', 'JN5', 's62', 'o9S']
-ayuda_msg = ("""
+staff = ["Gloria", "Miguel", "Henrry", "Ana", "David"]
+medidas = ["mts","metro","und","unidad","pq","paquete","mill","millar","grs","gruesa","par"]
+ayuda_medidas = ""
+for i in range(0,len(medidas)):
+    ayuda_medidas += f" * {medidas[i]}"
+    ayuda_medidas += "\n"
+ayuda_msg = (f"""
 Parece que no entiendes mucho sobre esto... Te lo explicaré.
 Sólo rellena la información que se te pide, de forma correcta.\n
 ----------------------------------------------------------------------------
@@ -37,12 +43,10 @@ cuesta 4,999,52 pesos, escribe directamente 4999 o 5000\n
 Medida Producto »\n
 * Es sencillamente el tipo de medida que usará este producto,
 si se trata de un cuello, cinta, tela, deberá ser de medida 'metro'\n
-    Te indicaré las medidas que admitimos.
-     * mts » metros
-     * und » unidad
-     * pq » paquete
-     * grs » gruesa
-     * mill » millar\n
+
+Te indicaré las medidas que admitimos.
+
+{ayuda_medidas}
 ----------------------------------------------------------------------------
 Ref. Producto »\n
 * Simplemente es la referencia con la cual se identifica en el 
@@ -50,12 +54,7 @@ inventario al producto.\n
 ----------------------------------------------------------------------------
 Añadido por »\n
 * Sólo escribe tú nombre, persona la cual se encuentra editando el listado de
-productos. Hasta la fecha sólo permitimos los siguientes personales:\n
-    * Gloria
-    * Miguel
-    * Henrry
-    * Ana
-    * David\n
+productos (Es posible que tu nombre se añada automáticamente).
         """)
 #============================================#
 
@@ -106,40 +105,49 @@ def CheckPrimaryKey(vaule):
     DBConnector.commit()
     DBConnector.close()
     for i in range(0,len(all_products)):
-        ref_products.append(all_products[i][3])
+        ref_products.append(all_products[i][4])
     if vaule in ref_products:
         return True
     return False
 
 
-def CheckRightInfo(nombre,precio,medida,referencia,agregadopor):
-    staff = ["Gloria", "Miguel", "Henrry", "Ana", "David"]
-    medidas = ["mts","metro","und","unidad","pq","paquete","mill","millar","grs","gruesa"]
+def CheckRightInfoToAddProducts(nombre,precio,medida,cantidad,referencia,agregadopor):
 
     #Checking if any entry is null
-    if (nombre == "") or (precio == "") or (medida == "") or (referencia == "") or (agregadopor == ""):
+    if (nombre == "") or (precio == "") or (medida == "") or (cantidad == "") or (referencia == "") or (agregadopor == ""):
         messagebox.showwarning(title="Alerta",message="No puedes dejar campos vacíos")
         return False
+
     #Checking if name entry is a digit (That cannot be)
     if nombre.isdigit():
         messagebox.showwarning(title="Alerta",message="El nombre del producto no puede ser un número")
         return False
+
     #Checking if price entry isn't a digit (float or int)
-    #if (precio != float):
-    #I got problems trying to check if the prices is a float... Nico, aiuda
-        #print(precio)
-        #messagebox.showwarning(title="Alerta",message=f"El precio no puede ser diferente a un número {type(precio)}")
-        #return False
+    if not (precio.isdigit()):
+        messagebox.showwarning(title="Alerta",message=f"El precio debe de ser un número")
+        return False
+
     #Checking if medida isn't register
     if not (medida in medidas):
         messagebox.showwarning(title="Alerta",message="La medida ingresada no está registrada (Revisa el botón de ayuda)")
         return False
-    #Ref don't needs to be checked (Another function checks if ref exist)
-    #Checking if staff is register
-    #I got problems trying to check if the staff exist... So i'll take the Username from login pag (I need to unencryp username)
+
+    #Checking if cantidad is a digit
+    if not (cantidad.isdigit()):
+        messagebox.showwarning(title="Alerta",message=f"La cantidad debe ser un número")
+        return False
+
+    #Checking if ref is allowed (Doesnt exist another product with the same ref)
+    if CheckPrimaryKey(referencia):
+        messagebox.showwarning(title="Alerta",message=f"Ya existe un producto con esta misma referencia {referencia}")
+        return False
+
+    #Cheking if staff who added the product is allowed
     if not (agregadopor in staff):
         messagebox.showwarning(title="Alerta",message="El personal ingresado no está registrado")
         return False
+    #If anyone condiction is true (That means: there's not erros in the information input) that gonna return True
     return True
 
 def ShowProducts():
@@ -160,11 +168,15 @@ def ShowProducts():
         products += "\n"
         products += f"Medida: {all_products[i][2]}"
         products += "\n"
-        products += f"Referencia: {all_products[i][3]}"
+        products += f"Cantidad: {all_products[i][3]}"
         products += "\n"
-        products += f"Agregado por: {all_products[i][4]}"
+        products += f"Referencia: {all_products[i][4]}"
         products += "\n"
-    products += f"\n\nProductos totales: {len(all_products)}"
+        products += f"Agregado por: {all_products[i][5]}"
+        products += "\n"
+        products += "=========================================="
+        products += "\n\n\n"
+    products += f"Productos totales: {len(all_products)}"
     return products
 
 #============================================#
