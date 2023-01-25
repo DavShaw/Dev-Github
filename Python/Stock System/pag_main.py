@@ -1,9 +1,33 @@
+#===========================================#
+#Imports
 from tkinter import *
 from functions_admin import TakeFiles
 
-def Start_pag_main():
 
-    #=============================================#
+#===========================================#
+#Main function
+def Start_pag_main():
+    #===========================================#
+    #Root window
+    root = Tk()
+
+    #===========================================#
+    #Assignments
+    companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
+    img_button_1 = PhotoImage(file = TakeFiles('img/add_products.png'))#120*42 (px)
+    img_button_2 = PhotoImage(file = TakeFiles('img/edit_products.png'))#120*42 (px)
+    img_button_3 = PhotoImage(file = TakeFiles('img/view_products.png'))#120*42 (px)
+    img_button_4 = PhotoImage(file = TakeFiles('img/sell_products.png'))#120*42 (px)
+    img_button_5 = PhotoImage(file = TakeFiles('img/log_out.png'))#120*42 (px)
+    img_button_6 = PhotoImage(file = TakeFiles('img/exit.png'))#120*42 (px)
+    font_type = "Times New Roman"
+
+    #===========================================#
+    #Variables
+    bgcolor = "#A6C7F7"
+
+    #===========================================#
+    #Functions
     def boton1():
         root.destroy()
         root.quit()
@@ -18,7 +42,7 @@ def Start_pag_main():
         print("Cambiando a » Visualizar productos")
         Start_pag_show_products()
 
-    def boton4():
+    def boton4(event = True):
             root.destroy()
             root.quit()
             from pag_login import Start_pag_login
@@ -29,45 +53,34 @@ def Start_pag_main():
             root.destroy()
             root.quit()
             print("Sistema cerrado (Botón 5)")
-    #=============================================#
-        
 
-
-    #======================================================================================================================#
+    #===========================================#
     #Root config
-    root = Tk()
     root.title("Multiadornos Maicao")
     root.resizable(1,1)
     root.iconbitmap(TakeFiles('img/terminal.ico'))
-    w = 1000
+
+    w = 600
     h = 600
     s_w = root.winfo_screenwidth()
     s_h = root.winfo_screenheight()
     x = (s_w/2) - (w/2) 
     y = ((s_h/2)+200) - (h-2)
+
     root.geometry("%dx%d+%d+%d" % (w, h, x, y))
-    #======================================================================================================================#
-    #MenuFrame config
-    bgcolor = "#A6C7F7"
-
-
-    MenuFrame = Frame()
-    MenuFrame.config(width = w, height = h)
-    MenuFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
-    MenuFrame.config(background = bgcolor)
     root.config(background = bgcolor)
+    root.state("zoomed")
+
+    #===========================================#
+    #Frame config
+    MenuFrame = Frame()
+    MenuFrame.config(width = w, height = h, background = bgcolor)
+    MenuFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
     MenuFrame.pack()
 
-    companylogo = PhotoImage(file = TakeFiles('img/logo_aux1.png'))
-    img_button_1 = PhotoImage(file = TakeFiles('img/boton_1.png'))#120*42 (px)
-    img_button_2 = PhotoImage(file = TakeFiles('img/boton_2.png'))#120*42 (px)
-    img_button_3 = PhotoImage(file = TakeFiles('img/boton_3.png'))#120*42 (px)
-    img_button_4 = PhotoImage(file = TakeFiles('img/boton_4.png'))#120*42 (px)
-    img_button_5 = PhotoImage(file = TakeFiles('img/boton_5.png'))#120*42 (px)
-    img_button_6 = PhotoImage(file = TakeFiles('img/boton_6.png'))#120*42 (px)
-    font_type = "Times New Roman"
-
-
+    
+    #===========================================#
+    #Widgets
     text_welcome = Label(MenuFrame, text = "M E N Ú   P R I N C I P A L", background = bgcolor)
     text_welcome.grid(row = 0, column = 1, padx = 0, pady = 20)
     text_welcome.config(fg = "black", font = (font_type,25), bd = 12)
@@ -92,8 +105,12 @@ def Start_pag_main():
 
     button_6 = Button(MenuFrame, image=img_button_6, borderwidth=0, background= bgcolor, command=boton5) #Cerrar sistema
     button_6.grid(row=3, column=2, padx=0, pady=30)
-    #======================================================================================================================#
+    #===========================================#
+
+    #===========================================#
+    #Binds
+    root.bind("<Escape>",boton4)
+
+    #===========================================#
+    #Mainloop
     root.mainloop()
-
-
-Start_pag_main()

@@ -6,15 +6,18 @@ def Start_pag_show_products():
     #Root config
     root = Tk()
     root.title("Multiadornos Maicao")
-    root.resizable(0,0)
+    root.resizable(1,1)
     root.iconbitmap(TakeFiles('img/terminal.ico'))
-    w = 520
-    h = 620
+    w = 600
+    h = 600
     s_w = root.winfo_screenwidth()
     s_h = root.winfo_screenheight()
     x = (s_w/2) - (w/2) 
     y = ((s_h/2)+200) - (h-2)
     root.geometry("%dx%d+%d+%d" % (w, h, x, y))
+
+    #Bind
+    
     #======================================================================================================================#
 
     def ToName():
@@ -34,14 +37,14 @@ def Start_pag_show_products():
         ProductsPrinter.insert(INSERT,tp)
         ProductsPrinter.config(state="disable")
 
-    def ToReset():
+    def ToReset(event = True):
         ProductsPrinter.config(state="normal")
         ProductsPrinter.delete(1.0, END)
         tp = ShowProducts()
         ProductsPrinter.insert(INSERT,tp)
         ProductsPrinter.config(state="disable")
 
-    def GoToBack():
+    def GoToBack(event = True):
         root.destroy()
         root.quit()
         from pag_main import Start_pag_main
@@ -49,22 +52,25 @@ def Start_pag_show_products():
         Start_pag_main()
 
 
+    root.bind("<Escape>",GoToBack)
+    root.bind("<BackSpace>",ToReset)
+    root.bind("<Return>",ToReset)
     #======================================================================================================================#
     #Config zone of SPFrame (Login page)
     bgcolor = "#A6C7F7"
     font_type = "Times New Roman"
 
     SPFrame = Frame()
-    SPFrame.config(width = w, height = h)
-    SPFrame.pack(fill = "both", expand = True)
-    SPFrame.config(background = bgcolor)
+    SPFrame.config(width = w, height = h, background = bgcolor)
     SPFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
-    #root.state("zoomed")
+    root.state("zoomed")
+    root.config(background=bgcolor)
+    SPFrame.pack()
 
-    companylogo = PhotoImage(file = TakeFiles('img/logo_aux1.png'))
-    img_button_7 = PhotoImage(file = TakeFiles('img/boton_8.png'))#65*26 (px)
-    img_button_10 = PhotoImage(file = TakeFiles('img/boton_10.png'))#65*26 (px)
-    img_button_11 = PhotoImage(file = TakeFiles('img/boton_11.png'))#65*26 (px)
+    companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
+    img_button_7 = PhotoImage(file = TakeFiles('img/back.png'))#65*26 (px)
+    img_button_10 = PhotoImage(file = TakeFiles('img/find.png'))#65*26 (px)
+    img_button_11 = PhotoImage(file = TakeFiles('img/reset.png'))#65*26 (px)
     
     img_logo = Label(SPFrame, image = companylogo, background = bgcolor)
     img_logo.grid(row = 0, column = 1, padx = 0, pady = 30)
@@ -99,7 +105,7 @@ def Start_pag_show_products():
     ProductsPrinter = Text(SPFrame)
     ProductsPrinter.grid(row=4,column=1,padx=0,pady=30)
     ProductsPrinter.insert(INSERT,show_products)
-    ProductsPrinter.config(state="disable", background="black", fg="white", width=25,height=15, borderwidth=10, font=(font_type,12))
+    ProductsPrinter.config(state="disable", background="black", fg="white", width=25,height=22, borderwidth=10, font=(font_type,12))
 
 
 

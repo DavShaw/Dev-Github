@@ -140,7 +140,7 @@ def CheckRightInfoToAddProducts(nombre,precio,medida,cantidad,referencia,agregad
 
     #Checking if ref is allowed (Doesnt exist another product with the same ref)
     if CheckPrimaryKey(referencia):
-        messagebox.showwarning(title="Alerta",message=f"Ya existe un producto con esta misma referencia {referencia}")
+        messagebox.showwarning(title="Alerta",message=f"Ya existe un producto con esta misma referencia ({referencia})")
         return False
 
     #Cheking if staff who added the product is allowed

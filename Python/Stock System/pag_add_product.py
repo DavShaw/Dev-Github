@@ -1,40 +1,56 @@
-from tkinter import *
+#===========================================#
+#Imports
+from functions_admin import TakeFiles, CheckRightInfoToAddProducts, ayuda_msg
 from tkinter import messagebox
+from tkinter import *
 import sqlite3
-from functions_admin import TakeFiles, CheckPrimaryKey, CheckRightInfoToAddProducts, ayuda_msg
 
 
-
+#===========================================#
+#Main function
 def Start_pag_add_product():
+    #===========================================#
+    #Root windown
+    root = Tk()
 
-    #=================================
-    #D A T A B A S E   Z O N E
-    try:
-        dbfile_path = TakeFiles("productos.db")
-        DBConnector = sqlite3.connect(dbfile_path)
-        DBCursor = DBConnector.cursor()
-        DBCursor.execute("CREATE TABLE PRODUCTOS (nombre text, precio float, medida text,cantidad integer ,referencia text PRIMARY KEY, agregadopor text)")
-        DBConnector.close()
-    except:
-        print("Hay un imprevisto en la zona de DB...")
-        import sys
-        print("Posiblemente el error sea: Tabla existente")
-        print("Tipo de error:",sys.exc_info()[0])
-    #=================================
+    #===========================================#
+    #Assignments
 
-    #=================================
-    #F U N C T I O N S   Z O N E
-    def boton6():
+    #===========================================#
+    #Variables
+    bgcolor = "#A6C7F7"
+    companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
+    img_button_6 = PhotoImage(file = TakeFiles('img/help.png'))
+    img_button_7 = PhotoImage(file = TakeFiles('img/back.png'))
+    img_button_8 = PhotoImage(file = TakeFiles('img/add.png'))
+    font_type = "Times New Roman"
+
+    #===========================================#
+    #Functions
+    def CreatingDB():
+        try:
+            dbfile_path = TakeFiles("productos.db")
+            DBConnector = sqlite3.connect(dbfile_path)
+            DBCursor = DBConnector.cursor()
+            DBCursor.execute("CREATE TABLE PRODUCTOS (nombre text, precio float, medida text,cantidad integer ,referencia text PRIMARY KEY, agregadopor text)")
+            DBConnector.close()
+        except:
+            print("Hay un imprevisto en la zona de DB...")
+            import sys
+            print("Posiblemente el error sea: Tabla existente")
+            print("Tipo de error:",sys.exc_info()[0])
+
+    def boton6(event = True):
         messagebox.showinfo(title="Ayuda", message=ayuda_msg)
 
-    def boton7():
+    def boton7(event = True):
         root.destroy()
         root.quit()
         from pag_main import Start_pag_main
         print("Cambiando a » Menú principal")
         Start_pag_main()
 
-    def boton8():
+    def boton8(event = True):
             nombre = ProductName.get()
             precio = ProductPrice.get()
             medida = ProductMeasurement.get()
@@ -42,6 +58,7 @@ def Start_pag_add_product():
             referencia = ProductRef.get()
             agregadopor = ProductAddedBy.get()
             if CheckRightInfoToAddProducts(nombre,precio,medida,cantidad,referencia,agregadopor):
+                CreatingDB()
                 dbfile_path = TakeFiles("productos.db")
                 DBConnector = sqlite3.connect(dbfile_path)
                 DBCursor = DBConnector.cursor()
@@ -50,44 +67,36 @@ def Start_pag_add_product():
                 DBConnector.commit()
                 DBConnector.close()
                 text7.config(text=f"Último producto agregado:\n({referencia})", font=(font_type,15), fg="green")
-    #==================================
 
     #===========================================#
     #Root config
-    root = Tk()
     root.title("Multiadornos Maicao")
-    root.resizable(0,0)
+    root.resizable(1,1)
     root.iconbitmap(TakeFiles('img/terminal.ico'))
-    w = 550
-    h = 500
+
+    w = 600
+    h = 600
     s_w = root.winfo_screenwidth()
     s_h = root.winfo_screenheight()
     x = (s_w/2) - (w/2) 
     y = ((s_h/2)+200) - (h-2)
+
     root.geometry("%dx%d+%d+%d" % (w, h, x, y))
-    #===========================================#
+    root.config(background = bgcolor)
+    root.state("zoomed")
 
     #===========================================#
     #Frame config
-
-    bgcolor = "#A6C7F7"
     ProductFrame = Frame()
     ProductFrame.config(width = w, height = h)
     ProductFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
     ProductFrame.config(background = bgcolor)
-    root.config(background = bgcolor)
     ProductFrame.pack()
 
-    companylogo = PhotoImage(file = TakeFiles('img/logo_aux1.png'))
-    img_button_6 = PhotoImage(file = TakeFiles('img/boton_7.png'))#65*26 (px)
-    img_button_7 = PhotoImage(file = TakeFiles('img/boton_8.png'))#65*26 (px)
-    img_button_8 = PhotoImage(file = TakeFiles('img/boton_9.png'))#65*26 (px)
-    font_type = "Times New Roman"
-
+    #===========================================#
+    #Widgets config
     img_logo = Label(ProductFrame, image=companylogo, background=bgcolor)
     img_logo.grid(row=0, column=1, padx=0, pady=30)
-
-
 
     text1 = Label(ProductFrame, text="Nombre Producto »", font=(font_type,12), background=bgcolor)#Entry -> Product Name
     text1.grid(row=1, column=0, padx=0, pady=10, sticky="w")
@@ -131,15 +140,11 @@ def Start_pag_add_product():
     text7 = Label(ProductFrame, text="", font=(font_type,0), background=bgcolor) #Text that shows last item added
     text7.grid(row=7,column=1,padx=0,pady=15)
 
-
-    #ProductName.insert(END,"Agarradera")
-    #ProductPrice.insert(END,50)
-    #ProductMeasurement.insert(END,"mts")
-    #ProductAmount.insert(END,2)
-    #ProductRef.insert(END,"CTM-P")
-    #ProductAddedBy.insert(END,"David")
     #===========================================#
+    #Binds
+    root.bind("<Escape>",boton7)
+    root.bind("<Return>",boton8)
 
-
-
+    #===========================================#
+    #Mainloop 
     root.mainloop()
