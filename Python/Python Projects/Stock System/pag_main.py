@@ -12,9 +12,11 @@ def Start_pag_main():
         Start_pag_add_product()
 
     def boton3():
-        print("Pulsando boton 3")
-        from functions_admin import ShowProducts
-        print(ShowProducts())
+        root.destroy()
+        root.quit()
+        from pag_show_products import Start_pag_show_products
+        print("Cambiando a » Visualizar productos")
+        Start_pag_show_products()
 
     def boton4():
             root.destroy()
@@ -35,7 +37,7 @@ def Start_pag_main():
     #Root config
     root = Tk()
     root.title("Multiadornos Maicao")
-    root.resizable(0,0)
+    root.resizable(1,1)
     root.iconbitmap(TakeFiles('img/terminal.ico'))
     w = 1000
     h = 600
@@ -57,8 +59,6 @@ def Start_pag_main():
     MenuFrame.pack()
 
     companylogo = PhotoImage(file = TakeFiles('img/logo_aux1.png'))
-    system_img1 = PhotoImage(file = TakeFiles('img/user_logo_aux1.png'))
-    system_img2 = PhotoImage(file = TakeFiles('img/password_logo_aux1.png'))
     img_button_1 = PhotoImage(file = TakeFiles('img/boton_1.png'))#120*42 (px)
     img_button_2 = PhotoImage(file = TakeFiles('img/boton_2.png'))#120*42 (px)
     img_button_3 = PhotoImage(file = TakeFiles('img/boton_3.png'))#120*42 (px)
@@ -94,3 +94,6 @@ def Start_pag_main():
     button_6.grid(row=3, column=2, padx=0, pady=30)
     #======================================================================================================================#
     root.mainloop()
+
+
+Start_pag_main()

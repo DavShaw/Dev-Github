@@ -13,7 +13,7 @@ def Start_pag_login():
             hidden_password = Encrypter(password)
             if UserExist(hidden_user) == True:
                 if LoginChecker(hidden_user,hidden_password):
-                    messagebox.showinfo(title="Acceso válido", message="Bienvenido al sistema...\n\nTe redireccionaremos en unos segundos a la\npágina principal del sistema")
+                    messagebox.showinfo(title="Acceso válido", message=f"Bienvenido al sistema, {user}\n\nTe redireccionaremos en unos segundos a la\npágina principal del sistema")
                     root.destroy()
                     root.quit()
                     from pag_main import Start_pag_main
@@ -23,7 +23,7 @@ def Start_pag_login():
                     #usuario.delete(0,END)
                     clave.delete(0,END)
             else:
-                messagebox.showwarning(title="Acceso inválido", message="Ésta cuenta no existe")
+                messagebox.showwarning(title="Acceso inválido", message="Este usuario no existe")
         else:
             messagebox.showwarning(title="Acceso inválido", message="No puedes dejar los campos vacíos")
     #======================================================================================================================#
@@ -55,7 +55,7 @@ def Start_pag_login():
 
     LoginFrame = Frame()
     LoginFrame.config(width = w, height = h)
-    LoginFrame.pack(fill = "both", expand = True)
+    #LoginFrame.pack(fill = "both", expand = True)
     LoginFrame.config(background = bgcolor)
     LoginFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 

@@ -150,7 +150,7 @@ def CheckRightInfoToAddProducts(nombre,precio,medida,cantidad,referencia,agregad
     #If anyone condiction is true (That means: there's not erros in the information input) that gonna return True
     return True
 
-def ShowProducts():
+def ShowProducts(vaule_center = 0):
     products = ""
     dbfile_path = TakeFiles("productos.db")
     DBConnector = sqlite3.connect(dbfile_path)
@@ -159,26 +159,80 @@ def ShowProducts():
     all_products = DBCursor.fetchall()
     DBConnector.commit()
     DBConnector.close()
+    products += (f"Productos totales: {len(all_products)}\n\n").center(vaule_center)
     for i in range(0,len(all_products)):
-        products += ("=======================")
-        products += ("\n")
-        products += (f"Nombre: {all_products[i][0]}")
-        products += ("\n")
-        products += (f"Precio: {all_products[i][1]}")
-        products += ("\n")
-        products += (f"Medida: {all_products[i][2]}")
-        products += ("\n")
-        products += (f"Cantidad: {all_products[i][3]}")
-        products += ("\n")
-        products += (f"Referencia: {all_products[i][4]}")
-        products += ("\n")
-        products += (f"Agregado por: {all_products[i][5]}")
-        products += ("\n")
-        products += ("=======================")
-        products += ("\n\n\n")
-    products += (f"Productos totales: {len(all_products)}")
+        products += ("==================").center(vaule_center)
+        products += ("\n").center(vaule_center)
+        products += (f"Nombre: {all_products[i][0]}").center(vaule_center)
+        products += ("\n").center(vaule_center)
+        products += (f"Precio: {all_products[i][1]}").center(vaule_center)
+        products += ("\n").center(vaule_center)
+        products += (f"Medida: {all_products[i][2]}").center(vaule_center)
+        products += ("\n").center(vaule_center)
+        products += (f"Cantidad: {all_products[i][3]}").center(vaule_center)
+        products += ("\n").center(vaule_center)
+        products += (f"Referencia: {all_products[i][4]}").center(vaule_center)
+        products += ("\n").center(vaule_center)
+        products += (f"Agregado por: {all_products[i][5]}").center(vaule_center)
+        products += ("\n").center(vaule_center)
+        products += ("==================").center(vaule_center)
+        products += ("\n\n\n").center(vaule_center)
     return products
 
+def SetFormatData(productlist = []):
+    products = f"Productos totales: {len(productlist)}\n\n"
+    for i in range(0,len(productlist)):
+        products += ("==================")
+        products += ("\n")
+        products += (f"Nombre: {productlist[i][0]}")
+        products += ("\n")
+        products += (f"Precio: {productlist[i][1]}")
+        products += ("\n")
+        products += (f"Medida: {productlist[i][2]}")
+        products += ("\n")
+        products += (f"Cantidad: {productlist[i][3]}")
+        products += ("\n")
+        products += (f"Referencia: {productlist[i][4]}")
+        products += ("\n")
+        products += (f"Agregado por: {productlist[i][5]}")
+        products += ("\n")
+        products += ("==================")
+        products += ("\n\n\n")
+    return products
+
+
+def FindProducts(producttosearch = "",searchmode = "ref"):
+    all_products = []
+    send_products = []
+    
+
+    dbfile_path = TakeFiles("productos.db")
+    DBConnector = sqlite3.connect(dbfile_path)
+    DBCursor = DBConnector.cursor()
+    DBCursor.execute(f"SELECT * FROM productos")
+    all_products = DBCursor.fetchall()
+    DBConnector.commit()
+    DBConnector.close()
+
+    if (searchmode == "ref"):
+        for i in range(0,len(all_products)):
+            if all_products[i][4] == producttosearch:
+                send_products.append(all_products[i])
+        return send_products
+
+    elif (searchmode == "name"):
+        for i in range(0,len(all_products)):
+            if all_products[i][0] == producttosearch:
+                send_products.append(all_products[i])
+        return send_products
+    else:
+        messagebox.showerror(title="Busqueda",message="Parece que has ingresado una opción no válida. (sólo se permite ref o name)")
+        return send_products
+
+def ProductShower(producttosearch = "",searchmode = ""):
+    MainList = FindProducts(producttosearch,searchmode)
+    MainString = SetFormatData(MainList)
+    return MainString
 #============================================#
 
 

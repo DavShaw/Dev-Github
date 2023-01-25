@@ -13,12 +13,12 @@ def Start_pag_add_product():
         dbfile_path = TakeFiles("productos.db")
         DBConnector = sqlite3.connect(dbfile_path)
         DBCursor = DBConnector.cursor()
-        #DBCursor.execute("CREATE TABLE PRODUCTOS (nombre text, precio float, medida text,cantidad integer ,referencia text PRIMARY KEY, agregadopor text)")
+        DBCursor.execute("CREATE TABLE PRODUCTOS (nombre text, precio float, medida text,cantidad integer ,referencia text PRIMARY KEY, agregadopor text)")
         DBConnector.close()
     except:
         print("Hay un imprevisto en la zona de DB...")
         import sys
-        print("Posiblemente el error sea: Tabla existente - Nombre no válido - Error de sintaxis")
+        print("Posiblemente el error sea: Tabla existente")
         print("Tipo de error:",sys.exc_info()[0])
     #=================================
 
@@ -71,7 +71,6 @@ def Start_pag_add_product():
     #Frame config
 
     bgcolor = "#A6C7F7"
-    ProductFrame = Frame()
     ProductFrame = Frame()
     ProductFrame.config(width = w, height = h)
     ProductFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
