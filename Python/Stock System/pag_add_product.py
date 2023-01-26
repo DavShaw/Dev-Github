@@ -34,11 +34,11 @@ def Start_pag_add_product():
             DBCursor = DBConnector.cursor()
             DBCursor.execute("CREATE TABLE PRODUCTOS (nombre text, precio float, medida text,cantidad integer ,referencia text PRIMARY KEY, agregadopor text)")
             DBConnector.close()
-        except:
+        except sqlite3.Error as the_error:
             print("Hay un imprevisto en la zona de DB...")
             import sys
             print("Posiblemente el error sea: Tabla existente")
-            print("Tipo de error:",sys.exc_info()[0])
+            print("Tipo de error:",the_error)
 
     def boton6(event = True):
         messagebox.showinfo(title="Ayuda", message=ayuda_msg)
