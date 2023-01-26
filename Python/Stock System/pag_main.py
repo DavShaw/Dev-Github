@@ -13,6 +13,10 @@ def Start_pag_main():
 
     #===========================================#
     #Assignments
+    
+    #===========================================#
+    #Variables
+    bgcolor = "#A6C7F7"
     companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
     img_button_1 = PhotoImage(file = TakeFiles('img/add_products.png'))#120*42 (px)
     img_button_2 = PhotoImage(file = TakeFiles('img/edit_products.png'))#120*42 (px)
@@ -23,10 +27,6 @@ def Start_pag_main():
     font_type = "Times New Roman"
 
     #===========================================#
-    #Variables
-    bgcolor = "#A6C7F7"
-
-    #===========================================#
     #Functions
     def boton1():
         root.destroy()
@@ -34,6 +34,29 @@ def Start_pag_main():
         from pag_add_product import Start_pag_add_product
         print("Cambiando a » Añadir productos")
         Start_pag_add_product()
+
+    def boton2():
+        from tkinter import messagebox
+        from tkinter.simpledialog import askstring
+        from tkinter.messagebox import showinfo
+        from functions_admin import FindProducts
+        
+        product_ref = askstring('Editar','Ref. a editar')
+        if FindProducts(product_ref) != []:
+            messagebox.showinfo(title="Válido",message=f"El producto ({product_ref}) ha sido encontrado.\n¡Vamos a editarlo!")
+
+            root.destroy()
+            root.quit()
+            from pag_edit_product import Start_pag_edit_product
+            print("Cambiando a » Editar productos")
+            Start_pag_edit_product(product_ref)
+        elif product_ref == None:
+            messagebox.showwarning(title="Cancelado",message="Has cancelado el proceso.")
+        elif (product_ref).strip() == "":
+            messagebox.showwarning(title="Inválido", message="No puedes dejar el campo vacío")
+        else:
+            messagebox.showwarning(title="Inválido",message=f"El producto ({product_ref}) no ha sido encontrado.")
+            
 
     def boton3():
         root.destroy()
@@ -91,7 +114,7 @@ def Start_pag_main():
     button_1 = Button(MenuFrame, image=img_button_1, borderwidth=0, background= bgcolor, command=boton1) #Agregar productos
     button_1.grid(row=2, column=0, padx=0, pady=30)
 
-    button_2 = Button(MenuFrame, image=img_button_2, borderwidth=0, background= bgcolor) #Editar productos
+    button_2 = Button(MenuFrame, image=img_button_2, borderwidth=0, background= bgcolor, command=boton2) #Editar productos
     button_2.grid(row=2, column=1, padx=0, pady=30)
 
     button_3 = Button(MenuFrame, image=img_button_3, borderwidth=0, background= bgcolor, command=boton3) #Ver productos
@@ -99,13 +122,13 @@ def Start_pag_main():
 
     button_4 = Button(MenuFrame, image=img_button_4, borderwidth=0, background= bgcolor) #Vender productos
     button_4.grid(row=3, column=0, padx=0, pady=30)
+    button_4.config(state="disable")
 
     button_5 = Button(MenuFrame, image=img_button_5, borderwidth=0, background= bgcolor, command=boton4) #Cerrar sesión
     button_5.grid(row=3, column=1, padx=0, pady=30)
 
     button_6 = Button(MenuFrame, image=img_button_6, borderwidth=0, background= bgcolor, command=boton5) #Cerrar sistema
     button_6.grid(row=3, column=2, padx=0, pady=30)
-    #===========================================#
 
     #===========================================#
     #Binds

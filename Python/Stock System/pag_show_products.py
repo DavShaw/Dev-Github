@@ -1,25 +1,31 @@
+#===========================================#
+#Imports
 from tkinter import *
 from functions_admin import TakeFiles, ProductShower, ShowProducts
 
+
+#===========================================#
+#Main function
 def Start_pag_show_products():
-#======================================================================================================================#
-    #Root config
+    #===========================================#
+    #Root window
     root = Tk()
-    root.title("Multiadornos Maicao")
-    root.resizable(1,1)
-    root.iconbitmap(TakeFiles('img/terminal.ico'))
-    w = 600
-    h = 600
-    s_w = root.winfo_screenwidth()
-    s_h = root.winfo_screenheight()
-    x = (s_w/2) - (w/2) 
-    y = ((s_h/2)+200) - (h-2)
-    root.geometry("%dx%d+%d+%d" % (w, h, x, y))
 
-    #Bind
-    
-    #======================================================================================================================#
+    #===========================================#
+    #Assignments
 
+    #===========================================#
+    #Variables
+    bgcolor = "#A6C7F7"
+    font_type = "Times New Roman"
+
+    companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
+    img_button_7 = PhotoImage(file = TakeFiles('img/back.png'))#65*26 (px)
+    img_button_10 = PhotoImage(file = TakeFiles('img/find.png'))#65*26 (px)
+    img_button_11 = PhotoImage(file = TakeFiles('img/reset.png'))#65*26 (px)
+
+    #===========================================#
+    #Functions
     def ToName():
         arg = entry1.get()
         tp = ProductShower(arg,"name")
@@ -51,27 +57,30 @@ def Start_pag_show_products():
         print("Cambiando a » Página principal")
         Start_pag_main()
 
+    #===========================================#
+    #Root config
+    root.title("Multiadornos Maicao")
+    root.resizable(1,1)
+    root.iconbitmap(TakeFiles('img/terminal.ico'))
+    w = 600
+    h = 600
+    s_w = root.winfo_screenwidth()
+    s_h = root.winfo_screenheight()
+    x = (s_w/2) - (w/2) 
+    y = ((s_h/2)+200) - (h-2)
+    root.geometry("%dx%d+%d+%d" % (w, h, x, y))
 
-    root.bind("<Escape>",GoToBack)
-    root.bind("<BackSpace>",ToReset)
-    root.bind("<Return>",ToReset)
-    #======================================================================================================================#
-    #Config zone of SPFrame (Login page)
-    bgcolor = "#A6C7F7"
-    font_type = "Times New Roman"
-
+    #===========================================#
+    #Frame config
     SPFrame = Frame()
     SPFrame.config(width = w, height = h, background = bgcolor)
     SPFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
     root.state("zoomed")
     root.config(background=bgcolor)
     SPFrame.pack()
-
-    companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
-    img_button_7 = PhotoImage(file = TakeFiles('img/back.png'))#65*26 (px)
-    img_button_10 = PhotoImage(file = TakeFiles('img/find.png'))#65*26 (px)
-    img_button_11 = PhotoImage(file = TakeFiles('img/reset.png'))#65*26 (px)
     
+    #===========================================#
+    #Widgets
     img_logo = Label(SPFrame, image = companylogo, background = bgcolor)
     img_logo.grid(row = 0, column = 1, padx = 0, pady = 30)
 
@@ -107,7 +116,12 @@ def Start_pag_show_products():
     ProductsPrinter.insert(INSERT,show_products)
     ProductsPrinter.config(state="disable", background="black", fg="white", width=25,height=22, borderwidth=10, font=(font_type,12))
 
+    #===========================================#
+    #Bind
+    root.bind("<Escape>",GoToBack)
+    root.bind("<BackSpace>",ToReset)
+    root.bind("<Return>",ToReset)
 
-
-    #======================================================================================================================#
+    #===========================================#
+    #Mainloop
     root.mainloop()
