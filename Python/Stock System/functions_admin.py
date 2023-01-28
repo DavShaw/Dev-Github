@@ -295,16 +295,21 @@ def Encrypter(information):
 #L O G I N  Z O N E
 
 def AccountRegister(user,password,safe = True):
-    if safe:
-        user = Encrypter(user)
-        password = Encrypter(password)
-    send_data = {'user':user,'password':password}
-    send_data = str(send_data)
-    file_path = TakeFiles("data.txt")
-    file = open(file_path,"a")
-    file.write(send_data)
-    file.write("\n")
-    file.close()
+    if not UserExist(Encrypter(user)):
+        if safe:
+            user = Encrypter(user)
+            password = Encrypter(password)
+            send_data = {'user':user,'password':password}
+            send_data = str(send_data)
+            file_path = TakeFiles("data.txt")
+            file = open(file_path,"a")
+            file.write(send_data)
+            file.write("\n")
+            file.close()
+        elif safe == False:
+            print("Parace que se intentó registrar el usuario sin encrypter, y no esta permitido")
+    else:
+        print("El usuario ingresado ya existe")
 #----------------------------------------------#
 def DataTaker(take_from = "data.txt"):
     file_path = TakeFiles(take_from)

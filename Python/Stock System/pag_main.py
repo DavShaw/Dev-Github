@@ -59,7 +59,7 @@ def Start_pag_main():
             print("Cambiando a » Editar productos")
             Start_pag_edit_product(product_ref)
         elif product_ref == None:
-            messagebox.showwarning(title="Cancelado",message="Has cancelado el proceso.")
+            pass
         elif (product_ref).strip() == "":
             messagebox.showwarning(title="Inválido", message="No puedes dejar el campo vacío")
         else:
