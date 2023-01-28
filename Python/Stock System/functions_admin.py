@@ -5,23 +5,15 @@ from tkinter import messagebox
 import re
 import json
 import sqlite3
-
-
-
-
-
-
-
-
-
-
+from config import config_staff, config_measurement
 #============================================#
 #G L O B A L   V A R I A B L E S
 
 characters_list = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$%&/><;.:-_+@"
 characters_encrypted = ['Stq', 'RS.', '1Bh', '>YD', '5Ug', '5/.', 'odt', 'XmL', 'cg>', '3hx', 'oIh', 'Ouc', 'few', '4ic', 'yGJ', '9z.', 'zPX', 'KU0', 'eVg', '9My', '8kA', '3rJ', 'XGr', '%2s', '02L', '$Ub', 'E:f', '&Lh', '30o', '2n.', '8qx', 'neQ', '1uS', '9Xt', '.53', 'p0s', 'hiS', 'GQe', '2Jt', '/48', 'ZiD', 'dKW', 'XOJ', 'vn0', 'lmv', 'Zhy', 'F_;', '7+i', '/dt', 'J0R', 'si3', 'W_q', 'P;R', 'U.-', ';C>', 'Gjo', 'clE', '+7r', 'VeL', 'rgv', 'y%j', '.J6', 'N>+', 'iEP', 'EAc', 'KrV', 'z8y', 'NsQ','/0v', 'TQA', '2vR', 'Arj', 'JN5', 's62', 'o9S']
-staff = ["Gloria", "Miguel", "Henrry", "Ana", "David"]
-medidas = ["mts","metro","und","unidad","pq","paquete","mill","millar","grs","gruesa","par"]
+staff = config_staff
+medidas = config_measurement
+
 ayuda_medidas = ""
 for i in range(0,len(medidas)):
     ayuda_medidas += f" * {medidas[i]}"

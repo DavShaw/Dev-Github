@@ -13,18 +13,26 @@ def Start_pag_main():
 
     #===========================================#
     #Assignments
-    
+    from config import config_bgcolor,config_font_type,config_img_add,config_img_add_products,config_img_back,config_img_edit,config_img_edit_products,config_img_exit,config_img_find,config_img_help,config_img_log_in,config_img_log_out,config_img_logo,config_img_password,config_img_reset,config_img_sell_products,config_img_terminal,config_img_user,config_img_view_products,config_main_menu,config_stock_system,config_title
+
     #===========================================#
     #Variables
-    bgcolor = "#A6C7F7"
-    companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
-    img_button_1 = PhotoImage(file = TakeFiles('img/add_products.png'))#120*42 (px)
-    img_button_2 = PhotoImage(file = TakeFiles('img/edit_products.png'))#120*42 (px)
-    img_button_3 = PhotoImage(file = TakeFiles('img/view_products.png'))#120*42 (px)
-    img_button_4 = PhotoImage(file = TakeFiles('img/sell_products.png'))#120*42 (px)
-    img_button_5 = PhotoImage(file = TakeFiles('img/log_out.png'))#120*42 (px)
-    img_button_6 = PhotoImage(file = TakeFiles('img/exit.png'))#120*42 (px)
-    font_type = "Times New Roman"
+    config_img_add = PhotoImage(file = config_img_add)
+    config_img_add_products = PhotoImage(file = config_img_add_products)
+    config_img_back = PhotoImage(file = config_img_back)
+    config_img_edit = PhotoImage(file = config_img_edit)
+    config_img_edit_products = PhotoImage(file = config_img_edit_products)
+    config_img_exit = PhotoImage(file = config_img_exit)
+    config_img_find = PhotoImage(file = config_img_find)
+    config_img_help = PhotoImage(file = config_img_help)
+    config_img_log_in = PhotoImage(file = config_img_log_in)
+    config_img_log_out = PhotoImage(file = config_img_log_out)
+    config_img_logo = PhotoImage(file = config_img_logo)
+    config_img_password = PhotoImage(file = config_img_password)
+    config_img_reset = PhotoImage(file = config_img_reset)
+    config_img_sell_products = PhotoImage(file = config_img_sell_products)
+    config_img_user = PhotoImage(file = config_img_user)
+    config_img_view_products = PhotoImage(file = config_img_view_products)
 
     #===========================================#
     #Functions
@@ -79,9 +87,9 @@ def Start_pag_main():
 
     #===========================================#
     #Root config
-    root.title("Multiadornos Maicao")
+    root.title(config_title)
     root.resizable(1,1)
-    root.iconbitmap(TakeFiles('img/terminal.ico'))
+    root.iconbitmap(config_img_terminal)
 
     w = 600
     h = 600
@@ -91,43 +99,43 @@ def Start_pag_main():
     y = ((s_h/2)+200) - (h-2)
 
     root.geometry("%dx%d+%d+%d" % (w, h, x, y))
-    root.config(background = bgcolor)
+    root.config(background = config_bgcolor)
     root.state("zoomed")
 
     #===========================================#
     #Frame config
     MenuFrame = Frame()
-    MenuFrame.config(width = w, height = h, background = bgcolor)
+    MenuFrame.config(width = w, height = h, background = config_bgcolor)
     MenuFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
     MenuFrame.pack()
 
     
     #===========================================#
     #Widgets
-    text_welcome = Label(MenuFrame, text = "M E N Ú   P R I N C I P A L", background = bgcolor)
+    text_welcome = Label(MenuFrame, text = "M E N Ú   P R I N C I P A L", background = config_bgcolor)
     text_welcome.grid(row = 0, column = 1, padx = 0, pady = 20)
-    text_welcome.config(fg = "black", font = (font_type,25), bd = 12)
+    text_welcome.config(fg = "black", font = (config_font_type,25), bd = 12)
 
-    img_logo = Label(MenuFrame, image = companylogo, background = bgcolor)
+    img_logo = Label(MenuFrame, image = config_img_logo, background = config_bgcolor)
     img_logo.grid(row = 1, column = 1, padx = 0, pady = 30)
 
-    button_1 = Button(MenuFrame, image=img_button_1, borderwidth=0, background= bgcolor, command=boton1) #Agregar productos
+    button_1 = Button(MenuFrame, image=config_img_add_products, borderwidth=0, background= config_bgcolor, command=boton1) #Agregar productos
     button_1.grid(row=2, column=0, padx=0, pady=30)
 
-    button_2 = Button(MenuFrame, image=img_button_2, borderwidth=0, background= bgcolor, command=boton2) #Editar productos
+    button_2 = Button(MenuFrame, image=config_img_edit_products, borderwidth=0, background= config_bgcolor, command=boton2) #Editar productos
     button_2.grid(row=2, column=1, padx=0, pady=30)
 
-    button_3 = Button(MenuFrame, image=img_button_3, borderwidth=0, background= bgcolor, command=boton3) #Ver productos
+    button_3 = Button(MenuFrame, image=config_img_view_products, borderwidth=0, background= config_bgcolor, command=boton3) #Ver productos
     button_3.grid(row=2, column=2, padx=0, pady=30)
 
-    button_4 = Button(MenuFrame, image=img_button_4, borderwidth=0, background= bgcolor) #Vender productos
+    button_4 = Button(MenuFrame, image=config_img_sell_products, borderwidth=0, background= config_bgcolor) #Vender productos
     button_4.grid(row=3, column=0, padx=0, pady=30)
     button_4.config(state="disable")
 
-    button_5 = Button(MenuFrame, image=img_button_5, borderwidth=0, background= bgcolor, command=boton4) #Cerrar sesión
+    button_5 = Button(MenuFrame, image=config_img_log_out, borderwidth=0, background= config_bgcolor, command=boton4) #Cerrar sesión
     button_5.grid(row=3, column=1, padx=0, pady=30)
 
-    button_6 = Button(MenuFrame, image=img_button_6, borderwidth=0, background= bgcolor, command=boton5) #Cerrar sistema
+    button_6 = Button(MenuFrame, image=config_img_exit, borderwidth=0, background= config_bgcolor, command=boton5) #Cerrar sistema
     button_6.grid(row=3, column=2, padx=0, pady=30)
 
     #===========================================#

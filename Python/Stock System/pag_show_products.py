@@ -13,16 +13,26 @@ def Start_pag_show_products():
 
     #===========================================#
     #Assignments
+    from config import config_bgcolor,config_font_type,config_img_add,config_img_add_products,config_img_back,config_img_edit,config_img_edit_products,config_img_exit,config_img_find,config_img_help,config_img_log_in,config_img_log_out,config_img_logo,config_img_password,config_img_reset,config_img_sell_products,config_img_terminal,config_img_user,config_img_view_products,config_main_menu,config_stock_system,config_title
 
     #===========================================#
     #Variables
-    bgcolor = "#A6C7F7"
-    font_type = "Times New Roman"
-
-    companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
-    img_button_7 = PhotoImage(file = TakeFiles('img/back.png'))#65*26 (px)
-    img_button_10 = PhotoImage(file = TakeFiles('img/find.png'))#65*26 (px)
-    img_button_11 = PhotoImage(file = TakeFiles('img/reset.png'))#65*26 (px)
+    config_img_add = PhotoImage(file = config_img_add)
+    config_img_add_products = PhotoImage(file = config_img_add_products)
+    config_img_back = PhotoImage(file = config_img_back)
+    config_img_edit = PhotoImage(file = config_img_edit)
+    config_img_edit_products = PhotoImage(file = config_img_edit_products)
+    config_img_exit = PhotoImage(file = config_img_exit)
+    config_img_find = PhotoImage(file = config_img_find)
+    config_img_help = PhotoImage(file = config_img_help)
+    config_img_log_in = PhotoImage(file = config_img_log_in)
+    config_img_log_out = PhotoImage(file = config_img_log_out)
+    config_img_logo = PhotoImage(file = config_img_logo)
+    config_img_password = PhotoImage(file = config_img_password)
+    config_img_reset = PhotoImage(file = config_img_reset)
+    config_img_sell_products = PhotoImage(file = config_img_sell_products)
+    config_img_user = PhotoImage(file = config_img_user)
+    config_img_view_products = PhotoImage(file = config_img_view_products)
 
     #===========================================#
     #Functions
@@ -59,9 +69,9 @@ def Start_pag_show_products():
 
     #===========================================#
     #Root config
-    root.title("Multiadornos Maicao")
+    root.title(config_title)
     root.resizable(1,1)
-    root.iconbitmap(TakeFiles('img/terminal.ico'))
+    root.iconbitmap(config_img_terminal)
     w = 600
     h = 600
     s_w = root.winfo_screenwidth()
@@ -73,48 +83,48 @@ def Start_pag_show_products():
     #===========================================#
     #Frame config
     SPFrame = Frame()
-    SPFrame.config(width = w, height = h, background = bgcolor)
+    SPFrame.config(width = w, height = h, background = config_bgcolor)
     SPFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
     root.state("zoomed")
-    root.config(background=bgcolor)
+    root.config(background=config_bgcolor)
     SPFrame.pack()
     
     #===========================================#
     #Widgets
-    img_logo = Label(SPFrame, image = companylogo, background = bgcolor)
+    img_logo = Label(SPFrame, image = config_img_logo, background = config_bgcolor)
     img_logo.grid(row = 0, column = 1, padx = 0, pady = 30)
 
 
-    text1 = Label(SPFrame,text="Búsqueda por nombre",background=bgcolor,font=(font_type,12))
+    text1 = Label(SPFrame,text="Búsqueda por nombre",background=config_bgcolor,font=(config_font_type,12))
     text1.grid(row=1,column=0,padx=0,pady=5)
 
     entry1 = Entry(SPFrame)
     entry1.grid(row=2,column=0,padx=0,pady=5)
 
-    button1 = Button(SPFrame, image=img_button_10, command=ToName,background=bgcolor,borderwidth=0)
+    button1 = Button(SPFrame, image=config_img_find, command=ToName,background=config_bgcolor,borderwidth=0)
     button1.grid(row=3,column=0,padx=0,pady=5)
 
 
-    text2 = Label(SPFrame,text="Búsqueda por referencia",background=bgcolor,font=(font_type,12))
+    text2 = Label(SPFrame,text="Búsqueda por referencia",background=config_bgcolor,font=(config_font_type,12))
     text2.grid(row=1,column=2,padx=0,pady=5)
 
     entry2 = Entry(SPFrame)
     entry2.grid(row=2,column=2,padx=0,pady=5)
 
-    button2 = Button(SPFrame, image=img_button_10, command=ToRef,background=bgcolor,borderwidth=0)
+    button2 = Button(SPFrame, image=config_img_find, command=ToRef,background=config_bgcolor,borderwidth=0)
     button2.grid(row=3,column=2,padx=0,pady=5)
 
-    button3 = Button(SPFrame,image=img_button_11 , command=ToReset,background=bgcolor,borderwidth=0)
+    button3 = Button(SPFrame,image=config_img_reset , command=ToReset,background=config_bgcolor,borderwidth=0)
     button3.grid(row=1,column=1,padx=0,pady=5)
 
-    button4 = Button(SPFrame, image=img_button_7, command=GoToBack,background=bgcolor,borderwidth=0)
+    button4 = Button(SPFrame, image=config_img_back, command=GoToBack,background=config_bgcolor,borderwidth=0)
     button4.grid(row=3,column=1,padx=0,pady=5)
     
     show_products = ShowProducts()
     ProductsPrinter = Text(SPFrame)
     ProductsPrinter.grid(row=4,column=1,padx=0,pady=30)
     ProductsPrinter.insert(INSERT,show_products)
-    ProductsPrinter.config(state="disable", background="black", fg="white", width=25,height=22, borderwidth=10, font=(font_type,12))
+    ProductsPrinter.config(state="disable", background="black", fg="white", width=25,height=22, borderwidth=10, font=(config_font_type,12))
 
     #===========================================#
     #Bind

@@ -15,15 +15,26 @@ def Start_pag_edit_product(ref = ""):
 
     #===========================================#
     #Assignments
+    from config import config_bgcolor,config_font_type,config_img_add,config_img_add_products,config_img_back,config_img_edit,config_img_edit_products,config_img_exit,config_img_find,config_img_help,config_img_log_in,config_img_log_out,config_img_logo,config_img_password,config_img_reset,config_img_sell_products,config_img_terminal,config_img_user,config_img_view_products,config_main_menu,config_stock_system,config_title
 
     #===========================================#
     #Variables
-    bgcolor = "#A6C7F7"
-    companylogo = PhotoImage(file = TakeFiles('img/logo.png'))
-    img_button_6 = PhotoImage(file = TakeFiles('img/help.png'))
-    img_button_7 = PhotoImage(file = TakeFiles('img/back.png'))
-    img_button_8 = PhotoImage(file = TakeFiles('img/edit.png'))
-    font_type = "Times New Roman"
+    config_img_add = PhotoImage(file = config_img_add)
+    config_img_add_products = PhotoImage(file = config_img_add_products)
+    config_img_back = PhotoImage(file = config_img_back)
+    config_img_edit = PhotoImage(file = config_img_edit)
+    config_img_edit_products = PhotoImage(file = config_img_edit_products)
+    config_img_exit = PhotoImage(file = config_img_exit)
+    config_img_find = PhotoImage(file = config_img_find)
+    config_img_help = PhotoImage(file = config_img_help)
+    config_img_log_in = PhotoImage(file = config_img_log_in)
+    config_img_log_out = PhotoImage(file = config_img_log_out)
+    config_img_logo = PhotoImage(file = config_img_logo)
+    config_img_password = PhotoImage(file = config_img_password)
+    config_img_reset = PhotoImage(file = config_img_reset)
+    config_img_sell_products = PhotoImage(file = config_img_sell_products)
+    config_img_user = PhotoImage(file = config_img_user)
+    config_img_view_products = PhotoImage(file = config_img_view_products)
 
     #===========================================#
     #Functions
@@ -53,7 +64,7 @@ def Start_pag_edit_product(ref = ""):
             DBConnector.close()
 
             ProductName.insert(END, producto_data[0])
-            ProductPrice.insert(END, producto_data[1])
+            ProductPrice.insert(END, round(producto_data[1]))
             ProductMeasurement.insert(END, producto_data[2])
             ProductAmount.insert(END, producto_data[3])
             ProductRef.insert(END, producto_data[4])
@@ -100,13 +111,13 @@ def Start_pag_edit_product(ref = ""):
                 DBCursor.execute(f"update productos set agregadopor = '{agregadopor}' where referencia == '{ref}'")
                 DBConnector.commit()
                 DBConnector.close()
-                text7.config(text=f"Último producto editado:\n({referencia})", font=(font_type,15), fg="green")
+                text7.config(text=f"Último producto editado:\n({referencia})", font=(config_font_type,15), fg="green")
 
     #===========================================#
     #Root config
-    root.title("Multiadornos Maicao")
+    root.title(config_title)
     root.resizable(1,1)
-    root.iconbitmap(TakeFiles('img/terminal.ico'))
+    root.iconbitmap(config_img_terminal)
 
     w = 600
     h = 600
@@ -116,7 +127,7 @@ def Start_pag_edit_product(ref = ""):
     y = ((s_h/2)+200) - (h-2)
 
     root.geometry("%dx%d+%d+%d" % (w, h, x, y))
-    root.config(background = bgcolor)
+    root.config(background = config_bgcolor)
     root.state("zoomed")
 
     #===========================================#
@@ -124,55 +135,55 @@ def Start_pag_edit_product(ref = ""):
     ProductFrame = Frame()
     ProductFrame.config(width = w, height = h)
     ProductFrame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
-    ProductFrame.config(background = bgcolor)
+    ProductFrame.config(background = config_bgcolor)
     ProductFrame.pack()
 
     #===========================================#
     #Widgets config
 
-    img_logo = Label(ProductFrame, image=companylogo, background=bgcolor)
+    img_logo = Label(ProductFrame, image=config_img_logo, background=config_bgcolor)
     img_logo.grid(row=0, column=1, padx=0, pady=30)
 
-    text1 = Label(ProductFrame, text="Nombre Producto »", font=(font_type,12), background=bgcolor)#Entry -> Product Name
+    text1 = Label(ProductFrame, text="Nombre Producto »", font=(config_font_type,12), background=config_bgcolor)#Entry -> Product Name
     text1.grid(row=1, column=0, padx=0, pady=10, sticky="w")
-    ProductName = Entry(ProductFrame, justify=CENTER, font=(font_type,10))
+    ProductName = Entry(ProductFrame, justify=CENTER, font=(config_font_type,10))
     ProductName.grid(row=1, column=1, padx=0, pady=10)
 
-    text2 = Label(ProductFrame, text="Precio Producto »", font=(font_type,12), background=bgcolor)#Entry -> Product Price
+    text2 = Label(ProductFrame, text="Precio Producto »", font=(config_font_type,12), background=config_bgcolor)#Entry -> Product Price
     text2.grid(row=2, column=0, padx=0, pady=10, sticky="w")
-    ProductPrice = Entry(ProductFrame, justify=CENTER, font=(font_type,10))
+    ProductPrice = Entry(ProductFrame, justify=CENTER, font=(config_font_type,10))
     ProductPrice.grid(row=2, column=1, padx=0, pady=10)
 
-    text3 = Label(ProductFrame, text="Medida Producto »", font=(font_type,12), background=bgcolor)#Entry -> Measurement Product
+    text3 = Label(ProductFrame, text="Medida Producto »", font=(config_font_type,12), background=config_bgcolor)#Entry -> Measurement Product
     text3.grid(row=3, column=0, padx=0, pady=10, sticky="w")
-    ProductMeasurement = Entry(ProductFrame, justify=CENTER, font=(font_type,10))
+    ProductMeasurement = Entry(ProductFrame, justify=CENTER, font=(config_font_type,10))
     ProductMeasurement.grid(row=3, column=1, padx=0, pady=10)
 
-    text4 = Label(ProductFrame, text="Cantidad Producto »", font=(font_type,12), background=bgcolor)#Entry -> Amount product
+    text4 = Label(ProductFrame, text="Cantidad Producto »", font=(config_font_type,12), background=config_bgcolor)#Entry -> Amount product
     text4.grid(row=4, column=0, padx=0, pady=10, sticky="w")
-    ProductAmount = Entry(ProductFrame, justify=CENTER, font=(font_type,10))
+    ProductAmount = Entry(ProductFrame, justify=CENTER, font=(config_font_type,10))
     ProductAmount.grid(row=4, column=1, padx=0, pady=10)
 
-    text5 = Label(ProductFrame, text="Ref. Producto »", font=(font_type,12), background=bgcolor)#Entry -> Ref product
+    text5 = Label(ProductFrame, text="Ref. Producto »", font=(config_font_type,12), background=config_bgcolor)#Entry -> Ref product
     text5.grid(row=5, column=0, padx=0, pady=10, sticky="w")
-    ProductRef = Entry(ProductFrame, justify=CENTER, font=(font_type,10))
+    ProductRef = Entry(ProductFrame, justify=CENTER, font=(config_font_type,10))
     ProductRef.grid(row=5, column=1, padx=0, pady=10)
 
-    text6 = Label(ProductFrame, text="Añadido por »", font=(font_type,12), background=bgcolor)#Entry -> Added by
+    text6 = Label(ProductFrame, text="Añadido por »", font=(config_font_type,12), background=config_bgcolor)#Entry -> Added by
     text6.grid(row=6, column=0, padx=0, pady=10, sticky="w")
-    ProductAddedBy = Entry(ProductFrame, justify=CENTER, font=(font_type,10))
+    ProductAddedBy = Entry(ProductFrame, justify=CENTER, font=(config_font_type,10))
     ProductAddedBy.grid(row=6,column=1, padx=0, pady=10)
 
-    button_6 = Button(ProductFrame, text="Ayuda", image=img_button_6,background=bgcolor, borderwidth=0, command=boton6)#Button ayuda
+    button_6 = Button(ProductFrame, text="Ayuda", image=config_img_help,background=config_bgcolor, borderwidth=0, command=boton6)#Button ayuda
     button_6.grid(row=4,column=2, padx=25, pady=10)
 
-    button_7 = Button(ProductFrame, text="Atrás", image=img_button_7, background=bgcolor, borderwidth=0, command=boton7)#Button atrás
+    button_7 = Button(ProductFrame, text="Atrás", image=config_img_back, background=config_bgcolor, borderwidth=0, command=boton7)#Button atrás
     button_7.grid(row=5,column=2, padx=25, pady=10)
 
-    button_8 = Button(ProductFrame, text="Añadir", image=img_button_8, background=bgcolor, borderwidth=0, command=boton8)#Button editar
+    button_8 = Button(ProductFrame, text="Añadir", image=config_img_edit, background=config_bgcolor, borderwidth=0, command=boton8)#Button editar
     button_8.grid(row=6,column=2, padx=25, pady=10)
 
-    text7 = Label(ProductFrame, text="", font=(font_type,0), background=bgcolor) #Text that shows last item added
+    text7 = Label(ProductFrame, text="", font=(config_bgcolor,0), background=config_bgcolor) #Text that shows last item added
     text7.grid(row=7,column=1,padx=0,pady=15)
 
     #===========================================#
