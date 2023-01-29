@@ -27,7 +27,7 @@ config_img_find = TakeFiles('img/find.png') #Button to find anything
 config_img_help = TakeFiles('img/help.png') #Button to get help
 config_img_log_in = TakeFiles('img/log_in.png') #Button to log in
 config_img_log_out = TakeFiles('img/log_out.png') #Button to log out
-config_img_logo = TakeFiles('img/logo.png') #Img of our company
+config_img_logo = TakeFiles('img/alt_logo.png') #Img of our company
 config_img_password = TakeFiles('img/password.png') #Img of password
 config_img_reset = TakeFiles('img/reset.png') #Img of reset (Anything that you was looking for)
 config_img_sell_products = TakeFiles('img/sell_products.png') #Button to go to sell products pag
@@ -36,10 +36,10 @@ config_img_view_products = TakeFiles('img/view_products.png') #Button to go to v
 config_img_create_bill = TakeFiles('img/create_bill.png') #Button to go to create a bill
 
 #JustFile
-config_img_terminal = (TakeFiles('img/terminal.ico')) #Img (ICO) to startup the sysyem
+config_img_terminal = (TakeFiles('img/alt_terminal.ico')) #Img (ICO) to startup the sysyem
 
 #Strings
-config_title = "Stock System" #Just system's title
+config_title = "David's Coffe" #Just system's title
 config_stock_system = "S I S T E M A  D E   V E N T A S" #That message will appear if u are in login pag
 config_main_menu = "M E N Ú   P R I N C I P A L" #That message will appear if u are in main menu pag
 config_bgcolor = "#A6C7F7" #Just Hexadec. to set system background
