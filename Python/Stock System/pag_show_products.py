@@ -13,7 +13,7 @@ def Start_pag_show_products():
 
     #===========================================#
     #Assignments
-    from config import config_bgcolor,config_font_type,config_img_add,config_img_add_products,config_img_back,config_img_edit,config_img_edit_products,config_img_exit,config_img_find,config_img_help,config_img_log_in,config_img_log_out,config_img_logo,config_img_password,config_img_reset,config_img_sell_products,config_img_terminal,config_img_user,config_img_view_products,config_main_menu,config_stock_system,config_title
+    from config import config_bgcolor,config_font_type,config_img_add,config_img_add_products,config_img_back,config_img_edit,config_img_edit_products,config_img_exit,config_img_find,config_img_help,config_img_log_in,config_img_log_out,config_img_logo,config_img_password,config_img_reset,config_img_sell_products,config_img_terminal,config_img_user,config_img_view_products,config_main_menu,config_stock_system,config_title,config_img_create_bill,config_measurement,config_staff
 
     #===========================================#
     #Variables
@@ -33,6 +33,7 @@ def Start_pag_show_products():
     config_img_sell_products = PhotoImage(file = config_img_sell_products)
     config_img_user = PhotoImage(file = config_img_user)
     config_img_view_products = PhotoImage(file = config_img_view_products)
+    config_img_create_bill = PhotoImage(file = config_img_create_bill)
 
     #===========================================#
     #Functions

@@ -13,7 +13,7 @@ def Start_pag_main():
 
     #===========================================#
     #Assignments
-    from config import config_bgcolor,config_font_type,config_img_add,config_img_add_products,config_img_back,config_img_edit,config_img_edit_products,config_img_exit,config_img_find,config_img_help,config_img_log_in,config_img_log_out,config_img_logo,config_img_password,config_img_reset,config_img_sell_products,config_img_terminal,config_img_user,config_img_view_products,config_main_menu,config_stock_system,config_title
+    from config import config_bgcolor,config_font_type,config_img_add,config_img_add_products,config_img_back,config_img_edit,config_img_edit_products,config_img_exit,config_img_find,config_img_help,config_img_log_in,config_img_log_out,config_img_logo,config_img_password,config_img_reset,config_img_sell_products,config_img_terminal,config_img_user,config_img_view_products,config_main_menu,config_stock_system,config_title,config_img_create_bill,config_measurement,config_staff
 
     #===========================================#
     #Variables
@@ -33,6 +33,7 @@ def Start_pag_main():
     config_img_sell_products = PhotoImage(file = config_img_sell_products)
     config_img_user = PhotoImage(file = config_img_user)
     config_img_view_products = PhotoImage(file = config_img_view_products)
+    config_img_create_bill = PhotoImage(file = config_img_create_bill)
 
     #===========================================#
     #Functions
@@ -85,6 +86,12 @@ def Start_pag_main():
             root.quit()
             print("Sistema cerrado (Botón 5)")
 
+    def GoToSellProducts():
+        root.destroy()
+        root.quit()
+        from pag_sell_products import Start_pag_sell_product
+        print("Cambiando a » Vender productos")
+        Start_pag_sell_product()
     #===========================================#
     #Root config
     root.title(config_title)
@@ -128,9 +135,8 @@ def Start_pag_main():
     button_3 = Button(MenuFrame, image=config_img_view_products, borderwidth=0, background= config_bgcolor, command=boton3) #Ver productos
     button_3.grid(row=2, column=2, padx=0, pady=30)
 
-    button_4 = Button(MenuFrame, image=config_img_sell_products, borderwidth=0, background= config_bgcolor) #Vender productos
+    button_4 = Button(MenuFrame, image=config_img_sell_products, borderwidth=0, background= config_bgcolor, command=GoToSellProducts) #Vender productos
     button_4.grid(row=3, column=0, padx=0, pady=30)
-    button_4.config(state="disable")
 
     button_5 = Button(MenuFrame, image=config_img_log_out, borderwidth=0, background= config_bgcolor, command=boton4) #Cerrar sesión
     button_5.grid(row=3, column=1, padx=0, pady=30)

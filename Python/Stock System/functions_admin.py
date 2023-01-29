@@ -142,6 +142,39 @@ def CheckRightInfoToAddProducts(nombre,precio,medida,cantidad,referencia,agregad
     #If anyone condiction is true (That means: there's not erros in the information input) that gonna return True
     return True
 
+def CheckRightInfoToSellProducts(cliente,vendedor,referencia,cantidad):
+    #Checking if the client entry is null
+    if ((cliente) == ""):
+        cliente = "No especificado"
+
+    #Checking if any entry is null
+    if ((vendedor) == "") or ((referencia) == "") or ((cantidad) == ""):
+        messagebox.showwarning(title="Alerta",message="No puedes dejar campos vacíos")
+        return False
+
+    #Checking if ref exist (That have to exist)
+    if not CheckPrimaryKey(referencia):
+        messagebox.showwarning(title="Alerta",message="La referencia ingresada no existe")
+        return False
+
+    #Checking if price entry isn't a digit (float or int)
+    if not (cantidad.isdigit()):
+        messagebox.showwarning(title="Alerta",message=f"La cantidad debe ser un número")
+        return False
+
+    #Cheking if the amount of the product is <= to stock units
+    if (cantidad.isdigit()):
+        cantidad = int(cantidad)
+        ProductCurrentAmount = FindProducts(referencia,"ref")
+        ProductCurrentAmount = ProductCurrentAmount[0]
+        ProductCurrentAmount = ProductCurrentAmount[3]
+        if ProductCurrentAmount < cantidad:
+            messagebox.showwarning(title="Alerta",message=f"La cantidad debe producto a vender\nsupera la cantidad en stock ({ProductCurrentAmount})")
+            return False
+
+    #If anyone condiction is true (That means: there's not erros in the information input) that gonna return True
+    return True
+
 def ShowProducts(vaule_center = 0):
     products = ""
     dbfile_path = TakeFiles("productos.db")

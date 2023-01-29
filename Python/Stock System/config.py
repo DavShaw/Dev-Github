@@ -33,6 +33,7 @@ config_img_reset = TakeFiles('img/reset.png') #Img of reset (Anything that you w
 config_img_sell_products = TakeFiles('img/sell_products.png') #Button to go to sell products pag
 config_img_user = TakeFiles('img/user.png') #Img of user
 config_img_view_products = TakeFiles('img/view_products.png') #Button to go to view products pag
+config_img_create_bill = TakeFiles('img/create_bill.png') #Button to go to create a bill
 
 #JustFile
 config_img_terminal = (TakeFiles('img/terminal.ico')) #Img (ICO) to startup the sysyem
