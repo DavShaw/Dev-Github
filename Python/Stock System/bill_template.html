@@ -1,0 +1,55 @@
+<head><meta charset="UTF-8"></head>
+<div class="logo-container">&nbsp;</div>
+<div class="logo-container">&nbsp;</div>
+<div class="logo-container"><img style="height: 18px; display: block; margin-left: auto; margin-right: auto;" src="https://app.useanvil.com/img/email-logo-black.png" /></div>
+<div class="logo-container">&nbsp;</div>
+<div class="logo-container" style="text-align: center;"><strong>{{CompanyName}}</strong></div>
+<div class="logo-container">&nbsp;</div>
+<div class="logo-container">&nbsp;</div>
+<table class="invoice-info-container" style="height: 72px; margin-left: auto; margin-right: auto;">
+<tbody>
+<tr style="height: 18px;">
+<td class="client-name" style="height: 36px; width: 222.45px; text-align: left;">Cliente: {{ClientName}}</td>
+<td style="height: 18px; width: 175.8px; text-align: right;">Vendedor: {{SellerName}}</td>
+</tr>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 222.45px; text-align: left;">Fecha: {{TimeFecha}} ({{TimeHora}})</td>
+<td style="height: 18px; width: 175.8px; text-align: right;">{{CompanyAddres}}</td>
+</tr>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 222.45px; text-align: left;">No. Factura: {{BillNumber}}</td>
+<td style="height: 18px; width: 175.8px; text-align: right;">{{CompanyEmail}}</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table class="line-items-container" style="margin-left: auto; margin-right: auto; height: 38px;">
+<thead>
+<tr style="height: 18px;">
+<th class="heading-quantity" style="width: 31px; text-align: center; height: 18px;">X</th>
+<th class="heading-description" style="width: 200px; text-align: center; height: 18px;">Nombre Producto</th>
+<th class="heading-price" style="width: 53px; text-align: center; height: 18px;">Ref.</th>
+<th class="heading-subtotal" style="width: 70px; text-align: center; height: 18px;">Precio</th>
+</tr>
+</thead>
+</table>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;">{{GeneralProductInfo}}</p>
+<p style="text-align: center;">&nbsp;</p>
+<table class="line-items-container has-bottom-border" style="width: 251px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="width: 161.1px; text-align: left;">Info. Pago</th>
+<th style="width: 76.3px; text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="payment-info" style="width: 161.1px;">
+<div style="text-align: left;">Banco #1: <strong>123567744</strong></div>
+<div style="text-align: left;">Banco #2: <strong>120000547</strong></div>
+</td>
+<td class="large total" style="width: 76.3px; text-align: right;">{{TotalToPay}}</td>
+</tr>
+</tbody>
+</table>
