@@ -9,6 +9,9 @@ import sqlite3
 #===========================================#
 #Main function
 def Start_pag_sell_product():
+    from os import path, remove
+    if path.exists(TakeFiles('temp_bill.txt')):
+        remove(TakeFiles('temp_bill.txt'))
     #===========================================#
     #Root windown
     root = Tk()
@@ -55,6 +58,8 @@ def Start_pag_sell_product():
         referencia = ProductRefEntry.get()
         cantidad = AmountProductEntry.get()
         if CheckRightInfoToSellProducts(cliente,vendedor,referencia,cantidad):
+            ClientEntry.config(state="disable")
+            SellerEntry.config(state="disable")
             ProductInfo = FindProducts(referencia,"ref")
             ProductInfo = ProductInfo[0]
             ProductName = ProductInfo[0]
@@ -85,39 +90,49 @@ def Start_pag_sell_product():
         from os import path, remove
         if (path.exists(TakeFiles("temp_bill.txt"))):
             from functions_admin import DataTaker
-
             if not (DataTaker("temp_bill.txt")) == []:
-                SoldItems = DataTaker("temp_bill.txt")
-                TotalToPay = 0
-                BillFormatString = ""
-                for i in range(0,len(SoldItems)):
-                    TotalToPay += (SoldItems[i]['precio']) * (SoldItems[i]['cantidad'])
+                    SoldItems = DataTaker("temp_bill.txt")
+                    TotalToPay = 0
+                    BillFormatString = ""
+                    HtmlDataPrinter = {}
+
+                    AcomToProduct = ""
+                    AcomToAmount = ""
+                    AcomToPrice = ""
+                    AcomToRef = ""
+                    for i in range(0,len(SoldItems)):
+                        TotalToPay += (SoldItems[i]['precio']) * (SoldItems[i]['cantidad'])
 
 
-                for j in range(0,len(SoldItems)):
-                    #{'producto': 'iPhone14', 'precio': 50.0, 'referencia': 'Apple4', 'cantidad': 3}
-                    BillFormatString += "========================\n"
-                    BillFormatString += f"Producto: {SoldItems[j]['producto']}\n"
-                    BillFormatString += f"Cantidad: {SoldItems[j]['cantidad']}\n"
-                    BillFormatString += f"Precio: {SoldItems[j]['precio']}\n"
-                    BillFormatString += f"referencia: {SoldItems[j]['referencia']}\n"
-                    BillFormatString += "========================\n\n\n"
-
-                file_path = TakeFiles("bill.txt")
-
-                #Cleanning last bill
-                file = open(file_path,"w")
-                file.write("")
-                file.close()
-
-                #Oppening and writing a new bill!
-                file = open(file_path,"a")
-                file.write(BillFormatString)
-                file.write(f"Total a pagar: {TotalToPay}")
-                file.close()
+                    for j in range(0,len(SoldItems)):
+                        #{'producto': 'iPhone14', 'precio': 50.0, 'referencia': 'Apple4', 'cantidad': 3}
+                        BillFormatString += "========================\n"
+                        BillFormatString += f"Producto: {SoldItems[j]['producto']}\n"
+                        BillFormatString += f"Cantidad: {SoldItems[j]['cantidad']}\n"
+                        BillFormatString += f"Precio: {SoldItems[j]['precio']}\n"
+                        BillFormatString += f"referencia: {SoldItems[j]['referencia']}\n"
+                        BillFormatString += "========================\n\n\n"
 
 
-                remove(TakeFiles("temp_bill.txt"))
+                        AcomToProduct += f"{SoldItems[j]['producto']}<br>"
+                        AcomToAmount += f"{SoldItems[j]['cantidad']}<br>"
+                        AcomToPrice += f"{SoldItems[j]['precio']}<br>"
+                        AcomToRef += f"{SoldItems[j]['referencia']}<br>"
+                    
+                    HtmlDataPrinter['ClientName'] = ClientEntry.get()
+                    HtmlDataPrinter['SellerName'] = SellerEntry.get()
+                    HtmlDataPrinter['AllProductName'] = AcomToProduct
+                    HtmlDataPrinter['AllAmountProduct'] = AcomToAmount
+                    HtmlDataPrinter['AllProductPrice'] = AcomToPrice
+                    HtmlDataPrinter['AllProductRef'] = AcomToRef
+                    HtmlDataPrinter['TotalToPay'] = TotalToPay
+
+
+                    #print(HtmlDataPrinter)
+                    #Creating last bill!!!!
+                    from pdf_test import Start_bill_creator
+                    Start_bill_creator(HtmlDataPrinter)
+
 
 
 
@@ -206,3 +221,5 @@ def Start_pag_sell_product():
     #===========================================#
     #Mainloop 
     root.mainloop()
+
+Start_pag_sell_product()

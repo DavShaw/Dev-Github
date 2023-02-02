@@ -39,11 +39,13 @@ config_img_create_bill = TakeFiles('img/create_bill.png') #Button to go to creat
 config_img_terminal = (TakeFiles('img/alt_terminal.ico')) #Img (ICO) to startup the sysyem
 
 #Strings
-config_title = "David's Coffe" #Just system's title
+config_title = "David's Coffee" #Just system's title
 config_stock_system = "S I S T E M A  D E   V E N T A S" #That message will appear if u are in login pag
 config_main_menu = "M E N Ú   P R I N C I P A L" #That message will appear if u are in main menu pag
 config_bgcolor = "#A6C7F7" #Just Hexadec. to set system background
 config_font_type = "Times New Roman" #Just the font family system uses
+
+dev_config_wkhtmltopdf_path = r"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"
 
 #List
 config_staff = ["David", "Nicolas", "StockSystem"] #List of the staff allowed to add products

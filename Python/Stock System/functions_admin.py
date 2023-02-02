@@ -145,8 +145,8 @@ def CheckRightInfoToAddProducts(nombre,precio,medida,cantidad,referencia,agregad
 def CheckRightInfoToSellProducts(cliente,vendedor,referencia,cantidad):
     #Checking if the client entry is null
     if ((cliente) == ""):
-        cliente = "No especificado"
-
+        messagebox.showwarning(title="Alerta",message="Debes especificar un cliente a facturar")
+        return False
     #Checking if any entry is null
     if ((vendedor) == "") or ((referencia) == "") or ((cantidad) == ""):
         messagebox.showwarning(title="Alerta",message="No puedes dejar campos vacíos")
