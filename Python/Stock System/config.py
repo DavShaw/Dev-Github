@@ -46,6 +46,7 @@ config_bgcolor = "#A6C7F7" #Just Hexadec. to set system background
 config_font_type = "Times New Roman" #Just the font family system uses
 
 dev_config_wkhtmltopdf_path = r"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"
+dev_config_zoom_type = "zoomed" #zoomed - normal - fullscreen
 
 #List
 config_staff = ["David", "Nicolas", "StockSystem"] #List of the staff allowed to add products
