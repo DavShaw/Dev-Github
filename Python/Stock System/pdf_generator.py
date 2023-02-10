@@ -40,6 +40,6 @@ def Start_bill_creator(DictToGetInfo):
 
         path_wkhtmltopdf = r"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"
         config = pdfkit.configuration(wkhtmltopdf = path_wkhtmltopdf) 
-        pdf_name = TakeFiles('factura.pdf')
+        pdf_name = TakeFiles(f'factura [{time.day}-{time.month}-{time.year}] (H{time.hour} M{time.minute}).pdf')
         pdfkit.from_string(template_text, pdf_name, configuration = config)
 
