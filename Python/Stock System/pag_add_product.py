@@ -82,7 +82,7 @@ def Start_pag_add_product():
     #Root config
     root.title(config_title)
     root.resizable(1,1)
-    root.iconphoto(True, config_img_logo)
+    root.iconphoto(False, config_img_logo)
 
     w = 600
     h = 600
