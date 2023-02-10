@@ -44,6 +44,8 @@ config_stock_system = "S I S T E M A  D E   V E N T A S" #That message will appe
 config_main_menu = "M E N Ú   P R I N C I P A L" #That message will appear if u are in main menu pag
 config_bgcolor = "#A6C7F7" #Just Hexadec. to set system background
 config_font_type = "Times New Roman" #Just the font family system uses
+config_company_email = "contact.devda.com"
+config_company_address = "Av. 70 #10 - 20"
 
 dev_config_wkhtmltopdf_path = r"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"
 dev_config_zoom_type = "zoomed" #zoomed - normal - fullscreen

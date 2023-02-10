@@ -10,13 +10,13 @@ def Start_bill_creator(DictToGetInfo):
     time = (datetime.datetime.now())
     #Adding some variables to the dict
     a = f"{time.day}/{time.month}/{time.year} ({time.hour}:{time.minute})"
-    from config import config_title
+    from config import config_title,config_company_address,config_company_email
 
     DictToGetInfo['CurrentDate'] = a
     DictToGetInfo['CompanyName'] = config_title
     DictToGetInfo['BillNumber'] = "FVE - 1"
-    DictToGetInfo['CompanyEmail'] = f"contact@{config_title}.com"
-    DictToGetInfo['CompanyAddres'] = "Carrera 1 #52-12"
+    DictToGetInfo['CompanyEmail'] = config_company_email
+    DictToGetInfo['CompanyAddres'] = config_company_address
 
 
 

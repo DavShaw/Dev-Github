@@ -130,9 +130,12 @@ def Start_pag_sell_product():
 
                     #print(HtmlDataPrinter)
                     #Creating last bill!!!!
-                    from pdf_generator import Start_bill_creator
-                    Start_bill_creator(HtmlDataPrinter)
-
+                    try:
+                        from pdf_generator import Start_bill_creator
+                        Start_bill_creator(HtmlDataPrinter)
+                        messagebox.showinfo(title="Factura",message=f"¡Hey! Se ha generado la factura con éxito...\n\nCliente: {ClientEntry.get()}\nVendedor: {SellerEntry.get()}")
+                    except ValueError as Error:
+                        messagebox.showerror(title="Factura",message="Oh, no... Algo falló en la generación de la factura...")
 
 
 
