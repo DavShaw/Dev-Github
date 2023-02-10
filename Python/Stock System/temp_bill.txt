@@ -1,1 +1,1 @@
-{'producto': 'Walterin', 'precio': 999.0, 'referencia': 'fastidio', 'cantidad': 1}
+{'producto': 'Walterin', 'precio': 999.0, 'referencia': 'fastidio', 'cantidad': 5}
