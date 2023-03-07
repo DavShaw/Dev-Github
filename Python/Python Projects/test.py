@@ -5,7 +5,6 @@ select_click = input("Cuál click deseas autoclickear (i = Izquierdo / d = Derec
 
 select_interval = float(input("¿Con qué intervalo deseas clickear (Recomendado: 0.5)?: "))
 
-select_exit_key = input("Con qué tecla deseas cerrar el script: ")
 
 import time
 from os import system
@@ -30,8 +29,9 @@ def Clicker():
                 mouse.click(Button.left, 1)
         time.sleep(select_interval)
 
-        if exit:
-            system('exit()')
+def Stopper():
+    if exit:
+        system("exit()")
             
 
 
@@ -50,6 +50,9 @@ def exit_event(key):
 
 clicking_thread = threading.Thread(target = Clicker)
 clicking_thread.start()
+
+stopper_thread = threading.Thread(target = Stopper)
+stopper_thread.start()
 
 with Listener(on_press = toggle_event) as listener:
     listener.join()
