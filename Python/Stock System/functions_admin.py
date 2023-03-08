@@ -384,3 +384,6 @@ def LoginChecker(user,password):
         else:
             return False
 #============================================#
+
+
+AccountRegister("nose","clave")
