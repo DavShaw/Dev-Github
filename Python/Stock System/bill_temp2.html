@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Factura</title>
+    <style>
+      /* Estilos para la factura */
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 800px;
+        margin: 0 auto;
+        padding: 40px;
+        border: 1px solid #ccc;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+      .logo {
+        width: 100px;
+        height: 100px;
+        background-color: #ccc;
+        margin-right: 20px;
+      }
+      .info {
+        font-size: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .info div {
+        width: 50%;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 40px;
+      }
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .total {
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .notes {
+        margin-top: 40px;
+      }
+      .payment {
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .payment div {
+        width: 50%;
+      }
+      .thankyou {
+        margin-top: 40px;
+        text-align: center;
+      }
+      .thankyou h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .thankyou p {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo"></div>
+        <h1>Factura</h1>
+      </div>
+      <div class="info">
+        <div>
+          <h3>Vendedor</h3>
+          <p>Nombre: Parqueadero los socios</p>
+          <p>Dirección: Calle 123</p>
+          <p>Teléfono: 555-5555</p>
+          <p>Correo electrónico: parqueaderosocios@gmail.com</p>
+        </div>
+        <div>
+          <h3>Comprador</h3>
+          <p>Nombre: {{NombreCliente}}</p>
+          <p>Placa: {{PlacaVehiculo}}</p>
+          <p>Teléfono: {{TelefonoCliente}}</p>
+          <p>Correo electrónico: {{CorreoCliente}}</p>
+          
+        </div>
+      </div>
+      <table>
+        <tr>
+          <th>Producto</th>
+          <th>Tiempo</th>
+          <th>Precio</th>
+          <th>Subtotal</th>
+        </tr>
+        <tr>
+          <td>Producto</td>
+          <td>{{Horas}}</td>
+          <td>{{PrecioHora}}</td>
+          <td>{{SubTotal}}</td>
+        </tr>
+        <tr>
+          <td colspan="3">IVA (19%)</td>
+          <td>{{ValorIva}}</td>
+        </tr>
+        <tr>
+          <td colspan="3" class="total">Total</td>
+          <td class="total">{{ValorTotal}}</td>
+        </tr>
+      </table>
+      <div class="notes">
+        <h3>Notas</h3>
+        <p>Gracias por su compra. Si tiene alguna pregunta o problema, no dude en ponerse en contacto con nosotros.
+            UwU
+        </p>
+      </div>
+      <div class="payment">
+        <div>
+          <h3>Forma de pago</h3>
+          <p>Efectivo</p>
+        </div>
+        <div>
+          <h3>Fecha de pago</h3>
+          <p>{{CambioFecha}}</p>
+        </div>
+      </div>
+      <div class="thankyou">
+        <h3>¡Gracias por su compra!</h3>
+        <p>Esperamos que nuestros servicios fueran de tu agrado</p>
+      </div>
+    </div>
+  </body>
+</html>
