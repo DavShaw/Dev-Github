@@ -1,5 +1,6 @@
-package supportClasses;
+package supportclasses;
 import java.util.List;
+import java.util.Scanner;
 
 import classes.Habitacion;
 
@@ -34,6 +35,33 @@ public class supportclasses
         {
             return roundedNumber;
         }
+    }
+
+    public static int redondearTrabajadores(int number)
+    {
+        if (number % 10 == 0)
+        {
+            return number/10;
+        }
+        
+        else
+        {
+            do
+            {
+                number++;    
+            }
+            
+            while (number %10 > 0 || number % 10 < 0);
+
+            return number/10;
+        }
+
+    }
+
+    public static Scanner input()
+    {
+        Scanner obj = new Scanner(System.in);
+        return obj;
     }
 
 

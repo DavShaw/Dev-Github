@@ -4,4 +4,26 @@
   <artifactId>CleanCode</artifactId>
   <version>0.1</version>
   <name>CleanCode</name>
+
+  <dependencies>
+
+    <!-- Dependencia para colores en java-->
+    <dependency>
+      <groupId>org.fusesource.jansi</groupId>
+      <artifactId>jansi</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+
+
+    <!-- Dependencia de tiempo -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.10.11</version>
+    </dependency>
+
+  </dependencies>
+
+
+
 </project>

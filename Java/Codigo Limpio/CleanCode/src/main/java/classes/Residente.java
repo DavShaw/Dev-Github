@@ -2,11 +2,16 @@ package classes;
 
 public class Residente extends Persona
 {
-    Habitacion HabitacionFavorita;
+    private Habitacion HabitacionFavorita;
 
     public Residente(String nombre)
     {
         super(nombre);
+    }
+
+    public Residente(String nombre, Habitacion habitacionFavorita) {
+        super(nombre);
+        HabitacionFavorita = habitacionFavorita;
     }
 
     public Habitacion ObtenerHabitacionFavorita()
@@ -14,10 +19,23 @@ public class Residente extends Persona
         return HabitacionFavorita;
     }
 
-    public void EstablecerHabitacionFavorita(Habitacion habitacionFavorita)
+    public void EstablecerHabitacionFavorita(String nombreHabitacion)
     {
-        HabitacionFavorita = habitacionFavorita;
+        Casa casa = this.obtenerCasaActual();
+        Habitacion habitacion = casa.obtenerHabitacion(nombreHabitacion);
+        this.HabitacionFavorita = habitacion;
     }
 
- 
+    public Habitacion getHabitacionFavorita()
+    {
+        return HabitacionFavorita;
+    }
+
+    public Habitacion setHabitacionFavorita(Habitacion HabitacionFavorita)
+    {
+        this.HabitacionFavorita = HabitacionFavorita;
+        return HabitacionFavorita;
+    }
+
+
 }

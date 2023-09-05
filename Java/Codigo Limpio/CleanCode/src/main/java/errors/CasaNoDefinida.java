@@ -1,4 +1,4 @@
-package Errores;
+package errors;
 
 public class CasaNoDefinida extends Exception
 {
