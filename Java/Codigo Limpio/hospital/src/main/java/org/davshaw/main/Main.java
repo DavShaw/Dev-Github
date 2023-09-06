@@ -18,6 +18,8 @@ public class Main
         Solicitudes.enqueue(r3);
         System.out.println(Solicitudes);
         Solicitudes.enqueue(new Request("Alfonsina", "Vómitos", 63));
+        Solicitudes.removeRequestByID(1);
+
 
         /*
          * Con base a como fueron ingresados se espera:
@@ -34,4 +36,17 @@ public class Main
         System.out.println(Solicitudes);
 
     }
+
+            public static int uwu(Integer age)
+        {
+            if (age >= 0 && age <= 120)
+            {
+                return 25 - age / 5;
+            }
+            
+            else
+            {
+                return 25;
+            }
+        }
 }

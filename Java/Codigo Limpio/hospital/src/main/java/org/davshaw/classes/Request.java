@@ -11,6 +11,7 @@ public class Request implements Comparable<Request>
     private String name;
     private String requestDescription;
     private Integer age;
+    private Integer priority = 25;
 
     public Request(String name, String requestDescription, Integer age)
     {
@@ -21,6 +22,7 @@ public class Request implements Comparable<Request>
             this.name = name;
             this.requestDescription = requestDescription;
             this.age = age;
+            this.setPriority();
         }
         
         catch (Exception exception)
@@ -58,7 +60,7 @@ public class Request implements Comparable<Request>
     @Override
     public String toString()
     {
-        return MessageFormat.format("{0} ({1})", this.getName(), this.getAge());
+        return MessageFormat.format("{0} ({1})", this.getName(), this.getPriority());
     }
 
     @Override
@@ -96,10 +98,29 @@ public class Request implements Comparable<Request>
     public int compareTo(Request otherRequest)
     {
         //Get this age
-        int thisAge = this.getAge();
+        int thisPriority = this.getPriority();
         //Get the other age
-        int otherAge = otherRequest.getAge();
+        int otherPriority = otherRequest.getPriority();
 
-        return otherAge - thisAge ;
+        return thisPriority - otherPriority;
     }
+
+    private void setPriority()
+    {
+        if (this.getAge() >= 0 && this.getAge() <= 120)
+        {
+            this.priority = (25 - this.getAge() / 5);
+        }
+    }
+
+    public int getPriority()
+    {
+        return this.priority;
+    }
+
+    public void setPriority(int priority)
+    {
+        this.priority = priority;
+    }
+
 }

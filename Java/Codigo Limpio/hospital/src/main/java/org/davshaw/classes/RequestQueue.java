@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.davshaw.external.Color;
 
@@ -136,6 +137,57 @@ public class RequestQueue extends Queue
         }
         return null;
         
+    }
+
+    public Request getRequestByID(int id) throws NoSuchElementException
+    {
+        try
+        {
+            for (Request request : queue)
+            {
+                if (request.getID() == id)
+                {
+                    return request;
+                }
+            }
+            throw new NoSuchElementException ("No existe una solicitud con este ID");
+        }
+
+        catch(NoSuchElementException exception)
+        {
+            System.out.println(Color.color("RED", "SE HA GENERADO UNA EXCEPCIÓN: ") + Color.color("CYAN", exception.getMessage()));
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    public void removeRequestByID(int id) throws NoSuchElementException
+    {
+        boolean sendException = true;
+        try
+        {
+            for (int i = 0; i < this.queue.size(); i++)
+            {
+                if (this.queue.get(i).getID() == id)
+                {
+                    this.queue.remove(i);
+                    sendException = false;
+                    break;
+                }    
+            }
+            
+            if (sendException)
+            {
+                throw new NoSuchElementException("No existe una solicitud con este ID");
+            }
+            
+        }
+
+        catch(NoSuchElementException exception)
+        {
+            System.out.println(Color.color("RED", "SE HA GENERADO UNA EXCEPCIÓN: ") + Color.color("CYAN", exception.getMessage()));
+            exception.printStackTrace();
+        }
     }
 
     @Override
