@@ -48,21 +48,22 @@ public class ShoppingCartTests {
         Product p3 = new Product("Pera",5.2);
 
         // Act
-        cart.addItem(p1,3);
-        cart.addItem(p3,10);
-        cart.addItem(p2,90);
+        cart.addItem(p1,3); //Mango
+        cart.addItem(p3,10); //Pera
+        cart.addItem(p2,90); //Manzana
         cart.sortItems();
 
         List<CarItem> listaObjetos = cart.getItems();
         //Obtener solo nombres xd
         List<String> nombre1 = new ArrayList<String>();
         nombre1.add("Mango");
-        nombre1.add("Manzana");
         nombre1.add("Pera");
+        nombre1.add("Manzana");
         List<String> nombre2 = new ArrayList<String>();
-        nombre2.add(listaObjetos.get(0).getProducto().getName());
-        nombre2.add(listaObjetos.get(1).getProducto().getName());
+        
         nombre2.add(listaObjetos.get(2).getProducto().getName());
+        nombre2.add(listaObjetos.get(1).getProducto().getName());
+        nombre2.add(listaObjetos.get(0).getProducto().getName());
         // Assert
         assertEquals(nombre1, nombre2);
     }

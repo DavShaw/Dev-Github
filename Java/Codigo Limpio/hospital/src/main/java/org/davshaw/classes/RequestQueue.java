@@ -3,6 +3,7 @@ package org.davshaw.classes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -10,7 +11,7 @@ import org.davshaw.external.Color;
 
 //Reimplementar con listas!!!!
 
-public class RequestQueue extends Queue
+public class RequestQueue extends Queue implements Iterable<Request>
 {
     private List<Request> queue = new ArrayList<Request>();
     private int size;
@@ -139,6 +140,11 @@ public class RequestQueue extends Queue
         
     }
 
+    public List<Request> getQueue()
+    {
+        return this.queue;
+    }
+
     public Request getRequestByID(int id) throws NoSuchElementException
     {
         try
@@ -230,6 +236,14 @@ public class RequestQueue extends Queue
     public String toString()
     {
         return this.queue.toString();
+    }
+
+
+
+    @Override
+    public Iterator<Request> iterator()
+    {
+        return this.queue.iterator();
     }
 
 }

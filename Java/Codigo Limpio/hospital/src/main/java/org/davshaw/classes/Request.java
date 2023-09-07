@@ -60,7 +60,7 @@ public class Request implements Comparable<Request>
     @Override
     public String toString()
     {
-        return MessageFormat.format("{0} ({1})", this.getName(), this.getPriority());
+        return MessageFormat.format("{0} (ID: {1})", this.getName(), this.getID());
     }
 
     @Override
