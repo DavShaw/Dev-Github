@@ -1,6 +1,8 @@
 package org.davshaw.classes;
 
-public class Hospital
+import java.io.Serializable;
+
+public class Hospital implements Serializable
 {
     private RequestQueue Solicitudes;
 
@@ -15,6 +17,11 @@ public class Hospital
         Request solicitud = new Request(nombrePaciente, descripcionSolicitud, edadPaciente);
         //Añadir a la lista de solicitudes
         this.Solicitudes.enqueue(solicitud);
+    }
+
+    public RequestQueue obtenerSolicitudes()
+    {
+        return this.Solicitudes;
     }
 
     
@@ -55,6 +62,11 @@ public class Hospital
         //Actualizar prioridad
         solicitud.setPriority(nuevaPrioridad);
         this.Solicitudes.sort();
+    }
+
+    public void actualizarCola(RequestQueue nuevaCola)
+    {
+        this.Solicitudes = nuevaCola;
     }
 
     private String obtenerDetallesSolicictud(int ID)

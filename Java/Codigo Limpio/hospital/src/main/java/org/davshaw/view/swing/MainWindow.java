@@ -4,6 +4,16 @@
  */
 package org.davshaw.view.swing;
 
+import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
+
+import org.davshaw.classes.Hospital;
+import org.davshaw.classes.RequestQueue;
+import org.davshaw.external.DataBase;
+import org.davshaw.external.QueueFromDatabase;
+import org.davshaw.resources.TestCase;
+
 /**
  *
  * @author Asus
@@ -12,11 +22,17 @@ public class MainWindow extends javax.swing.JFrame {
 
     /**
      * Creates new form MainWindow
+     * @throws SQLException
      */
-    public MainWindow() {
+    public MainWindow() throws SQLException {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        this.tester = new TestCase();
+        this.hospital = new Hospital(10000);
+        DataBase db = this.tester.getDatabase();
+        RequestQueue queue = new QueueFromDatabase(db).getRequestQueue();
+        this.hospital.actualizarCola(queue);
     }
 
     /**
@@ -34,6 +50,11 @@ public class MainWindow extends javax.swing.JFrame {
         viewRequest = new javax.swing.JButton();
         changeRequestPriority = new javax.swing.JButton();
         toExit = new javax.swing.JButton();
+        deleteData = new javax.swing.JButton();
+        testZone = new javax.swing.JButton();
+        testCaseNo1 = new javax.swing.JButton();
+        testCaseNo2 = new javax.swing.JButton();
+        testCaseNo3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,7 +68,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        assistRequest.setBackground(new java.awt.Color(0, 204, 204));
+        assistRequest.setBackground(new java.awt.Color(153, 255, 255));
         assistRequest.setText("Atender solicitud");
         assistRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,7 +76,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        viewRequest.setBackground(new java.awt.Color(204, 204, 204));
+        viewRequest.setBackground(new java.awt.Color(255, 153, 255));
         viewRequest.setText("Ver solicitudes");
         viewRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,11 +92,52 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        toExit.setBackground(new java.awt.Color(255, 102, 102));
+        toExit.setBackground(new java.awt.Color(255, 153, 153));
         toExit.setText("SALIR");
         toExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toExitActionPerformed(evt);
+            }
+        });
+
+        deleteData.setBackground(new java.awt.Color(255, 27, 41));
+        deleteData.setText("Borrar datos");
+        deleteData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteDataActionPerformed(evt);
+            }
+        });
+
+        testZone.setBackground(new java.awt.Color(102, 153, 255));
+        testZone.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
+        testZone.setText("🡓 PRUEBAS 🡓");
+        testZone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testZoneActionPerformed(evt);
+            }
+        });
+
+        testCaseNo1.setBackground(new java.awt.Color(102, 255, 102));
+        testCaseNo1.setText("Caso No. 1");
+        testCaseNo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testCaseNo1ActionPerformed(evt);
+            }
+        });
+
+        testCaseNo2.setBackground(new java.awt.Color(102, 255, 102));
+        testCaseNo2.setText("Caso No. 2");
+        testCaseNo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testCaseNo2ActionPerformed(evt);
+            }
+        });
+
+        testCaseNo3.setBackground(new java.awt.Color(102, 255, 102));
+        testCaseNo3.setText("Caso No. 3");
+        testCaseNo3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testCaseNo3ActionPerformed(evt);
             }
         });
 
@@ -84,33 +146,47 @@ public class MainWindow extends javax.swing.JFrame {
         mainContainerLayout.setHorizontalGroup(
             mainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainContainerLayout.createSequentialGroup()
-                .addGroup(mainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainContainerLayout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(mainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(changeRequestPriority, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(viewRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(assistRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(enterNewRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(mainContainerLayout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(toExit)))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addGap(89, 89, 89)
+                .addComponent(toExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(95, 95, 95))
+            .addGroup(mainContainerLayout.createSequentialGroup()
+                .addGap(63, 63, 63)
+                .addGroup(mainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(changeRequestPriority, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(viewRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(assistRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(enterNewRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(testCaseNo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(testCaseNo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(testCaseNo3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(testZone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainContainerLayout.setVerticalGroup(
             mainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainContainerLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(enterNewRequest)
-                .addGap(58, 58, 58)
+                .addGap(18, 18, 18)
                 .addComponent(assistRequest)
-                .addGap(60, 60, 60)
+                .addGap(18, 18, 18)
                 .addComponent(viewRequest)
-                .addGap(58, 58, 58)
+                .addGap(18, 18, 18)
                 .addComponent(changeRequestPriority)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(deleteData)
+                .addGap(18, 18, 18)
                 .addComponent(toExit)
-                .addGap(45, 45, 45))
+                .addGap(40, 40, 40)
+                .addComponent(testZone)
+                .addGap(18, 18, 18)
+                .addComponent(testCaseNo1)
+                .addGap(18, 18, 18)
+                .addComponent(testCaseNo2)
+                .addGap(12, 12, 12)
+                .addComponent(testCaseNo3)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -148,9 +224,32 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_changeRequestPriorityActionPerformed
 
     private void toExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toExitActionPerformed
-        // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_toExitActionPerformed
+
+    private void deleteDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDataActionPerformed
+        this.tester.deleteData();
+        JOptionPane.showMessageDialog(null, "Se han borrado todas las solicitudes","Solicitudes" ,JOptionPane.WARNING_MESSAGE);
+    }//GEN-LAST:event_deleteDataActionPerformed
+
+    private void testZoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testZoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_testZoneActionPerformed
+
+    private void testCaseNo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testCaseNo1ActionPerformed
+        this.tester.testCaseN1();
+        JOptionPane.showMessageDialog(null, "El caso 1 se ha ejecutado","Pruebas" ,JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_testCaseNo1ActionPerformed
+
+    private void testCaseNo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testCaseNo2ActionPerformed
+        this.tester.testCaseN2();
+        JOptionPane.showMessageDialog(null, "El caso 2 se ha ejecutado","Pruebas" ,JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_testCaseNo2ActionPerformed
+
+    private void testCaseNo3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testCaseNo3ActionPerformed
+        this.tester.testCaseN3();
+        JOptionPane.showMessageDialog(null, "El caso 3 se ha ejecutado","Pruebas" ,JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_testCaseNo3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,17 +281,29 @@ public class MainWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainWindow().setVisible(true);
+                try {
+                    new MainWindow().setVisible(true);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private TestCase tester;
     private javax.swing.JButton assistRequest;
     private javax.swing.JButton changeRequestPriority;
+    private javax.swing.JButton deleteData;
     private javax.swing.JButton enterNewRequest;
     private javax.swing.JPanel mainContainer;
+    private javax.swing.JButton testCaseNo1;
+    private javax.swing.JButton testCaseNo2;
+    private javax.swing.JButton testCaseNo3;
+    private javax.swing.JButton testZone;
     private javax.swing.JButton toExit;
     private javax.swing.JButton viewRequest;
+    private Hospital hospital;
     // End of variables declaration//GEN-END:variables
 }

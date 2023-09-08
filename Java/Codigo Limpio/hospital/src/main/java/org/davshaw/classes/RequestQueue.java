@@ -1,5 +1,6 @@
 package org.davshaw.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,7 +12,7 @@ import org.davshaw.external.Color;
 
 //Reimplementar con listas!!!!
 
-public class RequestQueue extends Queue implements Iterable<Request>
+public class RequestQueue extends Queue implements Iterable<Request>, Serializable
 {
     private List<Request> queue = new ArrayList<Request>();
     private int size;

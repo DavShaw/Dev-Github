@@ -1,10 +1,11 @@
 package org.davshaw.classes;
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 
 import org.davshaw.external.Color;
 
-public class Request implements Comparable<Request>
+public class Request implements Comparable<Request>, Serializable
 {
     private static int IDCounter = 1;
     private Integer ID;
@@ -91,15 +92,13 @@ public class Request implements Comparable<Request>
         }
         return false;
     }
-    
-
 
     @Override
     public int compareTo(Request otherRequest)
     {
-        //Get this age
+        //Get this priority
         int thisPriority = this.getPriority();
-        //Get the other age
+        //Get the other priority
         int otherPriority = otherRequest.getPriority();
 
         return thisPriority - otherPriority;
