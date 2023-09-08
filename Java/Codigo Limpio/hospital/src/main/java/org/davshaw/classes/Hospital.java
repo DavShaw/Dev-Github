@@ -36,7 +36,12 @@ public class Hospital implements Serializable
         System.out.println(detallesSolicitud);
     }
     
-    public void visualizarSolicitudes()
+    public void imprimirVisualizadorSolicitudes()
+    {
+        System.out.println(this.visualizarSolicitudes());
+    }
+
+    public String visualizarSolicitudes()
     {
         //Lógica: iterar sobre cada Request en la lista de solicitudes, obtener su ID, con su id obtener detales
         //de la solicitud y concatenar a la variable (totalSolicitudes)
@@ -51,8 +56,7 @@ public class Hospital implements Serializable
                 totalSolicitudes += informacionDetallada;
             }
         }
-
-        System.out.println(totalSolicitudes);
+        return totalSolicitudes;
     }
 
     public void cambiarPrioridad(int id, int nuevaPrioridad)

@@ -19,9 +19,7 @@ public class Main
         hospital.agregarSolicitudes("Sofia", "Cólicos", 35);
         hospital.agregarSolicitudes("Jonathan", "Ni el sabe", 105);
 
-        DataBase db = new TestData().getDatabase();
-        RequestQueue queue = new QueueFromDatabase(db).getRequestQueue();
-        System.out.println(queue);
+        hospital.atenderSolicitud();
 
 
     }

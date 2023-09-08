@@ -6,7 +6,10 @@ package org.davshaw.view.swing;
 
 import java.sql.SQLException;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import org.davshaw.classes.Hospital;
 import org.davshaw.classes.RequestQueue;
@@ -76,9 +79,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        showMessageAsDialog.setTitle("Solicictudes totales");
-        showMessageAsDialog.setModal(true);
-        
+        this.showMessageAsDialog.setTitle("Solicictudes totales");
+        this.showMessageAsDialog.setModal(true);
+        this.showMessageAsDialog.setSize(400, 300);
 
 
         mainContainer.setBackground(new java.awt.Color(102, 153, 255));
@@ -258,8 +261,27 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                             
 
-    private void viewRequestActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        this.hospital.visualizarSolicitudes();
+    private void viewRequestActionPerformed(java.awt.event.ActionEvent evt) {  
+        // Crear TextArea
+        JTextArea textArea = new JTextArea(this.hospital.visualizarSolicitudes());
+        textArea.setLineWrap(true); // Habilitar ajuste de línea
+        textArea.setWrapStyleWord(true); // Ajustar palabras enteras
+
+        // Crear Scrollpane
+        JScrollPane scrollPane = new JScrollPane(textArea);
+
+        // Configurar el ScrollPane
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Mostrar la barra de desplazamiento vertical siempre
+
+        // Crear el diálogo
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Visualización de Solicitudes");
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Configurar acción de cierre
+        dialog.setSize(400, 300);
+        dialog.add(scrollPane); // Agregar el JScrollPane al diálogo
+
+        // Mostrar el diálogo
+        dialog.setVisible(true);
     }                                           
 
     private void changeRequestPriorityActionPerformed(java.awt.event.ActionEvent evt) {                                                      
