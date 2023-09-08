@@ -1,5 +1,5 @@
 package org.davshaw.view.console;
 
-public class TotalMenu {
+public class ConsoleViewer {
     
 }

@@ -1,6 +1,10 @@
 package org.davshaw.classes;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
+import org.davshaw.external.ToSerializer;
 
 public class Hospital implements Serializable
 {
@@ -70,10 +74,12 @@ public class Hospital implements Serializable
 
     public void actualizarCola(RequestQueue nuevaCola)
     {
+        this.Solicitudes.resetIDCounter();
         this.Solicitudes = nuevaCola;
     }
 
-    private String obtenerDetallesSolicictud(int ID)
+
+    public String obtenerDetallesSolicictud(int ID)
     {
         //Obtener la solicictud con ese ID
         Request solicictud = this.Solicitudes.getRequestByID(ID);
@@ -92,6 +98,11 @@ public class Hospital implements Serializable
         detalle += "\n";
         
         return detalle;
+    }
+
+    public void generateSerialized(String filepath) throws IOException
+    {
+        ToSerializer objectSerializer = new ToSerializer(filepath, this);
     }
 
 

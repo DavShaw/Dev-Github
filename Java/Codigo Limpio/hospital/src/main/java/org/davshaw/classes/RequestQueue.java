@@ -30,6 +30,10 @@ public class RequestQueue extends Queue implements Iterable<Request>, Serializab
         }
     }
 
+    public void resetIDCounter()
+    {
+        this.nextIndex = 0;
+    }
     
 
     public void enqueue(Request request) throws ArrayIndexOutOfBoundsException

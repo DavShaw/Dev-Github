@@ -4,22 +4,27 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.davshaw.classes.Hospital;
-import org.davshaw.classes.RequestQueue;
-import org.davshaw.external.DataBase;
-import org.davshaw.external.QueueFromDatabase;
-import org.davshaw.resources.TestData;
+import org.davshaw.external.ToSerializer;
 
 public class Main
 {
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException
     {
-        Hospital hospital = new Hospital(6);
-        hospital.agregarSolicitudes("David", "Mareos", 3);
-        hospital.agregarSolicitudes("Magola", "Dolor de huesos", 63);
-        hospital.agregarSolicitudes("Sofia", "Cólicos", 35);
-        hospital.agregarSolicitudes("Jonathan", "Ni el sabe", 105);
+        Hospital hospital = new Hospital(4);
+        hospital.agregarSolicitudes("Manuel", "Sin conexión", 52);
+        hospital.agregarSolicitudes("Sofia", "Pantalla rota", 12);
+        hospital.agregarSolicitudes("Estefani", "Pantalla azúl", 36);
+        hospital.generateSerialized("hospital.txt");
+        hospital.agregarSolicitudes("Jonathan","C#: Problemas de framework", 29);
+        
+        ToSerializer serializador = new ToSerializer("hospital.txt");
+        Hospital nuevo = (Hospital) serializador.readObject();
+        System.out.println(hospital.obtenerSolicitudes());
+        System.out.println(nuevo.obtenerSolicitudes());
 
-        hospital.atenderSolicitud();
+        
+
+        
 
 
     }

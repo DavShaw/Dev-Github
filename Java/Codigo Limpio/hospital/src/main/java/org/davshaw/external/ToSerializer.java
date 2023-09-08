@@ -25,6 +25,17 @@ public class ToSerializer <Generic>
         this.writeObject();
     }
 
+    public ToSerializer(String filePath) throws IOException
+    {
+        this.filePath = filePath;
+    }
+
+    public ObjectOutputStream getSerialized() throws IOException
+    {
+        this.writeObject();
+        return this.serializer;
+    }
+
     private void writeObject() throws IOException
     {
         this.file = new FileOutputStream(this.filePath);

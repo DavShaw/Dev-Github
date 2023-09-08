@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import org.davshaw.classes.Request;
 import org.davshaw.classes.RequestQueue;
-import org.davshaw.resources.TestData;
 
 public class QueueFromDatabase
 {
@@ -21,6 +20,7 @@ public class QueueFromDatabase
 
     private void addQueryResultToQueue() throws SQLException
     {
+        this.db.connect();
         this.queryResult = this.db.executeQuery("SELECT * FROM requestDatabase");
         int querySize = this.getQuerySize(queryResult);
         this.requestQueue = new RequestQueue(querySize);
@@ -36,6 +36,7 @@ public class QueueFromDatabase
             this.requestQueue.enqueue(requestToAdd);
         }
         this.queryResult.close();
+        this.db.disconnect();
     }
 
     private int getQuerySize(ResultSet resultSet) throws SQLException
