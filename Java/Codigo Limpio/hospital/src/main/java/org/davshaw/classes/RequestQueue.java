@@ -30,7 +30,7 @@ public class RequestQueue extends Queue implements Iterable<Request>, Serializab
         }
     }
 
-    public void resetIDCounter()
+    private void resetIDCounter()
     {
         this.nextIndex = 0;
     }
@@ -234,6 +234,7 @@ public class RequestQueue extends Queue implements Iterable<Request>, Serializab
         {
             queue.set(i, null);
         }
+        this.resetIDCounter();
     }
     
 

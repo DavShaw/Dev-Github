@@ -1,10 +1,11 @@
 package org.davshaw.classes;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.List;
 
 import org.davshaw.external.ToSerializer;
+import org.davshaw.resources.TestData;
 
 public class Hospital implements Serializable
 {
@@ -29,7 +30,7 @@ public class Hospital implements Serializable
     }
 
     
-    public void atenderSolicitud()
+    public String atenderSolicitud()
     {
         //Obtener la siguiente solicitud en la cola
         Request solicitud = this.Solicitudes.first();
@@ -37,7 +38,7 @@ public class Hospital implements Serializable
         String detallesSolicitud = this.obtenerDetallesSolicictud(solicitud.getID());
         //Elimnarla
         this.Solicitudes.dequeue();
-        System.out.println(detallesSolicitud);
+        return detallesSolicitud;
     }
     
     public void imprimirVisualizadorSolicitudes()
@@ -74,7 +75,6 @@ public class Hospital implements Serializable
 
     public void actualizarCola(RequestQueue nuevaCola)
     {
-        this.Solicitudes.resetIDCounter();
         this.Solicitudes = nuevaCola;
     }
 
@@ -100,9 +100,21 @@ public class Hospital implements Serializable
         return detalle;
     }
 
-    public void generateSerialized(String filepath) throws IOException
+    public void deleteData()
     {
-        ToSerializer objectSerializer = new ToSerializer(filepath, this);
+        this.Solicitudes.clear();
+    }
+
+    public void testData(int amountOfTest)
+    {
+        TestData database = new TestData();
+        for (int i = 0; i < amountOfTest; i++)
+        {
+            String name = database.getNameToInsert();
+            String desc = database.getDescriptionToInsert();
+            int age = database.getAgeToInsert();
+            this.agregarSolicitudes(name, desc, age);
+        }
     }
 
 
