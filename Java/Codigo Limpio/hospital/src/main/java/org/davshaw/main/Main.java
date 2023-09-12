@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.davshaw.classes.Hospital;
-import org.davshaw.resources.TestCase;
+import org.davshaw.external.TestCase;
 
 public class Main
 {

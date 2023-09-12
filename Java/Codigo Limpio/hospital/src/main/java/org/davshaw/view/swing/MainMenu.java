@@ -8,7 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.davshaw.classes.Hospital;
-import org.davshaw.resources.TestCase;
+import org.davshaw.external.TestCase;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
