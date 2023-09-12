@@ -1,6 +1,7 @@
 package org.davshaw.external;
 
 import org.davshaw.classes.Hospital;
+import org.davshaw.resources.TestData;
 
 public class TestCase
 {

@@ -1,4 +1,4 @@
-package org.davshaw.external;
+package org.davshaw.resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
