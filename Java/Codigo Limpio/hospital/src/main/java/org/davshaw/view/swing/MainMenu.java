@@ -2,14 +2,12 @@ package org.davshaw.view.swing;
 
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.davshaw.classes.Hospital;
-import org.davshaw.external.ToSerializer;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -31,6 +29,7 @@ public class MainMenu extends javax.swing.JFrame
     public MainMenu() throws IOException, ClassNotFoundException {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
         /*
          !Obligado a poner throws IOException, ClassNotFoundException... Puede corromper el NetBeans
          */
