@@ -3,7 +3,7 @@ package org.davshaw.classes.doublelinkedlist;
 
 public class DoubleLinkedList
 {
-    private Node head;
+    protected Node head;
     private Node tail;
 
     public DoubleLinkedList()
@@ -12,7 +12,23 @@ public class DoubleLinkedList
         this.tail = null;
     }
 
-    public void add_node_at_tail(int value)
+    public Node getHead()
+    {
+        return this.head;
+    }
+
+    public Node getTail()
+    {
+        return this.tail;
+    }
+
+    public void addNodeAtTail(int value)
+    {
+        String valString = String.valueOf(value);
+        this.addNodeAtTail(valString);
+    }
+
+    public void addNodeAtTail(String value)
     {
         if (this.head == null)
         {
@@ -35,6 +51,40 @@ public class DoubleLinkedList
         }
     }
 
+    public void addNodeAt(int index, int value)
+    {
+        String valueString = String.valueOf(value);
+        this.addNodeAt(index, valueString);
+    }
+
+    public void addNodeAt(int index, String value)
+    {
+        try
+        {
+            // Obtener el nodo en la posición index - 1
+            Node A = this.getNodeAt(index - 1);
+            
+            // Crear un nuevo nodo con el valor deseado
+            Node B = new Node(value);
+
+            // Obtener el nodo en la posición index
+            Node C = this.getNodeAt(index);
+    
+            // Actualizar las referencias
+            A.setNext(B);
+            C.setPrev(B);
+            B.setNext(C);
+            B.setPrev(A);
+
+        }
+        
+        catch (IndexOutOfBoundsException error)
+        {
+            System.out.println("Ocurrió un error xd (ID: 2)");
+        }
+    }
+    
+
     public void traverse()
     {
         if(this.head == null)
@@ -53,7 +103,28 @@ public class DoubleLinkedList
             }
             System.out.println("");
         }
+    }
 
+    @Override
+    public String toString()
+    {
+        String toReturn = "";
+        if(this.head == null)
+        {
+            System.out.println("Linkedlist is empty... Dude, there's nothing to traverse.");
+        }
+
+        else
+        {
+            Node currentNode = this.head;
+            
+            while (currentNode != null)
+            {
+                toReturn += currentNode;
+                currentNode = currentNode.Next();
+            }
+        }  
+        return toReturn;
     }
 
     public int size()

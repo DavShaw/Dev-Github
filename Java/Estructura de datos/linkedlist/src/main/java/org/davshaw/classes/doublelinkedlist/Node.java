@@ -3,11 +3,11 @@ import java.text.MessageFormat;
 
 public class Node
 {
-    private int value;
+    private String value;
     private Node next;
     private Node prev;
 
-    public Node(int value)
+    public Node(String value)
     {
         this.value = value;
         this.next = null;
@@ -34,12 +34,12 @@ public class Node
         this.prev = prev;
     }
 
-    public int Value()
+    public String Value()
     {
         return value;
     }
 
-    public void setValue(int value)
+    public void setValue(String value)
     {
         this.value = value;
     }

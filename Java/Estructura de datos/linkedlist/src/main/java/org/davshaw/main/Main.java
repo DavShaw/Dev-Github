@@ -1,7 +1,23 @@
 package org.davshaw.main;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
+import org.davshaw.classes.megalinkedlist.MegaLinkedList;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        
+        //Crear instancia de mega linked list
+        MegaLinkedList l = new MegaLinkedList();
+        l.addNodesAsString("holasoypapauwumequieres");
+        l.traverse();
+        l.sort2();
+        l.traverse();
+        
+    
+        
+        
     }
+
+
 }
