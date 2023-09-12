@@ -1,11 +1,6 @@
 package org.davshaw.classes;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
-
-import org.davshaw.external.ToSerializer;
-import org.davshaw.resources.TestData;
 
 public class Hospital implements Serializable
 {
@@ -105,17 +100,7 @@ public class Hospital implements Serializable
         this.Solicitudes.clear();
     }
 
-    public void testData(int amountOfTest)
-    {
-        TestData database = new TestData();
-        for (int i = 0; i < amountOfTest; i++)
-        {
-            String name = database.getNameToInsert();
-            String desc = database.getDescriptionToInsert();
-            int age = database.getAgeToInsert();
-            this.agregarSolicitudes(name, desc, age);
-        }
-    }
+
 
 
 

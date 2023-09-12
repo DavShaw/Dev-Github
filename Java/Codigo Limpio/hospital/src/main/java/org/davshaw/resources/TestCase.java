@@ -10,8 +10,17 @@ public class TestCase
         this.Data = new TestData();
     }
 
-    public void generateTest(Hospital hospital, int requestAmountToGenerate)
-    {   
+
+    public static void testData(Hospital hospital, int amountOfTest)
+    {
+        TestData database = new TestData();
+        for (int i = 0; i < amountOfTest; i++)
+        {
+            String name = database.getNameToInsert();
+            String desc = database.getDescriptionToInsert();
+            int age = database.getAgeToInsert();
+            hospital.agregarSolicitudes(name, desc, age);
+        }
     }
 
 }

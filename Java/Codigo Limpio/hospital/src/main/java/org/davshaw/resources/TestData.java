@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.davshaw.external.DataBase;
-
 public class TestData
 {
     private List<String> names = new ArrayList<String>(
@@ -99,12 +97,6 @@ public class TestData
             111, 112, 113, 114, 115, 116, 117, 118, 119, 120
         ));
 
-    private String host = "containers-us-west-31.railway.app";
-    private int port = 6986;
-    private String database = "railway";
-    private String username = "root";
-    private String password = "IIBDbFM36RhcoMDL5WyQ"; 
-    private DataBase db;
     private Random random = new Random();
     private String nameToInto;
     private String descriptionToInto;
@@ -147,16 +139,5 @@ public class TestData
         this.updateData();
         return this.ageToInto;
     }
-
-    public DataBase getDatabase()
-    {
-        return this.db;
-    }
-
-    public TestData()
-    {
-        this.db = new DataBase(host,port,database,username,password);
-    }
-
 
 }

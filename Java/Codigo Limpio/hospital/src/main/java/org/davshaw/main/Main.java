@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.davshaw.classes.Hospital;
+import org.davshaw.resources.TestCase;
 
 public class Main
 {
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException
     {
         Hospital hospital = new Hospital(11);
-        hospital.testData(10);
+        TestCase.testData(hospital, 10);
         hospital.imprimirVisualizadorSolicitudes();
         hospital.deleteData();
-        hospital.testData(10);
+        TestCase.testData(hospital, 10);
         hospital.imprimirVisualizadorSolicitudes();
     }
 }
