@@ -4,11 +4,13 @@ public class Node
 {
     private int value;
     private Node next;
+    private Node previous;
 
     public Node(int value)
     {
         this.value = value;
         this.next = null;
+        this.previous = null;
     }
 
     public Node getNext()
@@ -19,6 +21,16 @@ public class Node
     public void setNext(Node next)
     {
         this.next = next;
+    }
+
+    public Node getPrevious()
+    {
+        return this.previous;
+    }
+
+    public void setPrevious(Node previous)
+    {
+        this.previous = previous;
     }
 
     public int getValue()
