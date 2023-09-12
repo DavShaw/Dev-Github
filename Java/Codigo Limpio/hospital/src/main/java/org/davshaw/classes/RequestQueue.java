@@ -21,13 +21,8 @@ public class RequestQueue extends Queue implements Iterable<Request>, Serializab
     public RequestQueue(int size)
     {
         this.size = size;
-        this.nextIndex = 0;
-
-        //Llenar la lista con null
-        for (int i = 0; i < size; i++)
-        {
-            this.queue.add(null);
-        }
+    this.nextIndex = 0;
+    this.queue = new ArrayList<>(Collections.nCopies(size, null));
     }
 
     private void resetIDCounter()

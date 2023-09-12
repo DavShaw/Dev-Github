@@ -11,6 +11,12 @@ public class Hospital implements Serializable
         this.Solicitudes = new RequestQueue(maximoSolicitudes);
     }
 
+    public Hospital()
+    {
+        //Se infiere que se desea una cola muy larga (Asignaremos 100.000)
+        this.Solicitudes = new RequestQueue(100000);
+    }
+
     public void agregarSolicitudes(String nombrePaciente, String descripcionSolicitud, int edadPaciente)
     {
         //instanciar objeto de Request

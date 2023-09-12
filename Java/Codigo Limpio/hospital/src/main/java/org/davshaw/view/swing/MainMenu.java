@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.davshaw.classes.Hospital;
+import org.davshaw.external.ExecuteTimer;
 import org.davshaw.external.TestCase;
 
 /*
@@ -35,7 +36,8 @@ public class MainMenu extends javax.swing.JFrame
          !Obligado a poner throws IOException, ClassNotFoundException... Puede corromper el NetBeans
          */
         
-        this.hospital = new Hospital(10000);
+        this.hospital = new Hospital();
+        this.timer = new ExecuteTimer();
 
     }
 
@@ -412,20 +414,36 @@ public class MainMenu extends javax.swing.JFrame
 
     private void testCaseNo1Action(java.awt.event.ActionEvent evt)
     {
+        timer.start();
         TestCase.testData(this.hospital, 10);
+        timer.stop();
+        String totalTime = String.valueOf(timer.getTotalTimeInSeconds());
+
+        JOptionPane.showMessageDialog(this, "El caso de prueba se ejecutó en: " + totalTime + " segundos.", "Pruebas", JOptionPane.INFORMATION_MESSAGE); 
     }
 
     private void testCaseNo2Action(java.awt.event.ActionEvent evt)
     {
+        timer.start();
         TestCase.testData(this.hospital, 100);
+        timer.stop();
+        String totalTime = String.valueOf(timer.getTotalTimeInSeconds());
+
+        JOptionPane.showMessageDialog(this, "El caso de prueba se ejecutó en: " + totalTime + " segundos.", "Pruebas", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void testCaseNo3Action(java.awt.event.ActionEvent evt)
     {
+        timer.start();
         TestCase.testData(this.hospital, 10000);
+        timer.stop();
+        String totalTime = String.valueOf(timer.getTotalTimeInSeconds());
+
+        JOptionPane.showMessageDialog(this, "El caso de prueba se ejecutó en: " + totalTime + " segundos.", "Pruebas", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private Hospital hospital;
+    private ExecuteTimer timer;
     // Variables declaration - do not modify                     
     private javax.swing.JButton assistNextRequest;
     private javax.swing.JButton changePriority;
