@@ -10,6 +10,7 @@ import org.davshaw.classes.doublelinkedlist.Node;
 
 public class MegaLinkedList extends DoubleLinkedList
 {
+    private MegaLinkedList nextLinkedList = null;
 
     //Clase que extiende métodos de DoubleLinkedList
     public void changeNodesToFrom(int index1, int index2)
@@ -38,6 +39,18 @@ public class MegaLinkedList extends DoubleLinkedList
         }
     }
 
+
+    public MegaLinkedList getNextLinkedList()
+    {
+        return this.nextLinkedList;
+    }
+
+    public void setNextLinkedList(MegaLinkedList nextLinkedList)
+    {
+        this.nextLinkedList = nextLinkedList;
+    }
+
+
     public void addNodesAsString(String txt)
     {
         char[] elements = txt.toCharArray();
@@ -51,6 +64,16 @@ public class MegaLinkedList extends DoubleLinkedList
         for (String stringuwu : chars)
         {
             this.addNodeAtTail(stringuwu);
+        }
+    }
+
+    public void addNodesAsSplitedString(String txt)
+    {
+        String[] elements = txt.split(",");
+        for (String element : elements)
+        {
+            String trimmedElement = element.trim();
+            this.addNodeAtTail(trimmedElement);
         }
     }
 
