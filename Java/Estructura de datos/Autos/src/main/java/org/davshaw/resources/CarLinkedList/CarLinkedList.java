@@ -1,83 +1,34 @@
-package org.davshaw.classes.doublelinkedlist;
+package org.davshaw.resources.CarLinkedList;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import org.davshaw.autos.Car;
 
-import org.davshaw.classes.megalinkedlist.MegaLinkedList;
-
-public class DoubleLinkedList
+public class CarLinkedList
 {
-    protected Node head;
-    protected Node tail;
+    protected CarNode head;
+    protected CarNode tail;
 
-    public DoubleLinkedList()
+    public CarLinkedList()
     {
         this.head = null;
         this.tail = null;
     }
 
-    public Node getHead()
+    public CarNode getHead()
     {
         return this.head;
     }
 
-    public Node getTail()
+    public CarNode getTail()
     {
         return this.tail;
     }
 
-    public void addNodeAtTail(int value)
-    {
-        String valString = String.valueOf(value);
-        this.addNodeAtTail(valString);
-    }
-
-    public void addNodeDown(int level, String value)
-    {
-        //Buscar la lista en el nivel X
-        MegaLinkedList lista = this.getListByLevel(level);
-        lista.addNodeAtTail(value);
-    }
-
-    public void addNodeDown(int level, int value)
-    {
-        //Buscar la lista en el nivel X
-        MegaLinkedList lista = this.getListByLevel(level);
-        lista.addNodeAtTail(value);
-    }
-
-    private MegaLinkedList getListByLevel(int level)
-    {
-        Node current = this.getHead();
-
-        // Itera hasta el nivel especificado
-        for (int i = 0; i < level; i++)
-        {
-            if (current.Down() != null)
-            {
-                current = current.Down();  // Sigue el enlace "down"
-            }
-
-            else
-            {
-                throw new IllegalArgumentException("El número de niveles supera el nivel mas bajo de la lista.");
-            }
-        }
-
-        MegaLinkedList list = new MegaLinkedList();
-        list.setHead(current);
-
-        return list;
-    }
-
-
-    public void addNodeAtTail(String value)
+    public void addNodeAtTail(Car car)
     {
         if (this.head == null)
         {
             //Instanciar nodo
-            Node nuevoHead = new Node(value);
+            CarNode nuevoHead = new CarNode(car);
             //Establecerlo como head
             this.head = nuevoHead;
             //Establecer nuevo nodo añadido
@@ -88,31 +39,25 @@ public class DoubleLinkedList
         {
             //Si el head no es null, implica que hay otro nodo
             //Instanciar nodo
-            Node nuevoNodo = new Node(value);
+            CarNode nuevoNodo = new CarNode(car);
             this.tail.setNext(nuevoNodo);
             nuevoNodo.setPrev(this.tail);
             this.tail = nuevoNodo;
         }
     }
 
-    public void addNodeAt(int index, int value)
-    {
-        String valueString = String.valueOf(value);
-        this.addNodeAt(index, valueString);
-    }
-
-    public void addNodeAt(int index, String value)
+    public void addNodeAt(int index, Car car)
     {
         try
         {
             // Obtener el nodo en la posición index - 1
-            Node A = this.getNodeAt(index - 1);
+            CarNode A = this.getNodeAt(index - 1);
             
             // Crear un nuevo nodo con el valor deseado
-            Node B = new Node(value);
+            CarNode B = new CarNode(car);
 
             // Obtener el nodo en la posición index
-            Node C = this.getNodeAt(index);
+            CarNode C = this.getNodeAt(index);
     
             // Actualizar las referencias
             A.setNext(B);
@@ -124,7 +69,7 @@ public class DoubleLinkedList
         
         catch (IndexOutOfBoundsException error)
         {
-            System.out.println("Ocurrió un error xd (ID: 2)");
+            error.printStackTrace();
         }
     }
     
@@ -138,11 +83,11 @@ public class DoubleLinkedList
 
         else
         {
-            Node currentNode = this.head;
+            CarNode currentNode = this.head;
             
             while (currentNode != null)
             {
-                System.out.print(currentNode);
+                System.out.println(currentNode);
                 currentNode = currentNode.Next();
             }
             System.out.println("");
@@ -160,7 +105,7 @@ public class DoubleLinkedList
 
         else
         {
-            Node currentNode = this.head;
+            CarNode currentNode = this.head;
             
             while (currentNode != null)
             {
@@ -174,7 +119,7 @@ public class DoubleLinkedList
     public int size()
     {
         int counter = 0;
-        Node currentNode = this.head;
+        CarNode currentNode = this.head;
         while (currentNode != null)
         {
             counter++;
@@ -183,9 +128,9 @@ public class DoubleLinkedList
         return counter;
     }
 
-    public Node getNodeAt(int index)
+    public CarNode getNodeAt(int index)
     {
-        Node currentNode = this.head;
+        CarNode currentNode = this.head;
         for (int i = 0; i < this.size(); i++)
         {
             if (i == index)
@@ -214,7 +159,7 @@ public class DoubleLinkedList
         {
             //Sabemos que Sí o sí habrá un nodo entre el head y el tail (Porque no se cumplieron las anteriores)
             //Obtenemos el prev y el next de ese nodo
-            Node B = this.getNodeAt(index);
+            CarNode B = this.getNodeAt(index);
             //[A, B, C]
             //Haremos que el next de A sea el next de B
             this.getNodeAt(index-1).setNext(B.Next());
@@ -242,7 +187,7 @@ public class DoubleLinkedList
                 }
 
                 //Si el tail tiene un prev nodo, guardaremos este para cambiar su "next"
-                Node prevNode = this.tail.Prev();
+                CarNode prevNode = this.tail.Prev();
                 if (prevNode != null)
                 {
                     prevNode.setNext(null);
@@ -271,7 +216,7 @@ public class DoubleLinkedList
             else
             {
                 //Si el head tiene un siguiente nodo, guardaremos este para cambiar su "prev"
-                Node nextNode = this.head.Next();
+                CarNode nextNode = this.head.Next();
                 if (nextNode != null)
                 {
                     nextNode.setPrev(null);
@@ -287,12 +232,12 @@ public class DoubleLinkedList
 
     }
     
-    public Node Head()
+    public CarNode Head()
     {
         return this.head;
     }
 
-    public Node Tail()
+    public CarNode Tail()
     {
         return this.tail;
     }

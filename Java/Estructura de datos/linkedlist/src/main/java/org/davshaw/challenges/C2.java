@@ -1,73 +1,52 @@
 package org.davshaw.challenges;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.davshaw.classes.megalinkedlist.SuperLinkedList;
-import org.davshaw.main.Main;
+import org.davshaw.classes.doublelinkedlist.Node;
 import org.davshaw.classes.megalinkedlist.MegaLinkedList;
 
 public class C2
 {
-    //Escriba una función que reciba una lista enlazada de listas enlazadas (matriz enlazada)
-    //y que devuelva cuál de las filas enlazadas tiene más números pares. (0.3)
 
-    public void result(SuperLinkedList sl)
+    //Escriba una función que tome dos listas enlazadas y sume sus nodos
+    public static void result(MegaLinkedList l1, MegaLinkedList l2)
     {
-        //Ya tenemos la SuperLinkedList, solo debemos iterar sobre cada uno de sus nodos (MegaLinkedList)
-
-        //Almacenar cada fila en una lista
-        List<MegaLinkedList> slFilas = new ArrayList<>();
-        for (int i = 0; i < sl.size(); i++)
+        try
         {
-            slFilas.add(sl.getLinkedListAt(i));
-        }
-
-        //Crear diccionario
-        HashMap<MegaLinkedList,Integer> dic = new HashMap<>();
-
-        //NOTA: La posicion en la lsita de cada fila implica su posicion en la lista enlazada de listas enlazadas
-        //! Iniciar el conteo
-        for (MegaLinkedList currentfila : slFilas)
-        {
-            int oddCounter = 0;
-            for (int i = 0; i < currentfila.size(); i++)
+            //Si alguno es nulo
+            if (l1 == null || l2 == null)
             {
-                //Añadir lista a diccionario
-                dic.put(currentfila, 0);
-                //Sabemos que todos su nodos son numeros, por ende son casteables (NOTA: casteables != parseables, preguntar a jonathangod)
-                int n = Integer.valueOf(currentfila.getNodeAt(i).Value());
-                if(n%2 == 0)
+                throw new IllegalArgumentException("Listas nulas");
+            }
+
+            //Si no tienen la misma longitud
+            if (l1.size() != l2.size())
+            {
+                throw new IllegalArgumentException("Listas de diferentes dimensiones");
+            }
+
+            //Código:
+            else
+            {
+                //Lista enlazada para guardar nodos resultantes
+                MegaLinkedList l3 = new MegaLinkedList();
+                //Iterar en ambas listas
+                for (int i = 0; i < l1.size(); i++)
                 {
-                    oddCounter++;
+                    int valorNodo1 = Integer.valueOf(l1.getNodeAt(i).Value());
+                    int valorNodo2 = Integer.valueOf(l2.getNodeAt(i).Value());
+
+                    l3.addNodeAtTail(valorNodo1+valorNodo2);
                 }
-                //Actualizar valor xd
-                dic.put(currentfila, oddCounter);
-            }
-        }
-        //Obtener la lista de mayor valor xd
-        MegaLinkedList mayor = this.buscarClaveMaxima(dic);
-        System.out.println("La lista enlazada con mayores numero de numeros pares es " + mayor);
-    }
-
-    private MegaLinkedList buscarClaveMaxima(Map<MegaLinkedList, Integer> diccionario) {
-        MegaLinkedList claveMaxima = null;
-        int valorMaximo = Integer.MIN_VALUE;
-
-        for (Map.Entry<MegaLinkedList, Integer> entry : diccionario.entrySet()) {
-            MegaLinkedList clave = entry.getKey();
-            int valor = entry.getValue();
-
-            if (valor > valorMaximo) {
-                valorMaximo = valor;
-                claveMaxima = clave;
+                System.out.println(l3);
             }
         }
 
-        return claveMaxima;
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
-
 
 }

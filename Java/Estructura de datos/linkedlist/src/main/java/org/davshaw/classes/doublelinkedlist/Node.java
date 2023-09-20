@@ -6,10 +6,19 @@ public class Node
     private String value;
     private Node next;
     private Node prev;
+    private Node down;
 
     public Node(String value)
     {
         this.value = value;
+        this.next = null;
+        this.prev = null;
+        this.down = null;
+    }
+
+    public Node(int value)
+    {
+        this.value = String.valueOf(value);
         this.next = null;
         this.prev = null;
     }
@@ -32,6 +41,16 @@ public class Node
     public void setPrev(Node prev)
     {
         this.prev = prev;
+    }
+
+    public void setDown(Node down)
+    {
+        this.down = down;
+    }
+
+    public Node Down()
+    {
+        return this.down;
     }
 
     public String Value()

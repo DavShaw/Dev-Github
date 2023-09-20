@@ -20,7 +20,7 @@ public class Main
 
 
         //Main.e1(db, 5);
-        Main.e2(db,"James Joyce");
+        Main.e2(db,"Paulo Coelho");
 
         
     }
@@ -36,15 +36,22 @@ public class Main
 
     public static void e2(DataBase db, String nombreAutor) throws SQLException
     {
-        String sql = ("SELECT * from books where author != 'James Joyce'");
+        String sql = String.format("select * from books where author = '%s'", nombreAutor);
         ResultSet result = db.executeQuery(sql);
-        result.next();
+    
+        // Verifica si hay al menos un libro
+        if (!result.isBeforeFirst())
+        {
+            System.out.println("No se encontraron libros para el autor: " + nombreAutor);
+            return;
+        }
+    
         System.out.println("Los libros del autor llamado " + nombreAutor + " son: ");
-
+    
         while (result.next())
         {
             System.out.println(result.getString("title"));
         }
-
     }
+    
 }

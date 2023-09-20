@@ -82,6 +82,10 @@ public class MegaLinkedList extends DoubleLinkedList
         this.head = node;
     }
 
+    public void setTail(Node node)
+    {
+        this.tail = node;
+    }
     public void sort2()
     {
         Map<String, Integer> vowelsCounter = new HashMap<>();
