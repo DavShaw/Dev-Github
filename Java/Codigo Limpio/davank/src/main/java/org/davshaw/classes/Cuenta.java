@@ -1,71 +1,30 @@
 package org.davshaw.classes;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-import org.davshaw.external.AccountNumberGenerator;
-
+@Entity
+@Table(name = "Cuenta")
 public class Cuenta
 {
-
-    //! VARIABLES DE CLASE:
-    private List<Integer> numeroCuentaRegistrados = new ArrayList<Integer>();
-
-
-    //? VARIABLES DE INSTANCIA:
-    private Usuario titular;
+    @Id
+    @Column(name = "numeroCuenta")
     private int numeroCuenta;
+
+    @Column(name = "titular")
+    private Usuario titular;
+
+    @Column(name = "saldo")
     private double saldo;
+
 
     public Cuenta(Usuario titular)
     {
         this.titular = titular;
-
-        //Generar número de cuenta
-        while(true)
-        {
-            int temporalNumber = AccountNumberGenerator.generateNumber();
-            if(!(this.numeroCuentaRegistrados.contains(temporalNumber)))
-            {
-                this.numeroCuenta = temporalNumber;
-                this.numeroCuentaRegistrados.add(temporalNumber);
-                break;
-            }
-        }
-    }
-
-    public Usuario titular()
-    {
-        return this.titular;
-    }
-
-    public int numeroCuenta()
-    {
-        return this.numeroCuenta;
-    }
-
-    public void depositar(double monto)
-    {
-        this.saldo += monto;
-    }
-
-    public void retirar(double monto)
-    {
-        try
-        {
-            if (this.saldo >= monto)
-            {
-                this.saldo -= monto;
-            }
-            else
-            {
-                throw new IllegalArgumentException("La cantidad de monto a retirar supera el saldo actual.");
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        this.saldo = 0.0;
+        this.numeroCuenta = 0;
     }
 
 

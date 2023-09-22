@@ -169,5 +169,14 @@ public final class DataBase
             }
         }
     }
+
+    public static DataBase getDataBase()
+    {
+        return new DataBase("containers-us-west-31.railway.app",
+        6986,
+        "Davank",
+        "root",
+        "IIBDbFM36RhcoMDL5WyQ");
+    }
     
 }
