@@ -20,11 +20,18 @@ public class Cuenta
 
     public Cuenta() 
     {
+        /*
+        ! Constructor para mapeo Hibernate -> Código 
+        */
     }
 
     public Cuenta(int titularDni)
     {
         this.titularDni = titularDni;
+
+        /*
+        ! Constructor para mapeo Código -> Hibernate
+        */
     }
 
 

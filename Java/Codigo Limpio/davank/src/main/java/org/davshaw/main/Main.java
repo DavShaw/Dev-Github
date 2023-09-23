@@ -1,7 +1,7 @@
 package org.davshaw.main;
 
-import org.davshaw.classes.Cuenta;
 import org.davshaw.controller.CuentaController;
+import org.davshaw.controller.GrupoController;
 import org.davshaw.controller.UsuarioController;
 import org.davshaw.external.DataBase;
 
@@ -16,6 +16,9 @@ public class Main
 
     public static void main(String[] args)
     {
+        GrupoController groupController = new GrupoController();
+        System.out.println(groupController.obtenersaldo(1));
+        
     }
     
 }

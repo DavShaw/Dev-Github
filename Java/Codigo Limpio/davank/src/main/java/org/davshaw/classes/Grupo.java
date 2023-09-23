@@ -1,7 +1,5 @@
 package org.davshaw.classes;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,22 +13,59 @@ public class Grupo
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private int id;
+
     @Column(name = "nombre")
     private String nombre;
-
-    @Column(name = "lider")
-    private Usuario lider;
-    
-    @Column(name = "integrantes")
-    private List<Usuario> integrantes;
 
     @Column(name = "saldo")
     private double saldo = 0;
 
-    public Grupo(Usuario lider, String nombre)
+    @Column(name = "numeroIntegrantes")
+    private int numeroIntegrantes = 0;
+
+    public Grupo()
     {
-        this.lider = lider;
+    }
+
+    public Grupo(String nombre)
+    {
         this.nombre = nombre;
     }
+
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getSaldo() {
+        return this.saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public int getNumeroIntegrantes() {
+        return this.numeroIntegrantes;
+    }
+
+    public void setNumeroIntegrantes(int numeroIntegrantes) {
+        this.numeroIntegrantes = numeroIntegrantes;
+    }
+
 
 }
