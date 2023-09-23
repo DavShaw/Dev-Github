@@ -14,9 +14,6 @@ public class Usuario
     @Id
     @Column(name = "dni")
     private int dni;
-    
-    @Column(name = "Cuenta")
-    private Cuenta cuenta;
 
     @Column(name = "primerNombre")
     private String primerNombre;
@@ -52,8 +49,76 @@ public class Usuario
         this.segundoApellido = segundoApellido;
         this.contraseña = contraseña;
 
-        //Intanciar cuenta
-        this.cuenta = new Cuenta(this);
+        //?En el controlador de usuario se instancia la cuenta y se guarda
+
+        /*
+        ! Constructor para el mapeo de Código -> DB ! 
+        */
     }
-    
+
+    public Usuario()
+    {
+        /*
+        ! Constructor para el mapeo de DB -> Código ! 
+        */
+    }
+
+
+    public int getDni() {
+        return this.dni;
+    }
+
+    public void setDni(int dni) {
+        this.dni = dni;
+    }
+
+
+    public String getPrimerNombre() {
+        return this.primerNombre;
+    }
+
+    public void setPrimerNombre(String primerNombre) {
+        this.primerNombre = primerNombre;
+    }
+
+    public String getSegundoNombre() {
+        return this.segundoNombre;
+    }
+
+    public void setSegundoNombre(String segundoNombre) {
+        this.segundoNombre = segundoNombre;
+    }
+
+    public String getPrimerApellido() {
+        return this.primerApellido;
+    }
+
+    public void setPrimerApellido(String primerApellido) {
+        this.primerApellido = primerApellido;
+    }
+
+    public String getSegundoApellido() {
+        return this.segundoApellido;
+    }
+
+    public void setSegundoApellido(String segundoApellido) {
+        this.segundoApellido = segundoApellido;
+    }
+
+    public String getContraseña() {
+        return this.contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public double getDinero() {
+        return this.dinero;
+    }
+
+    public void setDinero(double dinero) {
+        this.dinero = dinero;
+    }
+
 }

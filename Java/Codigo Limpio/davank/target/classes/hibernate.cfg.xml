@@ -4,9 +4,9 @@
    <session-factory>
    
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="connection.url">jdbc:mysql://root:IIBDbFM36RhcoMDL5WyQ@containers-us-west-31.railway.app:6986/Davank</property>
+    <property name="connection.url">JDBC:mysql://root:david@localhost:3306/Davank</property>
     <property name="connection.username">root</property>
-    <property name="connection.password">IIBDbFM36RhcoMDL5WyQ</property>
+    <property name="connection.password">david</property>
     <!-- 
     ? Propriedda removida ?
     
@@ -21,6 +21,7 @@
 
     <!-- ? Clases a mapear ? -->
     <mapping class="org.davshaw.classes.Usuario"/>
+    <mapping class="org.davshaw.classes.Cuenta"/>
 
 
    </session-factory>
