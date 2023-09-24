@@ -11,9 +11,9 @@ public class GroupLogs
     /*
     ! CRUD
     ! C - Create DONE
-    ! R - Read TO DO
-    ! U - Update TO DO
-    ! D - Delete  TO DO
+    ! R - Read DONE
+    ! U - Update DONE
+    ! D - Delete  DONE
 
     ? Hibernate structure
 

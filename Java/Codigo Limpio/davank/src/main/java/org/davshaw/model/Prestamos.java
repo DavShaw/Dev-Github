@@ -17,22 +17,49 @@ public class Prestamos
     @Column(name = "id")
     private int id;
 
-    @Column(name = "usuario")
-    private Usuario usuario;
-    
-    @Column(name = "grupo")
-    private Grupo grupo;
+    @Column(name = "registroId")
+    private int registroId;
 
     @Column(name = "monto")
     private double monto;
 
 
-    public Prestamos(Usuario usuario, Grupo grupo, double monto)
+    public Prestamos(int registroId, double monto)
     {
-        this.usuario = usuario;
-        this.grupo = grupo;
+        this.registroId = registroId;
         this.monto = monto;
     }
+
+    public Prestamos()
+    {
+
+    }
+
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRegistroId() {
+        return this.registroId;
+    }
+
+    public void setRegistroId(int registroId) {
+        this.registroId = registroId;
+    }
+
+    public double getMonto() {
+        return this.monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
+
 
 
 }

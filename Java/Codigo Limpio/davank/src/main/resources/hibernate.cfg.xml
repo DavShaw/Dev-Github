@@ -20,8 +20,10 @@
 
 
     <!-- ? Clases a mapear ? -->
-    <mapping class="org.davshaw.classes.Usuario"/>
-    <mapping class="org.davshaw.classes.Cuenta"/>
+    <mapping class="org.davshaw.model.Usuario"/>
+    <mapping class="org.davshaw.model.Cuenta"/>
+    <mapping class="org.davshaw.model.RegistroGrupos"/>
+    <mapping class="org.davshaw.model.Grupo"/>
 
 
    </session-factory>

@@ -13,7 +13,7 @@ public class UserController
     ! CRUD
     ! C - Create DONE
     ! R - Read DONE
-    ! U - Update TO DO
+    ! U - Update DONE
     ! D - Delete  DONE
 
     ? Hibernate structure
@@ -81,8 +81,7 @@ public class UserController
             session.persist(usuario);
             
             //Controlador de Cuentas
-            AccountController controller = new AccountController();
-            controller.crearCuenta(dni);
+            AccountController.crearCuenta(dni);
             
             session.getTransaction().commit();
 
