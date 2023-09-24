@@ -1,26 +1,26 @@
 package org.davshaw.controller;
 
-import org.davshaw.model.Grupo;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+import org.davshaw.model.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
-
-public class GrupoController
+public class UserController
 {
+
     /*
     ! CRUD
     ! C - Create DONE
     ! R - Read DONE
     ! U - Update TO DO
-    ! D - Delete  TO DO
+    ! D - Delete  DONE
 
     ? Hibernate structure
 
     SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Usuario.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -46,13 +46,152 @@ public class GrupoController
             session.close();
             sessionFactory.close();
         }
+        
+
     */
 
-    public String crearGrupo(String nombre)
+    public String crearUsuario(
+    int dni,
+    String primerNombre,
+    String segundoNombre,
+    String primerApellido,
+    String segundoApellido,
+    String contraseña)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Usuario.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+
+            Usuario usuario = new
+            Usuario(
+            dni,
+            primerNombre,
+            segundoNombre,
+            primerApellido,
+            segundoApellido,
+            contraseña);
+
+            session.beginTransaction();
+            session.persist(usuario);
+            
+            //Controlador de Cuentas
+            AccountController controller = new AccountController();
+            controller.crearCuenta(dni);
+            
+            session.getTransaction().commit();
+
+            return "Usuario creado correctamente.";
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "Error al crear usuario.";
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+
+    }
+
+    public static Boolean existeUsuario(int dni)
+    {
+        SessionFactory sessionFactory = new
+        Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(Usuario.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+    
+
+        try
+        {
+            String sql = "SELECT COUNT(*) FROM Usuario WHERE dni = :dni";
+            Query<Long> query = session.createNativeQuery(sql, Long.class);
+            query.setParameter("dni", dni);
+
+    
+            // Obtener el resultado de la consulta (cantidad de usuarios con el DNI dado)
+            int count = ((Number) query.uniqueResult()).intValue();
+    
+            // Si count es mayor que 0, significa que existe un usuario con ese DNI
+            return count > 0;
+        }
+        
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    
+    }
+
+    public String eliminarUsuario(int dni)
+    {
+        SessionFactory sessionFactory = new
+        Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(Usuario.class)
+        .buildSessionFactory();
+    
+        Session session = sessionFactory.openSession();
+    
+        try
+        {
+            if((UserController.existeUsuario(dni)))
+            {
+                Usuario usuario = session.get(Usuario.class, dni);
+                
+                session.beginTransaction();
+                session.remove(usuario);
+                session.getTransaction().commit();
+                sessionFactory.close();
+                
+                return "Usuario eliminado con éxito.";    
+            }
+
+            else
+            {
+                throw new IllegalStateException("Aja");
+            }
+            
+
+        }
+        
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "Error al eliminar usuario.";
+        }
+        
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
+    public Usuario obtenerUsuario(int dni)
+    {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(Usuario.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -60,85 +199,12 @@ public class GrupoController
         try
         {
             session.beginTransaction();
-            
-            Grupo grupo = new Grupo(nombre);
-            session.persist(grupo);
+
+            Usuario usuario = session.get(Usuario.class, dni);
 
             session.getTransaction().commit();
-            return "Grupo creado con éxito.";
-        }
 
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return "Error al crear el grupo.";
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    }
-
-    public static Boolean existeGrupo(int id)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            String sql = "SELECT count(*) FROM Grupo WHERE id = :id";
-            Query<Long> query = session.createNativeQuery(sql, Long.class);
-            query.setParameter("id", id);
-            int count = ((Number) query.uniqueResult()).intValue();
-
-            return count > 0;
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return false;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    }
-
-    public Grupo obtenerGrupo(int id)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            if(GrupoController.existeGrupo(id))
-            {
-                session.beginTransaction();
-
-                Grupo grupo = session.get(Grupo.class, id);
-
-                session.getTransaction().commit();
-
-                return grupo;
-            }
-            
-            else
-            {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
-            }
+            return usuario;
         }
 
         catch (Exception e)
@@ -154,38 +220,45 @@ public class GrupoController
         }
     }
 
-    public Integer obtenerNumeroIntegrates(int id)
+    public String cambiarPrimerNombre(int dni, String nombre)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Usuario.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            if(GrupoController.existeGrupo(id))
+            //Verificar que exista
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
-                Grupo grupo = session.get(Grupo.class, id);
+                Usuario usuario = session.get(Usuario.class, dni);
+
+                usuario.setPrimerNombre(nombre);
+                session.merge(usuario);
 
                 session.getTransaction().commit();
 
-                return grupo.getNumeroIntegrantes();
+                return "Primer nombre cambiado con éxito.";
+                
+
             }
-            
+
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new IllegalArgumentException("No existe un usuario con este DNI");
             }
+
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return "Error al cambiar el primer nombre.";
         }
 
         finally
@@ -195,45 +268,45 @@ public class GrupoController
         }
     }
 
-    public String agregarIntegrante(int id)
+    public String cambiarSegundoNombre(int dni, String nombre)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Usuario.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            if(GrupoController.existeGrupo(id))
+            //Verificar que exista
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
-                Grupo grupo = this.obtenerGrupo(id);
+                Usuario usuario = session.get(Usuario.class, dni);
 
-                //Editar número integrantes
-                int nuevoNumeroIntegrantes = grupo.getNumeroIntegrantes() + 1;
-                grupo.setNumeroIntegrantes(nuevoNumeroIntegrantes);
-
-                session.merge(grupo);
+                usuario.setSegundoNombre(nombre);
+                session.merge(usuario);
 
                 session.getTransaction().commit();
 
-                return "Se ha añadido un integrante al grupo";
+                return "Segundo nombre cambiado con éxito.";
+                
 
             }
-            
+
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new IllegalArgumentException("No existe un usuario con este DNI");
             }
+
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return "Error al cambiar el segundo nombre.";
         }
 
         finally
@@ -243,45 +316,45 @@ public class GrupoController
         }
     }
 
-    public String retirarIntegrante(int id)
+    public String cambiarPrimerApellido(int dni, String apellido)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Usuario.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            if(GrupoController.existeGrupo(id))
+            //Verificar que exista
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
-                Grupo grupo = this.obtenerGrupo(id);
+                Usuario usuario = session.get(Usuario.class, dni);
 
-                //Editar número integrantes
-                int nuevoNumeroIntegrantes = grupo.getNumeroIntegrantes() - 1;
-                grupo.setNumeroIntegrantes(nuevoNumeroIntegrantes);
-
-                session.merge(grupo);
+                usuario.setPrimerApellido(apellido);
+                session.merge(usuario);
 
                 session.getTransaction().commit();
 
-                return "Se ha removido un integrante al grupo";
+                return "Primer apellido cambiado con éxito.";
+                
 
             }
-            
+
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new IllegalArgumentException("No existe un usuario con este DNI");
             }
+
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return "Error al cambiar el primer apellido.";
         }
 
         finally
@@ -291,38 +364,45 @@ public class GrupoController
         }
     }
 
-    public Double obtenersaldo(int id)
+    public String cambiarSegundoApellido(int dni, String apellido)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Usuario.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            if(GrupoController.existeGrupo(id))
+            //Verificar que exista
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
-                Grupo grupo = session.get(Grupo.class, id);
+                Usuario usuario = session.get(Usuario.class, dni);
+
+                usuario.setSegundoApellido(apellido);
+                session.merge(usuario);
 
                 session.getTransaction().commit();
 
-                return grupo.getSaldo();
+                return "Segundo appelido cambiado con éxito.";
+                
+
             }
-            
+
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new IllegalArgumentException("No existe un usuario con este DNI");
             }
+
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return "Error al cambiar el segundo apellido.";
         }
 
         finally
@@ -332,50 +412,50 @@ public class GrupoController
         }
     }
 
-    public String agregarSaldo(int id, double monto)
+    public String cambiarContrasena(int dni, String contrasena, String nuevaContrasena)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Usuario.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            if(monto < 0)
-            {
-                throw new IllegalArgumentException("El monto no puede ser negativo.");
-            }
-
-            else if(GrupoController.existeGrupo(id))
+            //!Verificar que exista
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
+                Usuario usuario = session.get(Usuario.class, dni);
+                //!Verificar que la contraseña concuerde
+                if(usuario.getContraseña().equals(contrasena))
+                {
+                    usuario.setContraseña(nuevaContrasena);
+                    session.merge(usuario);
+    
+                    session.getTransaction().commit();
+    
+                    return "Contraseña cambiado con éxito.";
+                }
 
-                Grupo grupo = this.obtenerGrupo(id);
-
-                //Editar saldo
-                double nuevoSaldo = grupo.getSaldo() + monto;
-                grupo.setSaldo(nuevoSaldo);
-
-                session.merge(grupo);
-
-                session.getTransaction().commit();
-
-                return "Se ha agregado saldo al grupo.";
-
+                else
+                {
+                throw new IllegalArgumentException("Credenciales inválidas.");
+                }
             }
-            
+
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new IllegalArgumentException("No existe un usuario con este DNI");
             }
+
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return "Error al cambiar la contraseña.";
         }
 
         finally
@@ -384,61 +464,6 @@ public class GrupoController
             sessionFactory.close();
         }
     }
-
-    public String retirarSaldo(int id, double monto)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            if(monto < 0)
-            {
-                throw new IllegalArgumentException("El monto no puede ser negativo.");
-            }
-
-            else if(GrupoController.existeGrupo(id))
-            {
-                session.beginTransaction();
-
-                Grupo grupo = this.obtenerGrupo(id);
-
-                //Editar saldo
-                double nuevoSaldo = grupo.getSaldo() - monto;
-                grupo.setSaldo(nuevoSaldo);
-
-                session.merge(grupo);
-
-                session.getTransaction().commit();
-
-                return "Se ha retirado saldo al grupo.";
-
-            }
-            
-            else
-            {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
-            }
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    }
-
-
-
-
 }
+
+

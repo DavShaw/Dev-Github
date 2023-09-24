@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class RegistroGruposController
+public class GroupLogs
 {
     /*
     ! CRUD
@@ -59,12 +59,12 @@ public class RegistroGruposController
         try
         {
             //Verificar que exista el usuario
-            if(!(UsuarioController.existeUsuario(usuarioDni)))
+            if(!(UserController.existeUsuario(usuarioDni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este DNI.");
             }
             //Verificar que exista el grupo
-            else if (!(GrupoController.existeGrupo(grupoId)))
+            else if (!(GroupController.existeGrupo(grupoId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este ID.");
             }
@@ -178,7 +178,7 @@ public class RegistroGruposController
         try
         {
             //Verificar que exista el registro
-            if(!(RegistroGruposController.existeRegistro(id)))
+            if(!(GroupLogs.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
@@ -214,7 +214,7 @@ public class RegistroGruposController
         try
         {
             //Verificar que exista el registro
-            if(!(RegistroGruposController.existeRegistro(id)))
+            if(!(GroupLogs.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
@@ -250,7 +250,7 @@ public class RegistroGruposController
         try
         {
             //Verificar que exista el registro
-            if(!(RegistroGruposController.existeRegistro(id)))
+            if(!(GroupLogs.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }

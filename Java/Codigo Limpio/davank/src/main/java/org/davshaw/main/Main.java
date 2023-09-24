@@ -1,6 +1,6 @@
 package org.davshaw.main;
 
-import org.davshaw.controller.GrupoController;
+import org.davshaw.controller.GroupController;
 import org.davshaw.external.DataBase;
 
 public class Main
@@ -14,7 +14,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        GrupoController groupController = new GrupoController();
+        GroupController groupController = new GroupController();
         System.out.println(groupController.obtenersaldo(1));
         
     }
