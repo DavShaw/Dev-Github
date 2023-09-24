@@ -1,4 +1,4 @@
-package org.davshaw.classes;
+package org.davshaw.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

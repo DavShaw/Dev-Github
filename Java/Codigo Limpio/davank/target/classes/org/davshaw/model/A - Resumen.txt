@@ -1,0 +1,8 @@
+Modelos:
+
+-   Cuenta -> Es entidad y tiene controlador *
+-   Davank -> No es entidad y administrará todos los controladores
+-   Grupo -> Es entidad y tiene controlador *
+-   Prestamos -> Es entidad y no tiene controlador
+-   RegistroGrupos -> Es entidad y no tiene controlador
+-   Usuario -> Es entidad y tiene controlador *

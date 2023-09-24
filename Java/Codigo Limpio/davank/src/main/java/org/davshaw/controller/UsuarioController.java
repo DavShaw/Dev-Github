@@ -1,9 +1,8 @@
 package org.davshaw.controller;
 
-import org.davshaw.classes.Usuario;
-
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.davshaw.model.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -104,7 +103,7 @@ public class UsuarioController
 
     }
 
-    public Boolean existeUsuario(int dni)
+    public static Boolean existeUsuario(int dni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -155,7 +154,7 @@ public class UsuarioController
     
         try
         {
-            if((this.existeUsuario(dni)))
+            if((UsuarioController.existeUsuario(dni)))
             {
                 Usuario usuario = session.get(Usuario.class, dni);
                 
@@ -233,7 +232,7 @@ public class UsuarioController
         try
         {
             //Verificar que exista
-            if(this.existeUsuario(dni))
+            if(UsuarioController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -281,7 +280,7 @@ public class UsuarioController
         try
         {
             //Verificar que exista
-            if(this.existeUsuario(dni))
+            if(UsuarioController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -329,7 +328,7 @@ public class UsuarioController
         try
         {
             //Verificar que exista
-            if(this.existeUsuario(dni))
+            if(UsuarioController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -377,7 +376,7 @@ public class UsuarioController
         try
         {
             //Verificar que exista
-            if(this.existeUsuario(dni))
+            if(UsuarioController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -425,7 +424,7 @@ public class UsuarioController
         try
         {
             //!Verificar que exista
-            if(this.existeUsuario(dni))
+            if(UsuarioController.existeUsuario(dni))
             {
                 session.beginTransaction();
                 Usuario usuario = session.get(Usuario.class, dni);

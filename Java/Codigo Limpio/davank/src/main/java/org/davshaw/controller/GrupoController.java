@@ -1,6 +1,6 @@
 package org.davshaw.controller;
 
-import org.davshaw.classes.Grupo;
+import org.davshaw.model.Grupo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -81,7 +81,7 @@ public class GrupoController
         }
     }
 
-    public Boolean existeGrupo(int id)
+    public static Boolean existeGrupo(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -124,7 +124,7 @@ public class GrupoController
 
         try
         {
-            if(this.existeGrupo(id))
+            if(GrupoController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -165,7 +165,7 @@ public class GrupoController
 
         try
         {
-            if(this.existeGrupo(id))
+            if(GrupoController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -206,7 +206,7 @@ public class GrupoController
 
         try
         {
-            if(this.existeGrupo(id))
+            if(GrupoController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -254,7 +254,7 @@ public class GrupoController
 
         try
         {
-            if(this.existeGrupo(id))
+            if(GrupoController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -302,7 +302,7 @@ public class GrupoController
 
         try
         {
-            if(this.existeGrupo(id))
+            if(GrupoController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -348,7 +348,7 @@ public class GrupoController
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(this.existeGrupo(id))
+            else if(GrupoController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -401,7 +401,7 @@ public class GrupoController
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(this.existeGrupo(id))
+            else if(GrupoController.existeGrupo(id))
             {
                 session.beginTransaction();
 
