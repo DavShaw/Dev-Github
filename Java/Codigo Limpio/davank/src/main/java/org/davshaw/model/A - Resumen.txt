@@ -6,3 +6,8 @@ Modelos:
 -   Prestamos -> Es entidad y no tiene controlador
 -   RegistroGrupos -> Es entidad y tiene controlador *
 -   Usuario -> Es entidad y tiene controlador *
+
+*PENDIENTES*
+
+- Hacer el update y delete de los dos últimos controladores (Loans y GroupLogs)
+- Pensar la clave foranea para los susodichos
