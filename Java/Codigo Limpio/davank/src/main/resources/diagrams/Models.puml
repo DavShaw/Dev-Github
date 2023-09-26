@@ -1,0 +1,70 @@
+@startuml models
+
+Cuenta --* Usuario
+Grupo *-- RegistroGrupos
+Prestamos --* RegistroGrupos
+Usuario *-- RegistroGrupos
+
+class Cuenta
+{
+    - int numeroCuenta
+    - int titularDni (FK)
+    - double saldo
+
+    + cuenta(int titularDni)
+    + setters(*args)
+    + getters(*args)
+}
+
+class Grupo
+{
+    - int id
+    - String nombre
+    - double saldo
+    - int numeroIntegrantes 
+
+    + Grupo(String nombre)
+    + setters(*args)
+    + getters(*args)
+}
+
+class Prestamos
+{
+    - int id
+    - int registroId (FK)
+    - double monto
+
+    + Prestamos(int registroId, double monto)
+    + setters(*args)
+    + getters(*args)
+}
+
+class RegistroGrupos
+{
+    - int id
+    - int grupoId (FK)
+    - int usuarioDni (FK)
+    - boolean nativo
+
+    + RegistroGrupos(int usuarioDni, int grupoId, boolean nativo)
+    + RegistroGrupos(int usuarioDni, int grupoId)
+    + setters(*args)
+    + getters(*args)
+}
+
+class Usuario
+{
+    - int dni
+    - String primerNombre
+    - String segundoNombre
+    - String primerApellido
+    - String segundoApellido
+    - String contraseña
+    - double dinero
+
+    + Usuario(int dni, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String contraseña)
+    + setters(*args)
+    + getters(*args)
+}
+
+@enduml

@@ -1,4 +1,4 @@
-package org.davshaw.model;
+package org.davshaw.model.pureentities;
 
 import jakarta.persistence.*;
 

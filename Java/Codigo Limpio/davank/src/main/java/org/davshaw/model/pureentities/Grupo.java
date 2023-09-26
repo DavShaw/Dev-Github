@@ -1,4 +1,4 @@
-package org.davshaw.model;
+package org.davshaw.model.pureentities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,11 +27,18 @@ public class Grupo
 
     public Grupo()
     {
+        /*
+        ! Constructor para mapear Hibernate -> Código 
+        */
     }
 
     public Grupo(String nombre)
     {
         this.nombre = nombre;
+
+        /*
+        ! Constructor para mapear Código -> Hibernate 
+        */
     }
 
 

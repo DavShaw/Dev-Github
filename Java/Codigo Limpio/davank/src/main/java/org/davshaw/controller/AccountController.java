@@ -2,7 +2,7 @@ package org.davshaw.controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.davshaw.model.Cuenta;
+import org.davshaw.model.pureentities.Cuenta;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -91,7 +91,7 @@ public class AccountController
             sessionFactory.close();
         }
     }
-
+    
     public static Boolean existeCuenta(int titularDni)
     {
         SessionFactory sessionFactory = new Configuration()

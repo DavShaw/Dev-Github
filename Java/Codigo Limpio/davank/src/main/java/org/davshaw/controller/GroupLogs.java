@@ -1,6 +1,6 @@
 package org.davshaw.controller;
 
-import org.davshaw.model.RegistroGrupos;
+import org.davshaw.model.derivatedentities.RegistroGrupo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -47,11 +47,11 @@ public class GroupLogs
         }
     */
 
-    public String crearRegistro(int usuarioDni, int grupoId)
+    public String crearRegistro(int usuarioDni, int grupoId, Boolean nativo)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupos.class)
+        .addAnnotatedClass(RegistroGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -73,7 +73,7 @@ public class GroupLogs
             {
                 session.beginTransaction();
 
-                RegistroGrupos registro = new RegistroGrupos(usuarioDni, grupoId);
+                RegistroGrupo registro = new RegistroGrupo(usuarioDni, grupoId, nativo);
 
                 session.persist(registro);
                 session.getTransaction().commit();
@@ -100,7 +100,7 @@ public class GroupLogs
         SessionFactory sessionFactory = new
         Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupos.class)
+        .addAnnotatedClass(RegistroGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -133,11 +133,11 @@ public class GroupLogs
         }
     }
 
-    public RegistroGrupos obtenerRegistro(int id)
+    public RegistroGrupo obtenerRegistro(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupos.class)
+        .addAnnotatedClass(RegistroGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -146,7 +146,7 @@ public class GroupLogs
         {
             session.beginTransaction();
 
-            RegistroGrupos registro = session.get(RegistroGrupos.class, id);
+            RegistroGrupo registro = session.get(RegistroGrupo.class, id);
 
             session.getTransaction().commit();
 
@@ -170,7 +170,7 @@ public class GroupLogs
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupos.class)
+        .addAnnotatedClass(RegistroGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -184,7 +184,7 @@ public class GroupLogs
             }
 
             //Obtener objeto
-            RegistroGrupos registro = this.obtenerRegistro(id);
+            RegistroGrupo registro = this.obtenerRegistro(id);
 
             return registro.getUsuarioDni();
         }
@@ -206,7 +206,7 @@ public class GroupLogs
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupos.class)
+        .addAnnotatedClass(RegistroGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -220,7 +220,7 @@ public class GroupLogs
             }
 
             //Obtener objeto
-            RegistroGrupos registro = this.obtenerRegistro(id);
+            RegistroGrupo registro = this.obtenerRegistro(id);
 
             return registro.getGrupoId();
         }
@@ -242,7 +242,7 @@ public class GroupLogs
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupos.class)
+        .addAnnotatedClass(RegistroGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -256,7 +256,7 @@ public class GroupLogs
             }
 
             //Obtener objeto
-            RegistroGrupos registro = this.obtenerRegistro(id);
+            RegistroGrupo registro = this.obtenerRegistro(id);
 
             return registro.getNativo();
         }

@@ -1,4 +1,4 @@
-package org.davshaw.model;
+package org.davshaw.model.derivatedentities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Prestamos")
-public class Prestamos
+@Table(name = "PrestamoGrupo")
+public class PrestamoGrupo
 {
 
     @Id
@@ -17,6 +17,7 @@ public class Prestamos
     @Column(name = "id")
     private int id;
 
+    //!Clave foranea (Conexión con RegistroGrupos)
     @Column(name = "registroId")
     private int registroId;
 
@@ -24,15 +25,20 @@ public class Prestamos
     private double monto;
 
 
-    public Prestamos(int registroId, double monto)
+    public PrestamoGrupo(int registroId, double monto)
     {
         this.registroId = registroId;
         this.monto = monto;
+        /*
+        ! Constructor para mapear Código -> Hibernate 
+        */
     }
 
-    public Prestamos()
+    public PrestamoGrupo()
     {
-
+        /*
+        ! Constructor para mapear Hibernate -> Código 
+        */
     }
 
 

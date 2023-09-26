@@ -10,11 +10,7 @@ public class Main
 {
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException
     {
-        Hospital hospital = new Hospital(11);
-        TestCase.testData(hospital, 10);
-        hospital.imprimirVisualizadorSolicitudes();
-        hospital.deleteData();
-        TestCase.testData(hospital, 10);
-        hospital.imprimirVisualizadorSolicitudes();
+        Hospital hospital = new Hospital(100000);
+
     }
 }

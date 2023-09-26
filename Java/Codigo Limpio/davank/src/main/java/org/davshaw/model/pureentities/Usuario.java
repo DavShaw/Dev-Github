@@ -1,4 +1,4 @@
-package org.davshaw.model;
+package org.davshaw.model.pureentities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,14 +52,14 @@ public class Usuario
         //?En el controlador de usuario se instancia la cuenta y se guarda
 
         /*
-        ! Constructor para el mapeo de Código -> DB ! 
+        ! Constructor para el mapeo de Código -> Hibernate
         */
     }
 
     public Usuario()
     {
         /*
-        ! Constructor para el mapeo de DB -> Código ! 
+        ! Constructor para el mapeo de Hibernate -> Código
         */
     }
 

@@ -1,4 +1,4 @@
-package org.davshaw.model;
+package org.davshaw.model.derivatedentities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,39 +8,40 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "RegistroGrupos")
-public class RegistroGrupos
+@Table(name = "RegistroGrupo")
+public class RegistroGrupo
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
 
+    //!Clave foranea (Conexión con grupo)
     @Column(name = "grupoId")
     private int grupoId;
-
+    //!Clave foranea (Conexión con usuario)
     @Column(name = "usuarioDni")
     private int usuarioDni;
 
     @Column(name = "nativo")
     private boolean nativo;
 
-    public RegistroGrupos()
+    public RegistroGrupo()
     {
+        /*
+        ! Constructor para mapear Hibernate -> Código 
+        */
     }
 
-    public RegistroGrupos(int usuarioDni, int grupoId, boolean nativo)
+    public RegistroGrupo(int usuarioDni, int grupoId, boolean nativo)
     {
         this.usuarioDni = usuarioDni;
         this.grupoId = grupoId;
         this.nativo = nativo;
-    }
-
-    public RegistroGrupos(int usuarioDni, int grupoId)
-    {
-        this.usuarioDni = usuarioDni;
-        this.grupoId = grupoId;
-        this.nativo = true;
+        
+        /*
+        ! Constructor para mapear Código -> Hibernate 
+        */
     }
 
 

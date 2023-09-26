@@ -2,7 +2,7 @@ package org.davshaw.controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.davshaw.model.Usuario;
+import org.davshaw.model.pureentities.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 

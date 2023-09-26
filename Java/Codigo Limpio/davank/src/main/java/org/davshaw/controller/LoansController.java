@@ -1,6 +1,6 @@
 package org.davshaw.controller;
 
-import org.davshaw.model.Prestamos;
+import org.davshaw.model.derivatedentities.PrestamoGrupo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -51,7 +51,7 @@ public class LoansController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Prestamos.class)
+        .addAnnotatedClass(PrestamoGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -69,7 +69,7 @@ public class LoansController
             {
                 session.beginTransaction();
 
-                Prestamos prestamo = new Prestamos(registroId, monto);
+                PrestamoGrupo prestamo = new PrestamoGrupo(registroId, monto);
 
                 session.persist(prestamo);
                 session.getTransaction().commit();
@@ -95,7 +95,7 @@ public class LoansController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Prestamos.class)
+        .addAnnotatedClass(PrestamoGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -126,11 +126,11 @@ public class LoansController
         }
     }
 
-    public static Prestamos obtenerPrestamo(int id)
+    public static PrestamoGrupo obtenerPrestamo(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Prestamos.class)
+        .addAnnotatedClass(PrestamoGrupo.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -148,7 +148,7 @@ public class LoansController
             {
                 session.beginTransaction();
 
-                Prestamos prestamo = session.get(Prestamos.class, id);
+                PrestamoGrupo prestamo = session.get(PrestamoGrupo.class, id);
 
                 session.getTransaction().commit();;
 

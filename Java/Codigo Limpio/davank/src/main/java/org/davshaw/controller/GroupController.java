@@ -1,6 +1,6 @@
 package org.davshaw.controller;
 
-import org.davshaw.model.Grupo;
+import org.davshaw.model.pureentities.Grupo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
