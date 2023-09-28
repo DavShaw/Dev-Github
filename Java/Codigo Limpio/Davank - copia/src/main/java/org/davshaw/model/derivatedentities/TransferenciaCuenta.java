@@ -1,13 +1,10 @@
 package org.davshaw.model.derivatedentities;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -23,22 +20,21 @@ import java.util.Date;
 @ToString
 
 @Entity
-@Table(name = "PrestamoGrupo")
-public class PrestamoGrupo
+@Table(name = "TransferenciaCuenta")
+public class TransferenciaCuenta
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
 
-    //? Clave foranea (Con RegistroGrupo)
-    @ManyToOne(targetEntity = RegistroGrupo.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "registroId", referencedColumnName = "id", insertable = false, updatable = false)
-    private RegistroGrupo registro;
-    
-    @Column(name = "registroId")
-    private int registroId;
+    //?Clave foranea (Con grupos)
+    @Column(name = "numeroCuentaOrigen")
+    private int numeroCuentaOrigen;
+
+    //?Clave foranea (Con grupos)
+    @Column(name = "numeroCuentaDestino")
+    private int numeroCuentaDestino;
 
     @Column(name = "monto")
     private double monto;
@@ -46,13 +42,4 @@ public class PrestamoGrupo
     @Column(name = "fechaHora")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHora;
-
-    public PrestamoGrupo(int registroId, double monto)
-    {
-        this.registroId = registroId;
-        this.monto = monto;
-        /*
-        ! Constructor para mapear Código -> Hibernate 
-        */
-    }
 }

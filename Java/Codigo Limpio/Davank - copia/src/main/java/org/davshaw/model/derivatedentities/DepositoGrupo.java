@@ -1,5 +1,7 @@
 package org.davshaw.model.derivatedentities;
 
+import java.util.Date;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,11 +13,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
-import java.util.Date;
 
 @Setter
 @Getter
@@ -23,8 +24,8 @@ import java.util.Date;
 @ToString
 
 @Entity
-@Table(name = "PrestamoGrupo")
-public class PrestamoGrupo
+@Table(name = "DepositoGrupo")
+public class DepositoGrupo
 {
 
     @Id
@@ -36,7 +37,7 @@ public class PrestamoGrupo
     @ManyToOne(targetEntity = RegistroGrupo.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "registroId", referencedColumnName = "id", insertable = false, updatable = false)
     private RegistroGrupo registro;
-    
+
     @Column(name = "registroId")
     private int registroId;
 
@@ -47,7 +48,7 @@ public class PrestamoGrupo
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHora;
 
-    public PrestamoGrupo(int registroId, double monto)
+    public DepositoGrupo(int registroId, double monto)
     {
         this.registroId = registroId;
         this.monto = monto;

@@ -17,28 +17,29 @@ import lombok.Setter;
 import lombok.ToString;
 import java.util.Date;
 
+import org.davshaw.model.pureentities.Cuenta;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @ToString
 
 @Entity
-@Table(name = "PrestamoGrupo")
-public class PrestamoGrupo
+@Table(name = "RetiroCuenta")
+public class RetiroCuenta
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
 
-    //? Clave foranea (Con RegistroGrupo)
-    @ManyToOne(targetEntity = RegistroGrupo.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "registroId", referencedColumnName = "id", insertable = false, updatable = false)
-    private RegistroGrupo registro;
-    
-    @Column(name = "registroId")
-    private int registroId;
+    //? Clave foranea (Con Cuenta)
+    @ManyToOne(targetEntity = Cuenta.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "numeroCuenta", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
+    private Cuenta cuenta;
+
+    @Column(name = "numeroCuenta")
+    private int numeroCuenta;
 
     @Column(name = "monto")
     private double monto;
@@ -46,13 +47,4 @@ public class PrestamoGrupo
     @Column(name = "fechaHora")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHora;
-
-    public PrestamoGrupo(int registroId, double monto)
-    {
-        this.registroId = registroId;
-        this.monto = monto;
-        /*
-        ! Constructor para mapear Código -> Hibernate 
-        */
-    }
 }
