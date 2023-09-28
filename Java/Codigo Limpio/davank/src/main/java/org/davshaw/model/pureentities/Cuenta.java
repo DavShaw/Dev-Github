@@ -1,4 +1,4 @@
-package org.davshaw.model.pureentities;
+package org.davshaw.Model.pureentities;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

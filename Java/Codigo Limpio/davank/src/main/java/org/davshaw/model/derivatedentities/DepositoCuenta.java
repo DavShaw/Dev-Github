@@ -1,4 +1,4 @@
-package org.davshaw.model.derivatedentities;
+package org.davshaw.Model.derivatedentities;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import org.davshaw.model.pureentities.Cuenta;
+import org.davshaw.Model.pureentities.Cuenta;
 import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

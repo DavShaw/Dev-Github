@@ -1,6 +1,6 @@
-package org.davshaw.controller;
+package org.davshaw.Controller;
 
-import org.davshaw.model.derivatedentities.RegistroGrupo;
+import org.davshaw.Model.derivatedentities.RegistroGrupo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

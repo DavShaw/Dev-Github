@@ -11,6 +11,6 @@ public class DavankApplication
 	public static void main(String[] args)
 	{
 		SpringApplication.run(DavankApplication.class, args);
-        org.davshaw.controller.CuentaControlador.eliminarCuenta(1067592686);
+        org.davshaw.Controller.CuentaControlador.eliminarCuenta(1067592686);
 	}
 }

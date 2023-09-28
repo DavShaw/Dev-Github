@@ -1,4 +1,4 @@
-package org.davshaw.model.derivatedentities;
+package org.davshaw.Model.derivatedentities;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,7 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 import java.util.Date;
 
-import org.davshaw.model.pureentities.Cuenta;
+import org.davshaw.Model.pureentities.Cuenta;
 
 @Setter
 @Getter

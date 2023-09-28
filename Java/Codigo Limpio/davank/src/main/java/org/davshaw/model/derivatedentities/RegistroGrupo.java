@@ -1,4 +1,4 @@
-package org.davshaw.model.derivatedentities;
+package org.davshaw.Model.derivatedentities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

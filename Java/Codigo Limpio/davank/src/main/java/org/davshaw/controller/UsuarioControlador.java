@@ -1,8 +1,8 @@
-package org.davshaw.controller;
+package org.davshaw.Controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.davshaw.model.pureentities.Usuario;
+import org.davshaw.Model.pureentities.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
