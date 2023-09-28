@@ -4,10 +4,18 @@ Controladores:
         - Grupo -> Done
         - Usuario -> Done
     * For derivatedentities
-        - DepositoCuenta
+        - DepositoCuenta -> Doing
         - DepositoGrupo
         - PrestamoGrupo -> Done
         - RegistroGrupo -> Done
         - RetiroCuenta
         - TransferenciaCuenta
+
+Notas:
+    * Problemas:
+        - El controlador de DepositoCuenta hace el registro en función del número de cuenta, pero la obtención de la cuenta está en 
+        función del titularDni.
+
+        - La entidad DepositoCuenta tiene una clave foranea de tipo cascada, lo cual no debe ser así.
+        
 
