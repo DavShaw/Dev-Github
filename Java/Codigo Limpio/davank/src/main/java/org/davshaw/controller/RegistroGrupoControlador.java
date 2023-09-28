@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class GroupLogs
+public class RegistroGrupoControlador
 {
     /*
     ! CRUD
@@ -59,12 +59,12 @@ public class GroupLogs
         try
         {
             //Verificar que exista el usuario
-            if(!(UserController.existeUsuario(usuarioDni)))
+            if(!(UsuarioControlador.existeUsuario(usuarioDni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este DNI.");
             }
             //Verificar que exista el grupo
-            else if (!(GroupController.existeGrupo(grupoId)))
+            else if (!(GrupoControlador.existeGrupo(grupoId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este ID.");
             }
@@ -73,7 +73,11 @@ public class GroupLogs
             {
                 session.beginTransaction();
 
-                RegistroGrupo registro = new RegistroGrupo(usuarioDni, grupoId, nativo);
+                RegistroGrupo registro = new RegistroGrupo();
+                //Establecer datos con setters (Reemplazando el constructor)
+                registro.setUsuarioDni(usuarioDni);
+                registro.setGrupoId(grupoId);
+                registro.setNativo(nativo);
 
                 session.persist(registro);
                 session.getTransaction().commit();
@@ -178,7 +182,7 @@ public class GroupLogs
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogs.existeRegistro(id)))
+            if(!(RegistroGrupoControlador.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
@@ -214,7 +218,7 @@ public class GroupLogs
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogs.existeRegistro(id)))
+            if(!(RegistroGrupoControlador.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
@@ -250,7 +254,7 @@ public class GroupLogs
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogs.existeRegistro(id)))
+            if(!(RegistroGrupoControlador.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }

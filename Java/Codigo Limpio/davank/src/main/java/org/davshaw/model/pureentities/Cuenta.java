@@ -23,7 +23,6 @@ import lombok.ToString;
 @Table(name = "Cuenta")
 public class Cuenta
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "numeroCuenta")
@@ -39,13 +38,4 @@ public class Cuenta
 
     @Column(name = "saldo")
     private double saldo;
-
-    public Cuenta(int dni)
-    {
-        this.titularDni = dni;
-        /*
-        ! Constructor para mapeo Código -> Hibernate
-        */
-    }
-  
 }

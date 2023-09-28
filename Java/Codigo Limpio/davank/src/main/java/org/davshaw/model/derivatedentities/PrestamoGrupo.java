@@ -26,7 +26,6 @@ import java.util.Date;
 @Table(name = "PrestamoGrupo")
 public class PrestamoGrupo
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -46,13 +45,4 @@ public class PrestamoGrupo
     @Column(name = "fechaHora")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHora;
-
-    public PrestamoGrupo(int registroId, double monto)
-    {
-        this.registroId = registroId;
-        this.monto = monto;
-        /*
-        ! Constructor para mapear Código -> Hibernate 
-        */
-    }
 }

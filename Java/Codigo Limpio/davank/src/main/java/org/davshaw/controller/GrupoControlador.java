@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class GroupController
+public class GrupoControlador
 {
     /*
     ! CRUD
@@ -61,7 +61,10 @@ public class GroupController
         {
             session.beginTransaction();
             
-            Grupo grupo = new Grupo(nombre);
+            Grupo grupo = new Grupo();
+            //Establecer datos con setters (Reemplazando el constructor)
+            grupo.setNombre(nombre);
+
             session.persist(grupo);
 
             session.getTransaction().commit();
@@ -124,7 +127,7 @@ public class GroupController
 
         try
         {
-            if(GroupController.existeGrupo(id))
+            if(GrupoControlador.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -165,7 +168,7 @@ public class GroupController
 
         try
         {
-            if(GroupController.existeGrupo(id))
+            if(GrupoControlador.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -206,7 +209,7 @@ public class GroupController
 
         try
         {
-            if(GroupController.existeGrupo(id))
+            if(GrupoControlador.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -254,7 +257,7 @@ public class GroupController
 
         try
         {
-            if(GroupController.existeGrupo(id))
+            if(GrupoControlador.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -302,7 +305,7 @@ public class GroupController
 
         try
         {
-            if(GroupController.existeGrupo(id))
+            if(GrupoControlador.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -348,7 +351,7 @@ public class GroupController
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(GroupController.existeGrupo(id))
+            else if(GrupoControlador.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -401,7 +404,7 @@ public class GroupController
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(GroupController.existeGrupo(id))
+            else if(GrupoControlador.existeGrupo(id))
             {
                 session.beginTransaction();
 

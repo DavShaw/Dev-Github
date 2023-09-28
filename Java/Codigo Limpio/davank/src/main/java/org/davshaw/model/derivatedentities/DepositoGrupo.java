@@ -27,7 +27,6 @@ import lombok.ToString;
 @Table(name = "DepositoGrupo")
 public class DepositoGrupo
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -47,13 +46,4 @@ public class DepositoGrupo
     @Column(name = "fechaHora")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHora;
-
-    public DepositoGrupo(int registroId, double monto)
-    {
-        this.registroId = registroId;
-        this.monto = monto;
-        /*
-        ! Constructor para mapear Código -> Hibernate 
-        */
-    }
 }

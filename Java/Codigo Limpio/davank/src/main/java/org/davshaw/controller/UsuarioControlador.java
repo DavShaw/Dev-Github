@@ -6,7 +6,7 @@ import org.davshaw.model.pureentities.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class UserController
+public class UsuarioControlador
 {
 
     /*
@@ -68,14 +68,15 @@ public class UserController
         try
         {
 
-            Usuario usuario = new
-            Usuario(
-            dni,
-            primerNombre,
-            segundoNombre,
-            primerApellido,
-            segundoApellido,
-            contraseña);
+            Usuario usuario = new Usuario();
+            
+            //Establecer datos con setters (Reemplazando el constructor)
+            usuario.setDni(dni);
+            usuario.setPrimerNombre(primerNombre);
+            usuario.setSegundoNombre(segundoNombre);
+            usuario.setPrimerApellido(primerApellido);
+            usuario.setSegundoApellido(segundoApellido);
+            usuario.setContraseña(contraseña);
 
             session.beginTransaction();
             
@@ -84,7 +85,7 @@ public class UserController
             session.getTransaction().commit();
             
             //Controlador de Cuentas
-            AccountController.crearCuenta(dni);
+            CuentaControlador.crearCuenta(dni);
             
 
             return "Usuario creado correctamente.";
@@ -155,7 +156,7 @@ public class UserController
     
         try
         {
-            if((UserController.existeUsuario(dni)))
+            if((UsuarioControlador.existeUsuario(dni)))
             {
                 Usuario usuario = session.get(Usuario.class, dni);
                 
@@ -233,7 +234,7 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UsuarioControlador.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -281,7 +282,7 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UsuarioControlador.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -329,7 +330,7 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UsuarioControlador.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -377,7 +378,7 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UsuarioControlador.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -425,7 +426,7 @@ public class UserController
         try
         {
             //!Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UsuarioControlador.existeUsuario(dni))
             {
                 session.beginTransaction();
                 Usuario usuario = session.get(Usuario.class, dni);

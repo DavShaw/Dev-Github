@@ -35,16 +35,4 @@ public class RegistroGrupo
 
     @Column(name = "nativo")
     private boolean nativo;
-
-    public RegistroGrupo(int usuarioDni, int grupoId, boolean nativo)
-    {
-        this.usuarioDni = usuarioDni;
-        this.grupoId = grupoId;
-        this.nativo = nativo;
-        
-        /*
-        ! Constructor para mapear Código -> Hibernate 
-        */
-    }
-
 }

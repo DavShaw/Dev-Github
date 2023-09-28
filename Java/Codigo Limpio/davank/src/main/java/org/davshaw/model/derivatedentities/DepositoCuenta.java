@@ -47,6 +47,4 @@ public class DepositoCuenta
     @Column(name = "fechaHora")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHora;
-
-
 }

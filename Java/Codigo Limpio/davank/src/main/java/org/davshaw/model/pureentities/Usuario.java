@@ -37,27 +37,4 @@ public class Usuario
 
     @Column(name = "contraseña")
     private String contraseña;
-
-
-    public Usuario(
-    int dni,
-    String primerNombre,
-    String segundoNombre,
-    String primerApellido,
-    String segundoApellido,
-    String contraseña)
-    {
-        this.dni = dni;
-        this.primerNombre = primerNombre;
-        this.segundoNombre = segundoNombre;
-        this.primerApellido = primerApellido;
-        this.segundoApellido = segundoApellido;
-        this.contraseña = contraseña;
-
-        //?En el controlador de usuario se instancia la cuenta y se guarda
-
-        /*
-        ! Constructor para el mapeo de Código -> Hibernate
-        */
-    }
 }

@@ -6,7 +6,7 @@ import org.davshaw.model.pureentities.Cuenta;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class AccountController
+public class CuentaControlador
 {
 
     /*
@@ -62,9 +62,13 @@ public class AccountController
         try
         {
             //Verificar que no exista otra cuenta con el titularDni igual
-            if(!AccountController.existeCuenta(dni))
+            if(!CuentaControlador.existeCuenta(dni))
             {
-                Cuenta cuenta = new Cuenta(dni);
+                Cuenta cuenta = new Cuenta();
+
+                //Establecer datos con setters (Reemplazando el constructor)
+                cuenta.setTitularDni(dni);
+
                 session.beginTransaction();
                 session.persist(cuenta);
                 session.getTransaction().commit();
@@ -168,11 +172,11 @@ public class AccountController
         try
         {
             //Verificar si existe cuenta con titularDni
-            if(AccountController.existeCuenta(titularDni))
+            if(CuentaControlador.existeCuenta(titularDni))
             {
                 session.beginTransaction();
 
-                Cuenta cuenta = session.get(Cuenta.class, AccountController.obtenerNumeroCuenta(titularDni));
+                Cuenta cuenta = session.get(Cuenta.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
 
                 session.getTransaction().commit();
                 return cuenta;
@@ -212,11 +216,11 @@ public class AccountController
                 throw new IllegalArgumentException("El monto no puede ser negativo");
             }
 
-            else if(AccountController.existeCuenta(titularDni))
+            else if(CuentaControlador.existeCuenta(titularDni))
             {
                 session.beginTransaction();
 
-                Cuenta cuenta = session.get(Cuenta.class, AccountController.obtenerNumeroCuenta(titularDni));
+                Cuenta cuenta = session.get(Cuenta.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
 
                 //Obtener saldo actual
                 double nuevoSaldo = cuenta.getSaldo() + monto;
@@ -264,11 +268,11 @@ public class AccountController
                 throw new IllegalArgumentException("El monto no puede ser negativo");
             }
 
-            else if(AccountController.existeCuenta(titularDni))
+            else if(CuentaControlador.existeCuenta(titularDni))
             {
                 session.beginTransaction();
 
-                Cuenta cuenta = session.get(Cuenta.class, AccountController.obtenerNumeroCuenta(titularDni));
+                Cuenta cuenta = session.get(Cuenta.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
 
                 //Obtener saldo actual
                 double nuevoSaldo = cuenta.getSaldo() - monto;
@@ -311,9 +315,9 @@ public class AccountController
 
         try
         {
-            if(AccountController.existeCuenta(titularDni))
+            if(CuentaControlador.existeCuenta(titularDni))
             {
-                Cuenta cuenta = AccountController.obtenerCuenta(titularDni);
+                Cuenta cuenta = CuentaControlador.obtenerCuenta(titularDni);
                 return cuenta.getSaldo();
             }
             
@@ -347,11 +351,11 @@ public class AccountController
 
         try
         {
-            if(AccountController.existeCuenta(titularDni))
+            if(CuentaControlador.existeCuenta(titularDni))
             {
                 session.beginTransaction();
 
-                Cuenta cuenta = session.get(Cuenta.class, AccountController.obtenerNumeroCuenta(titularDni));
+                Cuenta cuenta = session.get(Cuenta.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
 
                 session.remove(cuenta);
 

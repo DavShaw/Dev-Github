@@ -34,13 +34,4 @@ public class Grupo
 
     @Column(name = "numeroIntegrantes")
     private int numeroIntegrantes = 0;
-
-    public Grupo(String nombre)
-    {
-        this.nombre = nombre;
-
-        /*
-        ! Constructor para mapear Código -> Hibernate 
-        */
-    }
 }

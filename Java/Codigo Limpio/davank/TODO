@@ -1,0 +1,13 @@
+Controladores:
+    * For pureentities
+        - Cuenta -> Done 
+        - Grupo -> Done
+        - Usuario -> Done
+    * For derivatedentities
+        - DepositoCuenta
+        - DepositoGrupo
+        - PrestamoGrupo -> Done
+        - RegistroGrupo -> Done
+        - RetiroCuenta
+        - TransferenciaCuenta
+

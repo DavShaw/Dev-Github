@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class LoansController
+public class PrestamoGrupoControlador
 {
     /*
     ! CRUD
@@ -59,7 +59,7 @@ public class LoansController
         try
         {
             //verificar que exista el registro
-            if(!(GroupLogs.existeRegistro(registroId)))
+            if(!(RegistroGrupoControlador.existeRegistro(registroId)))
             {
                 throw new IllegalArgumentException("No existe ningún registro con este ID.");
             }
@@ -69,7 +69,10 @@ public class LoansController
             {
                 session.beginTransaction();
 
-                PrestamoGrupo prestamo = new PrestamoGrupo(registroId, monto);
+                PrestamoGrupo prestamo = new PrestamoGrupo();
+                //Establecer datos con setters (Reemplazando el constructor)
+                prestamo.setRegistroId(registroId);
+                prestamo.setMonto(monto);
 
                 session.persist(prestamo);
                 session.getTransaction().commit();
@@ -138,7 +141,7 @@ public class LoansController
         try
         {
             //Verificar que exista el prestamo
-            if(!(LoansController.existePrestamo(id)))
+            if(!(PrestamoGrupoControlador.existePrestamo(id)))
             {
                 throw new IllegalArgumentException("No existe un prestamo con este id.");
             }
