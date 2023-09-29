@@ -4,11 +4,11 @@ Controladores:
         - Grupo -> Done
         - Usuario -> Done
     * For derivatedentities
-        - DepositoCuenta -> Doing
+        - DepositoCuenta -> Done
         - DepositoGrupo
         - PrestamoGrupo -> Done
         - RegistroGrupo -> Done
-        - RetiroCuenta
+        - RetiroCuenta -> Done
         - TransferenciaCuenta
 
 Notas:
@@ -17,5 +17,7 @@ Notas:
         función del titularDni.
 
         - La entidad DepositoCuenta tiene una clave foranea de tipo cascada, lo cual no debe ser así.
+
+        - Hacer que todos los métodos del controlador devuelvan un Boolean si es posible (o null)
         
 

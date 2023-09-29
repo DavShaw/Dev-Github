@@ -32,7 +32,7 @@ public class PrestamoGrupo
     private int id;
 
     //? Clave foranea (Con RegistroGrupo)
-    @ManyToOne(targetEntity = RegistroGrupo.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = RegistroGrupo.class)
     @JoinColumn(name = "registroId", referencedColumnName = "id", insertable = false, updatable = false)
     private RegistroGrupo registro;
     

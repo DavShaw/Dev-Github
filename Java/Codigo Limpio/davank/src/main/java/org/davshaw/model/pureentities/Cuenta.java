@@ -29,7 +29,7 @@ public class Cuenta
     private int numeroCuenta;
 
     //? Clave foranea (Con usuario)
-    @OneToOne(targetEntity = Usuario.class, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Usuario.class)
     @JoinColumn(name = "titularDni", referencedColumnName = "dni", insertable = false, updatable = false)
     private Usuario titular;
 

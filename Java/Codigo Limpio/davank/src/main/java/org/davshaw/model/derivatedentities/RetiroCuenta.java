@@ -34,7 +34,7 @@ public class RetiroCuenta
     private int id;
 
     //? Clave foranea (Con Cuenta)
-    @ManyToOne(targetEntity = Cuenta.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Cuenta.class)
     @JoinColumn(name = "numeroCuenta", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
     private Cuenta cuenta;
 
