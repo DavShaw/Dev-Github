@@ -1,0 +1,22 @@
+Controladores:
+    * For pureentities
+        - Cuenta -> Done -> Refactorizar (Quizá) 
+        - Grupo -> Done
+        - Usuario -> Done
+    * For derivatedentities
+        - DepositoCuenta -> Done
+        - DepositoGrupo 
+        - PrestamoGrupo -> Done
+        - RegistroGrupo -> Done
+        - RetiroCuenta -> Done
+        - TransferenciaCuenta -> Done
+
+Notas:
+    * Problemas:
+        - El controlador de DepositoCuenta hace el registro en función del número de cuenta,
+        pero la obtención de la cuenta está en 
+        función del titularDni.
+
+        - Hacer que todos los métodos del controlador devuelvan un Boolean si es posible (o null)
+        
+

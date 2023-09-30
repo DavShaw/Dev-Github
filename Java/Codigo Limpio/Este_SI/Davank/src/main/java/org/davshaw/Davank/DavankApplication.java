@@ -1,10 +1,6 @@
 package org.davshaw.Davank;
 
-import org.davshaw.Controller.CuentaControlador;
-import org.davshaw.Controller.DepositoCuentaControlador;
-import org.davshaw.Controller.RetiroCuentaControlador;
-import org.davshaw.Controller.UsuarioControlador;
-import org.davshaw.Model.derivatedentities.RetiroCuenta;
+import org.davshaw.External.Color;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -13,8 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 public class DavankApplication
 {
-
-		
+	
 	public static void main(String[] args)
 	{
 		SpringApplication.run(DavankApplication.class, args);
@@ -25,6 +20,10 @@ public class DavankApplication
 		//DepositoCuentaControlador.hacerDeposito(456, 520);
 		//RetiroCuentaControlador.hacerRetiro(123, 500);
 		//RetiroCuentaControlador.eliminarRetiro(1);
-		System.out.println("asd");
+		//System.out.println("asd");
+		//CuentaControlador.eliminarCuenta(5125);
+
+		System.out.println(Color.color("RED","El servidor local del proyecto Spring Boot está encendido. Todo lo que veas depués de este mensaje son los request"));
+	
 	}
 }
