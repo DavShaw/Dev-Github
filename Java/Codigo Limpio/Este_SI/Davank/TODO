@@ -5,11 +5,14 @@ Controladores:
         - Usuario -> Done
     * For derivatedentities
         - DepositoCuenta -> Done
-        - DepositoGrupo 
+        - DepositoGrupo -> Done
         - PrestamoGrupo -> Done
         - RegistroGrupo -> Done
         - RetiroCuenta -> Done
         - TransferenciaCuenta -> Done
+    * For services
+        * For Groups
+            - Pensar la lógica de ingresos a grupos...
 
 Notas:
     * Problemas:
