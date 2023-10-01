@@ -12,14 +12,11 @@ Controladores:
         - TransferenciaCuenta -> Done
     * For services
         * For Groups
-            - Pensar la lógica de ingresos a grupos...
-
+            - Pensar la lógica de ingresos/salidas a grupos... -> DONE
+            - Pensar servicio para ingresar registro de grupos no nativos....
+            
 Notas:
     * Problemas:
-        - El controlador de DepositoCuenta hace el registro en función del número de cuenta,
-        pero la obtención de la cuenta está en 
-        función del titularDni.
-
         - Hacer que todos los métodos del controlador devuelvan un Boolean si es posible (o null)
         
 
