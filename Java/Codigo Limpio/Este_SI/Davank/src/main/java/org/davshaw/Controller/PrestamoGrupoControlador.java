@@ -47,7 +47,7 @@ public class PrestamoGrupoControlador
         }
     */
 
-    public static String hacerPrestamo(int registroId, double monto)
+    public static Boolean hacerPrestamo(int registroId, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -64,27 +64,30 @@ public class PrestamoGrupoControlador
                 throw new IllegalArgumentException("No existe ningún registro con este ID.");
             }
 
-            //Sino se lanzó la exception, entonces existe el registro (Por ende un usuario y grupo)
-            else 
+            //Verificar que la cantidad a prestar < depositos históricos
+            else if(DepositoGrupoControlador.totalDepositos(registroId) < monto)
             {
-                session.beginTransaction();
-
-                PrestamoGrupo prestamo = new PrestamoGrupo();
-                //Establecer datos con setters (Reemplazando el constructor)
-                prestamo.setRegistroId(registroId);
-                prestamo.setMonto(monto);
-
-                session.persist(prestamo);
-                session.getTransaction().commit();
-                
-                return "Prestamo realizado con éxito.";
+                throw new IllegalArgumentException("El usuario ha depositado menos del valor a prestar.");
             }
+
+            //Sino se lanzo alguna exceptión, todo está bien
+            session.beginTransaction();
+
+            PrestamoGrupo prestamo = new PrestamoGrupo();
+            //Establecer datos con setters (Reemplazando el constructor)
+            prestamo.setRegistroId(registroId);
+            prestamo.setMonto(monto);
+            session.persist(prestamo);
+
+            session.getTransaction().commit();
+                
+                return true;
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al crear el prestamo.";
+            return false;
         }
 
         finally

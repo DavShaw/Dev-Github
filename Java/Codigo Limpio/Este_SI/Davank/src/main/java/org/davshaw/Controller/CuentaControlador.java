@@ -428,7 +428,7 @@ public class CuentaControlador
 
     public static Boolean tieneCantidad(int titularDni, double monto)
     {
-        return CuentaControlador.obtenerSaldo(titularDni) > monto;
+        return CuentaControlador.obtenerSaldo(titularDni) >= monto;
     }
 
 }

@@ -1,6 +1,10 @@
 package org.davshaw.Controller;
 
+import java.util.Date;
+import java.util.List;
+
 import org.davshaw.Model.derivatedentities.DepositoGrupo;
+import org.davshaw.Model.pureentities.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -62,6 +66,8 @@ public class DepositoGrupoControlador
             //Verificar que el registro exista
             if(RegistroGrupoControlador.existeRegistro(registroId))
             {
+                session.beginTransaction();
+
                 //Obtener id del grupo y dni del usuario
                 int grupoId = RegistroGrupoControlador.obtenerGrupoId(registroId);
                 int titularDni = RegistroGrupoControlador.obtenerUsuarioDni(registroId);
@@ -73,6 +79,20 @@ public class DepositoGrupoControlador
                     CuentaControlador.retirarSaldo(titularDni, monto);
                     //Agregar cantidad al grupo
                     GrupoControlador.agregarSaldo(grupoId, monto);
+
+                    //Crear el registro
+                    DepositoGrupo deposito = new DepositoGrupo();
+                    deposito.setFechaHora(new Date());
+                    deposito.setMonto(monto);
+                    deposito.setRegistroId(registroId);
+
+                    session.persist(deposito);
+
+                    session.getTransaction().commit();
+
+                    
+                    
+
                     return true;
                 }
                 
@@ -207,4 +227,54 @@ public class DepositoGrupoControlador
             sessionFactory.close();
         }
     }
+
+    public static Double totalDepositos(int registroId)
+    {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(DepositoGrupo.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+            //Verificar que el registro exista
+            if(!(RegistroGrupoControlador.existeRegistro(registroId)))
+            {
+                throw new IllegalArgumentException("No existe un registro con este id.");
+            }
+
+            //Obtener ID de registro de depositos que cumplan con el registroId
+            String sql = "SELECT monto FROM DepositoGrupo WHERE (registroId = :registroId)";
+            Query<Double> query = session.createNativeQuery(sql, Double.class);
+            query.setParameter("registroId", registroId);
+
+                        // Cambia de Double[] a List<Double>
+            List<Double> totalesList = query.list();
+
+            Double totalDepositado = 0.0;
+
+            for (Double monto : totalesList)
+            {
+                totalDepositado += monto;
+            }
+
+            return totalDepositado;
+
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return 0.0;
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
 }

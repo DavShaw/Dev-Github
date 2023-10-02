@@ -2,6 +2,9 @@ package org.davshaw.Controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+
+import java.util.List;
+
 import org.davshaw.Model.derivatedentities.RegistroGrupo;
 import org.davshaw.Model.pureentities.Usuario;
 import org.hibernate.Session;
@@ -466,7 +469,7 @@ public class UsuarioControlador
         }
     }
 
-    public static Integer contadorGrupos(int usuarioDni)
+    public static Integer contadorGrupos(int usuariodni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -478,16 +481,16 @@ public class UsuarioControlador
         try
         {
             //Verificar que el usuario exista
-            if(!(UsuarioControlador.existeUsuario(usuarioDni)))
+            if(!(UsuarioControlador.existeUsuario(usuariodni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }
 
             session.beginTransaction();
 
-            String sql = "SELECT Count(*) FROM RegistroGrupo WHERE (usuarioDni = :usuarioDni and nativo = :nativo)";
+            String sql = "SELECT Count(*) FROM RegistroGrupo WHERE (usuariodni = :usuariodni and nativo = :nativo)";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
-            query.setParameter("usuarioDni", usuarioDni);
+            query.setParameter("usuariodni", usuariodni);
             query.setParameter("nativo", true);
             session.getTransaction().commit();
 
@@ -508,7 +511,7 @@ public class UsuarioControlador
         }
     }
 
-    public static Boolean entrarGrupo(int usuarioDni, int grupoId)
+    public static Boolean entrarGrupo(int usuariodni, int grupoid)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -520,22 +523,22 @@ public class UsuarioControlador
         try
         {
             //Verificar que el grupo exista
-            if(!(GrupoControlador.existeGrupo(grupoId)))
+            if(!(GrupoControlador.existeGrupo(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
             
             //Verificar que el usuario no este en mas de >= 3 grupos
-            else if(UsuarioControlador.contadorGrupos(usuarioDni) >= 3)
+            else if(UsuarioControlador.contadorGrupos(usuariodni) >= 3)
             {
                 throw new IllegalArgumentException("El usuario está en el máximo de grupos permitidos.");
             }
             session.beginTransaction();
 
             RegistroGrupo registro = new RegistroGrupo();
-            registro.setGrupoId(grupoId);
+            registro.setGrupoId(grupoid);
             registro.setNativo(true);
-            registro.setUsuarioDni(usuarioDni);
+            registro.setUsuarioDni(usuariodni);
 
             session.persist(registro);
 
@@ -557,7 +560,7 @@ public class UsuarioControlador
         }
     }
 
-    public static Boolean salirGrupo(int usuarioDni, int grupoId)
+    public static Boolean salirGrupo(int usuariodni, int grupoid)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -569,19 +572,19 @@ public class UsuarioControlador
         try
         {
             //Verificar que el usuario este en al menos un grupo
-            if(UsuarioControlador.contadorGrupos(usuarioDni) <= 0)
+            if(UsuarioControlador.contadorGrupos(usuariodni) <= 0)
             {
                 throw new IllegalArgumentException("El usuario no está en ningún grupo.");
             }
 
             //Verificar que el grupo exista
-            else if(!(GrupoControlador.existeGrupo(grupoId)))
+            else if(!(GrupoControlador.existeGrupo(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Obtener ID del registro
-            Integer registroId = UsuarioControlador.obtenerRegistroId(usuarioDni, grupoId);
+            Integer registroId = UsuarioControlador.obtenerRegistroId(usuariodni, grupoid);
 
             //Verificar que el registroId no sea null (No existe el registro)
             if (registroId == null)
@@ -612,7 +615,7 @@ public class UsuarioControlador
         }
     }
 
-    public static Integer obtenerRegistroId(int usuarioDni, int grupoId)
+    public static Integer obtenerRegistroId(int usuariodni, int grupoid)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -624,23 +627,23 @@ public class UsuarioControlador
         try
         {
             //Verificar que el grupo exista
-            if(!(GrupoControlador.existeGrupo(grupoId)))
+            if(!(GrupoControlador.existeGrupo(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Verificar que el usuario exista
-            else if(!(UsuarioControlador.existeUsuario(usuarioDni)))
+            else if(!(UsuarioControlador.existeUsuario(usuariodni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }
 
             session.beginTransaction();
 
-            String sql = "SELECT id FROM RegistroGrupo WHERE (GrupoId = :grupoId AND usuarioDni = :usuarioDni AND nativo =: nativo)";
+            String sql = "SELECT id FROM RegistroGrupo WHERE (grupoid = :grupoid AND usuariodni = :usuariodni AND nativo = :nativo)";
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
-            query.setParameter("usuarioDni", usuarioDni);
-            query.setParameter("grupoId", grupoId);
+            query.setParameter("usuariodni", usuariodni);
+            query.setParameter("grupoid", grupoid);
             query.setParameter("nativo", true);
 
 

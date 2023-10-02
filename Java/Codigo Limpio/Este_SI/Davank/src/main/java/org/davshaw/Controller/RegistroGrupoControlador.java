@@ -112,7 +112,7 @@ public class RegistroGrupoControlador
 
         try
         {
-            String sql = "SELECT COUNT(*) FROM RegistroGrupos WHERE id = :di";
+            String sql = "SELECT COUNT(*) FROM RegistroGrupo WHERE id = :id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
 
