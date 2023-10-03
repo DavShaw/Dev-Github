@@ -21,7 +21,7 @@
     <mapping class="org.davshaw.Model.derivatedentities.AccountWithdrawal"/>
     <mapping class="org.davshaw.Model.derivatedentities.GroupDeposit"/>
     <mapping class="org.davshaw.Model.derivatedentities.GroupLoan"/>
-    <mapping class="org.davshaw.Model.derivatedentities.GroupLog"/>
+    <mapping class="org.davshaw.Model.derivatedentities.teamLog"/>
 
 
    </session-factory>

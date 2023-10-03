@@ -1,18 +1,18 @@
 package org.davshaw.Controller;
 
-import org.davshaw.Model.derivatedentities.GroupLog;
+import org.davshaw.Model.derivatedentities.TeamLog;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class GroupLogController
+public class TeamLogController
 {
-    public static String createLog(int userDni, int groupId, Boolean nativeFlag)
+    public static String createLog(int userDni, int teamId, Boolean nativeFlag)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLog.class)
+        .addAnnotatedClass(TeamLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -25,7 +25,7 @@ public class GroupLogController
                 throw new IllegalArgumentException("No existe un usuario con este DNI.");
             }
             //Verificar que exista el grupo
-            else if (!(GroupController.groupExist(groupId)))
+            else if (!(TeamController.groupExist(teamId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este ID.");
             }
@@ -34,10 +34,10 @@ public class GroupLogController
             {
                 session.beginTransaction();
 
-                GroupLog registro = new GroupLog();
+                TeamLog registro = new TeamLog();
                 //Establecer datos con setters (Reemplazando el constructor)
                 registro.setUserDni(userDni);
-                registro.setGroupId(groupId);
+                registro.setTeamId(teamId);
                 registro.setNativeFlag(nativeFlag);
 
                 session.persist(registro);
@@ -65,7 +65,7 @@ public class GroupLogController
         SessionFactory sessionFactory = new
         Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLog.class)
+        .addAnnotatedClass(TeamLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -73,7 +73,7 @@ public class GroupLogController
 
         try
         {
-            String sql = "SELECT COUNT(*) FROM GroupLog WHERE id = :id";
+            String sql = "SELECT COUNT(*) FROM TeamLog WHERE id = :id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
 
@@ -98,11 +98,11 @@ public class GroupLogController
         }
     }
 
-    public static GroupLog getLog(int id)
+    public static TeamLog getLog(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLog.class)
+        .addAnnotatedClass(TeamLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -111,7 +111,7 @@ public class GroupLogController
         {
             session.beginTransaction();
 
-            GroupLog registro = session.get(GroupLog.class, id);
+            TeamLog registro = session.get(TeamLog.class, id);
 
             session.getTransaction().commit();
 
@@ -135,7 +135,7 @@ public class GroupLogController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLog.class)
+        .addAnnotatedClass(TeamLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -143,13 +143,13 @@ public class GroupLogController
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogController.logExist(id)))
+            if(!(TeamLogController.logExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = GroupLogController.getLog(id);
+            TeamLog registro = TeamLogController.getLog(id);
 
             return registro.getUserDni();
         }
@@ -167,11 +167,11 @@ public class GroupLogController
         }
     }
 
-    public static Integer getGroupId(int id)
+    public static Integer getteamId(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLog.class)
+        .addAnnotatedClass(TeamLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -179,15 +179,15 @@ public class GroupLogController
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogController.logExist(id)))
+            if(!(TeamLogController.logExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = GroupLogController.getLog(id);
+            TeamLog registro = TeamLogController.getLog(id);
 
-            return registro.getGroupId();
+            return registro.getTeamId();
         }
 
         catch (Exception e)
@@ -207,7 +207,7 @@ public class GroupLogController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLog.class)
+        .addAnnotatedClass(TeamLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -215,13 +215,13 @@ public class GroupLogController
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogController.logExist(id)))
+            if(!(TeamLogController.logExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = GroupLogController.getLog(id);
+            TeamLog registro = TeamLogController.getLog(id);
 
             return registro.isNativeFlag();
         }

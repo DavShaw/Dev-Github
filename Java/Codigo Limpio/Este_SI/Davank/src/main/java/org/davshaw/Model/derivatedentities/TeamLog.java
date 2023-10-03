@@ -1,6 +1,6 @@
 package org.davshaw.Model.derivatedentities;
 
-import org.davshaw.Model.pureentities.Group;
+import org.davshaw.Model.pureentities.Team;
 import org.davshaw.Model.pureentities.User;
 
 import jakarta.persistence.Column;
@@ -22,8 +22,8 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "GroupLog")
-public class GroupLog
+@Table(name = "teamLog")
+public class TeamLog
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,12 +31,12 @@ public class GroupLog
     private int id;
 
     //?Clave foranea (Con grupo)
-    @ManyToOne(targetEntity = Group.class)
-    @JoinColumn(name = "groupId", referencedColumnName = "id", insertable = false, updatable = false)
-    private Group group;
+    @ManyToOne(targetEntity = Team.class)
+    @JoinColumn(name = "teamId", referencedColumnName = "id", insertable = false, updatable = false)
+    private Team group;
 
-    @Column(name = "groupId")
-    private int groupId;
+    @Column(name = "teamId")
+    private int teamId;
 
     //?Clave foranea (Con usuario)
     @ManyToOne(targetEntity = User.class)

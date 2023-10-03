@@ -1,18 +1,18 @@
 package org.davshaw.Controller;
 
-import org.davshaw.Model.derivatedentities.GroupLoan;
+import org.davshaw.Model.derivatedentities.TeamLoan;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class GroupLoanController
+public class TeamLoanController
 {
     public static Boolean loan(int logId, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLoan.class)
+        .addAnnotatedClass(TeamLoan.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -20,13 +20,13 @@ public class GroupLoanController
         try
         {
             //verificar que exista el registro
-            if(!(GroupLogController.logExist(logId)))
+            if(!(TeamLogController.logExist(logId)))
             {
                 throw new IllegalArgumentException("No existe ningún registro con este ID.");
             }
 
             //Verificar que la cantidad a prestar < depositos históricos
-            else if(GroupDepositController.totalDeposit(logId) < balance)
+            else if(TeamDepositController.totalDeposit(logId) < balance)
             {
                 throw new IllegalArgumentException("El usuario ha depositado menos del valor a prestar.");
             }
@@ -34,7 +34,7 @@ public class GroupLoanController
             //Sino se lanzo alguna exceptión, todo está bien
             session.beginTransaction();
 
-            GroupLoan prestamo = new GroupLoan();
+            TeamLoan prestamo = new TeamLoan();
             //Establecer datos con setters (Reemplazando el constructor)
             prestamo.setLogId(logId);
             prestamo.setBalance(balance);
@@ -62,7 +62,7 @@ public class GroupLoanController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLoan.class)
+        .addAnnotatedClass(TeamLoan.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -71,7 +71,7 @@ public class GroupLoanController
         {
             session.beginTransaction();
 
-            String sql = "SELECT Count(*) FROM GroupLoan WHERE id = :id";
+            String sql = "SELECT Count(*) FROM TeamLoan WHERE id = :id";
             Query<Long> query = session.createQuery(sql, Long.class);
             query.setParameter(sql, id);
 
@@ -93,11 +93,11 @@ public class GroupLoanController
         }
     }
 
-    public static GroupLoan getLoan(int id)
+    public static TeamLoan getLoan(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLoan.class)
+        .addAnnotatedClass(TeamLoan.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -105,7 +105,7 @@ public class GroupLoanController
         try
         {
             //Verificar que exista el prestamo
-            if(!(GroupLoanController.loanExist(id)))
+            if(!(TeamLoanController.loanExist(id)))
             {
                 throw new IllegalArgumentException("No existe un prestamo con este id.");
             }
@@ -115,7 +115,7 @@ public class GroupLoanController
             {
                 session.beginTransaction();
 
-                GroupLoan prestamo = session.get(GroupLoan.class, id);
+                TeamLoan prestamo = session.get(TeamLoan.class, id);
 
                 session.getTransaction().commit();;
 
@@ -140,7 +140,7 @@ public class GroupLoanController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLoan.class)
+        .addAnnotatedClass(TeamLoan.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -148,12 +148,12 @@ public class GroupLoanController
         try
         {
             //Verificar que exista
-            if(!(GroupLoanController.loanExist(id)))
+            if(!(TeamLoanController.loanExist(id)))
             {
                 throw new IllegalArgumentException("No existe un prestamo registrado con este id.");
             }
             session.beginTransaction();
-            GroupLoan prestamo = GroupLoanController.getLoan(id);
+            TeamLoan prestamo = TeamLoanController.getLoan(id);
             session.remove(prestamo);
             session.getTransaction().commit();
             return true;

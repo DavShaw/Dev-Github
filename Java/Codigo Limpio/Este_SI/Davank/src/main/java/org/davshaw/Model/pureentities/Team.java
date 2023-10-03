@@ -18,8 +18,8 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "Group")
-public class Group
+@Table(name = "Team")
+public class Team
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

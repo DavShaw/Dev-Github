@@ -5,7 +5,7 @@ import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import org.davshaw.Model.derivatedentities.GroupLog;
+import org.davshaw.Model.derivatedentities.TeamLog;
 import org.davshaw.Model.pureentities.User;
 
 public class UserController
@@ -444,7 +444,7 @@ public class UserController
 
             session.beginTransaction();
 
-            String sql = "SELECT Count(*) FROM GroupLog WHERE userDni = :userDni AND nativeFlag = :nativeFlag";
+            String sql = "SELECT Count(*) FROM TeamLog WHERE userDni = :userDni AND nativeFlag = :nativeFlag";
 
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("userDni", userDni);
@@ -468,7 +468,7 @@ public class UserController
         }
     }
 
-    public static Boolean joinGroup(int userDni, int groupId)
+    public static Boolean joinGroup(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -480,7 +480,7 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(GroupController.groupExist(groupId)))
+            if(!(TeamController.groupExist(teamId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
@@ -492,8 +492,8 @@ public class UserController
             }
             session.beginTransaction();
 
-            GroupLog registro = new GroupLog();
-            registro.setGroupId(groupId);
+            TeamLog registro = new TeamLog();
+            registro.setTeamId(teamId);
             registro.setNativeFlag(true);
             registro.setUserDni(userDni);
 
@@ -517,7 +517,7 @@ public class UserController
         }
     }
 
-    public static Boolean leaveGroup(int userDni, int groupId)
+    public static Boolean leaveGroup(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -535,13 +535,13 @@ public class UserController
             }
 
             //Verificar que el grupo exista
-            else if(!(GroupController.groupExist(groupId)))
+            else if(!(TeamController.groupExist(teamId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Obtener ID del registro
-            Integer registroId = UserController.getLogId(userDni, groupId);
+            Integer registroId = UserController.getLogId(userDni, teamId);
 
             //Verificar que el registroId no sea null (No existe el registro)
             if (registroId == null)
@@ -551,7 +551,7 @@ public class UserController
 
             session.beginTransaction();
 
-            GroupLog registro = GroupLogController.getLog(registroId);
+            TeamLog registro = TeamLogController.getLog(registroId);
             session.remove(registro);
 
             session.getTransaction().commit();
@@ -572,7 +572,7 @@ public class UserController
         }
     }
 
-    public static Integer getLogId(int userDni, int groupId)
+    public static Integer getLogId(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -584,7 +584,7 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(GroupController.groupExist(groupId)))
+            if(!(TeamController.groupExist(teamId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
@@ -597,10 +597,10 @@ public class UserController
 
             session.beginTransaction();
 
-            String sql = "SELECT id FROM GroupLog WHERE groupId = :groupId AND userDni = :userDni AND nativeFlag = :nativeFlag";
+            String sql = "SELECT id FROM TeamLog WHERE teamId = :teamId AND userDni = :userDni AND nativeFlag = :nativeFlag";
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
             query.setParameter("userDni", userDni);
-            query.setParameter("groupId", groupId);
+            query.setParameter("teamId", teamId);
             query.setParameter("nativo", true);
 
 

@@ -1,19 +1,19 @@
 package org.davshaw.Controller;
 
-import org.davshaw.Model.pureentities.Group;
+import org.davshaw.Model.pureentities.Team;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class GroupController
+public class TeamController
 {
     public static String createGroup(String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Group.class)
+        .addAnnotatedClass(Team.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -22,7 +22,7 @@ public class GroupController
         {
             session.beginTransaction();
             
-            Group grupo = new Group();
+            Team grupo = new Team();
             //Establecer datos con setters (Reemplazando el constructor)
             grupo.setName(name);
 
@@ -49,14 +49,14 @@ public class GroupController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Group.class)
+        .addAnnotatedClass(Team.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            String sql = "SELECT count(*) FROM `Group` WHERE id = :id";
+            String sql = "SELECT count(*) FROM Team WHERE id = :id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
             int count = ((Number) query.uniqueResult()).intValue();
@@ -77,22 +77,22 @@ public class GroupController
         }
     }
 
-    public static Group getGroup(int id)
+    public static Team getGroup(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Group.class)
+        .addAnnotatedClass(Team.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            if(GroupController.groupExist(id))
+            if(TeamController.groupExist(id))
             {
                 session.beginTransaction();
 
-                Group grupo = session.get(Group.class, id);
+                Team grupo = session.get(Team.class, id);
 
                 session.getTransaction().commit();
 
@@ -122,18 +122,18 @@ public class GroupController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Group.class)
+        .addAnnotatedClass(Team.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            if(GroupController.groupExist(id))
+            if(TeamController.groupExist(id))
             {
                 session.beginTransaction();
 
-                Group grupo = session.get(Group.class, id);
+                Team grupo = session.get(Team.class, id);
 
                 session.getTransaction().commit();
 
@@ -163,7 +163,7 @@ public class GroupController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Group.class)
+        .addAnnotatedClass(Team.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -175,11 +175,11 @@ public class GroupController
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(GroupController.groupExist(id))
+            else if(TeamController.groupExist(id))
             {
                 session.beginTransaction();
 
-                Group grupo = GroupController.getGroup(id);
+                Team grupo = TeamController.getGroup(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getBalance() + balance;
@@ -216,7 +216,7 @@ public class GroupController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Group.class)
+        .addAnnotatedClass(Team.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -228,11 +228,11 @@ public class GroupController
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(GroupController.groupExist(id))
+            else if(TeamController.groupExist(id))
             {
                 session.beginTransaction();
 
-                Group grupo = GroupController.getGroup(id);
+                Team grupo = TeamController.getGroup(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getBalance() - balance;
