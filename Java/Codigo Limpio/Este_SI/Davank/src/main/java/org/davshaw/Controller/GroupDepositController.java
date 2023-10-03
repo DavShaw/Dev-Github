@@ -48,7 +48,7 @@ import org.hibernate.query.Query;
         }
     */
 
-public class DepositoGrupoControlador
+public class GroupDepositController
 {
 
     public static Boolean hacerDeposito(int registroId, double monto)
@@ -63,21 +63,21 @@ public class DepositoGrupoControlador
         try
         {
             //Verificar que el registro exista
-            if(RegistroGrupoControlador.existeRegistro(registroId))
+            if(GroupLogController.existeRegistro(registroId))
             {
                 session.beginTransaction();
 
                 //Obtener id del grupo y dni del usuario
-                int grupoId = RegistroGrupoControlador.obtenerGrupoId(registroId);
-                int titularDni = RegistroGrupoControlador.obtenerUsuarioDni(registroId);
+                int grupoId = GroupLogController.obtenerGrupoId(registroId);
+                int titularDni = GroupLogController.obtenerUsuarioDni(registroId);
                 
                 //Verificar que la cuenta tenga el dinero para depositar
-                if(CuentaControlador.tieneCantidad(titularDni, monto))
+                if(AccountController.tieneCantidad(titularDni, monto))
                 {
                     //Retirar cantidad de la cuenta
-                    CuentaControlador.retirarSaldo(titularDni, monto);
+                    AccountController.retirarSaldo(titularDni, monto);
                     //Agregar cantidad al grupo
-                    GrupoControlador.agregarSaldo(grupoId, monto);
+                    GroupController.agregarSaldo(grupoId, monto);
 
                     //Crear el registro
                     GroupDeposit deposito = new GroupDeposit();
@@ -164,7 +164,7 @@ public class DepositoGrupoControlador
         try
         {
             //Verificar si existe el registro del deposito
-            if(!(DepositoGrupoControlador.existeDeposito(id)))
+            if(!(GroupDepositController.existeDeposito(id)))
             {
                 throw new IllegalArgumentException("No existe un registro de deposito con este id.");
             }
@@ -201,13 +201,13 @@ public class DepositoGrupoControlador
         {
 
             //Verificar que exista el deposito
-            if(!(DepositoGrupoControlador.existeDeposito(id)))
+            if(!(GroupDepositController.existeDeposito(id)))
             {
                 throw new IllegalArgumentException("No existe un registro de deposito con este id.");
             }
 
             session.beginTransaction();
-            GroupDeposit deposito = DepositoGrupoControlador.obtenerDeposito(id);
+            GroupDeposit deposito = GroupDepositController.obtenerDeposito(id);
             session.remove(deposito);
             session.getTransaction().commit();
 
@@ -239,7 +239,7 @@ public class DepositoGrupoControlador
         try
         {
             //Verificar que el registro exista
-            if(!(RegistroGrupoControlador.existeRegistro(registroId)))
+            if(!(GroupLogController.existeRegistro(registroId)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }

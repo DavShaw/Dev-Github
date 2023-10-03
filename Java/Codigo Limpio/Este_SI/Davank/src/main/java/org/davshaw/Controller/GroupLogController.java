@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class RegistroGrupoControlador
+public class GroupLogController
 {
     /*
     ! CRUD
@@ -59,12 +59,12 @@ public class RegistroGrupoControlador
         try
         {
             //Verificar que exista el usuario
-            if(!(UsuarioControlador.existeUsuario(usuarioDni)))
+            if(!(UserController.existeUsuario(usuarioDni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este DNI.");
             }
             //Verificar que exista el grupo
-            else if (!(GrupoControlador.existeGrupo(grupoId)))
+            else if (!(GroupController.existeGrupo(grupoId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este ID.");
             }
@@ -182,13 +182,13 @@ public class RegistroGrupoControlador
         try
         {
             //Verificar que exista el registro
-            if(!(RegistroGrupoControlador.existeRegistro(id)))
+            if(!(GroupLogController.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = RegistroGrupoControlador.obtenerRegistro(id);
+            GroupLog registro = GroupLogController.obtenerRegistro(id);
 
             return registro.getUsuarioDni();
         }
@@ -218,13 +218,13 @@ public class RegistroGrupoControlador
         try
         {
             //Verificar que exista el registro
-            if(!(RegistroGrupoControlador.existeRegistro(id)))
+            if(!(GroupLogController.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = RegistroGrupoControlador.obtenerRegistro(id);
+            GroupLog registro = GroupLogController.obtenerRegistro(id);
 
             return registro.getGrupoId();
         }
@@ -254,13 +254,13 @@ public class RegistroGrupoControlador
         try
         {
             //Verificar que exista el registro
-            if(!(RegistroGrupoControlador.existeRegistro(id)))
+            if(!(GroupLogController.existeRegistro(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = RegistroGrupoControlador.obtenerRegistro(id);
+            GroupLog registro = GroupLogController.obtenerRegistro(id);
 
             return registro.isNativo();
         }

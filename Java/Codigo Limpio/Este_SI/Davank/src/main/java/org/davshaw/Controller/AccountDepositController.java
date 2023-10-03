@@ -5,11 +5,11 @@ import org.hibernate.query.Query;
 
 import java.util.Date;
 
-import org.davshaw.Model.derivatedentities.AccountTransfer;
+import org.davshaw.Model.derivatedentities.AccountDeposit;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class TransferenciaCuentaControlador
+public class AccountDepositController
 {
 
     /*
@@ -23,7 +23,7 @@ public class TransferenciaCuentaControlador
 
     SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TransferenciaCuenta.class)
+        .addAnnotatedClass(DepositoCuenta.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -49,50 +49,42 @@ public class TransferenciaCuentaControlador
             session.close();
             sessionFactory.close();
         }
+        
+
     */
 
-    public static Boolean hacerTransferencia(int titularDniCuentaOrigen, int titularDniCuentaDestino, double monto)
+    public static Boolean hacerDeposito(int titularDniCuenta, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(AccountTransfer.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            //Verificar si las dos cuentas existen
-            if(!(CuentaControlador.existeCuenta(titularDniCuentaOrigen)) || !(CuentaControlador.existeCuenta(titularDniCuentaDestino)))
+            //Verificar que la cuenta exista
+            if(!(AccountController.existeCuenta(titularDniCuenta)))
             {
-                throw new IllegalArgumentException("La cuenta ingresada no existe.");
+                throw new IllegalArgumentException("La cuenta no existen.");
             }
-
-            //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
-            else if (CuentaControlador.obtenerSaldo(titularDniCuentaOrigen) < monto)
-            {
-                throw new IllegalArgumentException("La cuenta de origen tiene el saldo");
-            }
-
+            //Sino se lanzan las exceptions, entonces se procede
             session.beginTransaction();
 
-            //Retirar dinero de la cuenta de origen
-            CuentaControlador.retirarSaldo(titularDniCuentaOrigen, monto);
-            //Agregar dinero a la cuenta de destino
-            CuentaControlador.agregarSaldo(titularDniCuentaDestino, monto);
+            //Haciendo el deposito
+            AccountController.agregarSaldo(titularDniCuenta, monto);
 
-            //Iniciar creación del registro de la transferencia
-            AccountTransfer transferencia = new AccountTransfer();
-            transferencia.setFechaHora(new Date());
-            transferencia.setMonto(monto);
-            transferencia.setNumeroCuentaDestino(CuentaControlador.obtenerNumeroCuenta(titularDniCuentaDestino));
-            transferencia.setNumeroCuentaOrigen(CuentaControlador.obtenerNumeroCuenta(titularDniCuentaOrigen));
+            //Haciendo el registro del deposito
+            AccountDeposit depositoCuenta = new AccountDeposit();
+            depositoCuenta.setCuentaId(AccountController.obtenerNumeroCuenta(titularDniCuenta));
+            depositoCuenta.setFechaHora(new Date());
+            depositoCuenta.setMonto(monto);
 
-            session.persist(transferencia);
+            //Guardando el registro del deposito
+            session.persist(depositoCuenta);
 
             session.getTransaction().commit();
-            
-
             return true;
         }
 
@@ -108,22 +100,22 @@ public class TransferenciaCuentaControlador
             sessionFactory.close();
         }
     }
-
-    public static Boolean existeTransferencia(int id)
+    
+    public static Boolean existeDeposito(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(AccountTransfer.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            String sql = "SELECT count(*) FROM TransferenciaCuenta WHERE id = :id";
-            Query<Long> query = session.createQuery(sql, Long.class);
+            String sql = "SELECT count(*) FROM DepositoCuenta WHERE id = :id";
+            Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
-            int count = Integer.valueOf(query.uniqueResult().toString());
+            int count = ((Number) query.uniqueResult()).intValue();
 
             return count > 0;
         }
@@ -141,30 +133,32 @@ public class TransferenciaCuentaControlador
         }
     }
 
-    public static AccountTransfer obtenerTransferencia(int id)
+    public static AccountDeposit obtenerDeposito(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(AccountTransfer.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            if(!(TransferenciaCuentaControlador.existeTransferencia(id)))
+            //Verificar que exista el registro del deposito
+            if(!(AccountDepositController.existeDeposito(id)))
             {
-                throw new IllegalArgumentException("No existe una transferencia con este id.");
+                throw new IllegalArgumentException("No existe un deposito registrado con este id.");
             }
 
             else
             {
                 session.beginTransaction();
-                AccountTransfer transferencia = session.get(AccountTransfer.class, id);
+
+                AccountDeposit deposito = session.get(AccountDeposit.class, id);
+
                 session.getTransaction().commit();
 
-                return transferencia;
-
+                return deposito;
             }
         }
 
@@ -181,30 +175,34 @@ public class TransferenciaCuentaControlador
         }
     }
 
-    public static Boolean eliminarTransferencia(int id)
+    public static Boolean eliminarDeposito (int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(AccountTransfer.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            //Verificar si existe
-            if(!(TransferenciaCuentaControlador.existeTransferencia(id)))
+            //Verificar que exista el registro del deposito
+            if(!(AccountDepositController.existeDeposito(id)))
             {
-                throw new IllegalArgumentException("No existe un registro de transferencia con este id.");
+                throw new IllegalArgumentException("No existe un deposito registrado con este id.");
             }
 
-            session.beginTransaction();
-            AccountTransfer transferencia = TransferenciaCuentaControlador.obtenerTransferencia(id);
+            else
+            {
+                session.beginTransaction();
 
-            session.remove(transferencia);
-            session.getTransaction().commit();
+                AccountDeposit deposito = AccountDepositController.obtenerDeposito(id);
+                session.remove(deposito);
 
-            return true;
+                session.getTransaction().commit();
+
+                return true;
+            }
         }
 
         catch (Exception e)

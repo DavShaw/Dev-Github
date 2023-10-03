@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class GrupoControlador
+public class GroupController
 {
     /*
     ! CRUD
@@ -127,7 +127,7 @@ public class GrupoControlador
 
         try
         {
-            if(GrupoControlador.existeGrupo(id))
+            if(GroupController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -168,7 +168,7 @@ public class GrupoControlador
 
         try
         {
-            if(GrupoControlador.existeGrupo(id))
+            if(GroupController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -209,11 +209,11 @@ public class GrupoControlador
 
         try
         {
-            if(GrupoControlador.existeGrupo(id))
+            if(GroupController.existeGrupo(id))
             {
                 session.beginTransaction();
 
-                Group grupo = GrupoControlador.obtenerGrupo(id);
+                Group grupo = GroupController.obtenerGrupo(id);
 
                 //Editar número integrantes
                 int nuevoNumeroIntegrantes = grupo.getNumeroIntegrantes() + 1;
@@ -257,11 +257,11 @@ public class GrupoControlador
 
         try
         {
-            if(GrupoControlador.existeGrupo(id))
+            if(GroupController.existeGrupo(id))
             {
                 session.beginTransaction();
 
-                Group grupo = GrupoControlador.obtenerGrupo(id);
+                Group grupo = GroupController.obtenerGrupo(id);
 
                 //Editar número integrantes
                 int nuevoNumeroIntegrantes = grupo.getNumeroIntegrantes() - 1;
@@ -305,7 +305,7 @@ public class GrupoControlador
 
         try
         {
-            if(GrupoControlador.existeGrupo(id))
+            if(GroupController.existeGrupo(id))
             {
                 session.beginTransaction();
 
@@ -351,11 +351,11 @@ public class GrupoControlador
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(GrupoControlador.existeGrupo(id))
+            else if(GroupController.existeGrupo(id))
             {
                 session.beginTransaction();
 
-                Group grupo = GrupoControlador.obtenerGrupo(id);
+                Group grupo = GroupController.obtenerGrupo(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getSaldo() + monto;
@@ -404,11 +404,11 @@ public class GrupoControlador
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(GrupoControlador.existeGrupo(id))
+            else if(GroupController.existeGrupo(id))
             {
                 session.beginTransaction();
 
-                Group grupo = GrupoControlador.obtenerGrupo(id);
+                Group grupo = GroupController.obtenerGrupo(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getSaldo() - monto;

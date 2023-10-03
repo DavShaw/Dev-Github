@@ -7,7 +7,7 @@ import org.davshaw.Model.pureentities.Account;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class CuentaControlador
+public class AccountController
 {
 
     /*
@@ -63,7 +63,7 @@ public class CuentaControlador
         try
         {
             //Verificar que no exista otra cuenta con el titularDni igual
-            if(!CuentaControlador.existeCuenta(dni))
+            if(!AccountController.existeCuenta(dni))
             {
                 Account cuenta = new Account();
 
@@ -180,11 +180,11 @@ public class CuentaControlador
         try
         {
             //Verificar si existe cuenta con titularDni
-            if(CuentaControlador.existeCuenta(titularDni))
+            if(AccountController.existeCuenta(titularDni))
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
 
                 session.getTransaction().commit();
                 return cuenta;
@@ -231,11 +231,11 @@ public class CuentaControlador
                 throw new IllegalArgumentException("El monto no puede ser negativo");
             }
 
-            else if(CuentaControlador.existeCuenta(titularDni))
+            else if(AccountController.existeCuenta(titularDni))
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
 
                 //Obtener saldo actual
                 double nuevoSaldo = cuenta.getSaldo() + monto;
@@ -290,11 +290,11 @@ public class CuentaControlador
                 throw new IllegalArgumentException("El monto no puede ser negativo");
             }
 
-            else if(CuentaControlador.existeCuenta(titularDni))
+            else if(AccountController.existeCuenta(titularDni))
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
 
                 //Obtener saldo actual
                 double nuevoSaldo = cuenta.getSaldo() - monto;
@@ -344,9 +344,9 @@ public class CuentaControlador
 
         try
         {
-            if(CuentaControlador.existeCuenta(titularDni))
+            if(AccountController.existeCuenta(titularDni))
             {
-                Account cuenta = CuentaControlador.obtenerCuenta(titularDni);
+                Account cuenta = AccountController.obtenerCuenta(titularDni);
                 return cuenta.getSaldo();
             }
             
@@ -387,11 +387,11 @@ public class CuentaControlador
 
         try
         {
-            if(CuentaControlador.existeCuenta(titularDni))
+            if(AccountController.existeCuenta(titularDni))
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
 
                 session.remove(cuenta);
 
@@ -428,7 +428,7 @@ public class CuentaControlador
 
     public static Boolean tieneCantidad(int titularDni, double monto)
     {
-        return CuentaControlador.obtenerSaldo(titularDni) >= monto;
+        return AccountController.obtenerSaldo(titularDni) >= monto;
     }
 
 }

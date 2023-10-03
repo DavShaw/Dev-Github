@@ -1,13 +1,17 @@
 package org.davshaw.Controller;
 
-import org.davshaw.Model.derivatedentities.GroupLoan;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class PrestamoGrupoControlador
+import java.util.Date;
+
+import org.davshaw.Model.derivatedentities.AccountTransfer;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+public class AccountTransferController
 {
+
     /*
     ! CRUD
     ! C - Create DONE
@@ -19,7 +23,7 @@ public class PrestamoGrupoControlador
 
     SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Prestamos.class)
+        .addAnnotatedClass(TransferenciaCuenta.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -47,41 +51,49 @@ public class PrestamoGrupoControlador
         }
     */
 
-    public static Boolean hacerPrestamo(int registroId, double monto)
+    public static Boolean hacerTransferencia(int titularDniCuentaOrigen, int titularDniCuentaDestino, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLoan.class)
+        .addAnnotatedClass(AccountTransfer.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            //verificar que exista el registro
-            if(!(RegistroGrupoControlador.existeRegistro(registroId)))
+            //Verificar si las dos cuentas existen
+            if(!(AccountController.existeCuenta(titularDniCuentaOrigen)) || !(AccountController.existeCuenta(titularDniCuentaDestino)))
             {
-                throw new IllegalArgumentException("No existe ningún registro con este ID.");
+                throw new IllegalArgumentException("La cuenta ingresada no existe.");
             }
 
-            //Verificar que la cantidad a prestar < depositos históricos
-            else if(DepositoGrupoControlador.totalDepositos(registroId) < monto)
+            //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
+            else if (AccountController.obtenerSaldo(titularDniCuentaOrigen) < monto)
             {
-                throw new IllegalArgumentException("El usuario ha depositado menos del valor a prestar.");
+                throw new IllegalArgumentException("La cuenta de origen tiene el saldo");
             }
 
-            //Sino se lanzo alguna exceptión, todo está bien
             session.beginTransaction();
 
-            GroupLoan prestamo = new GroupLoan();
-            //Establecer datos con setters (Reemplazando el constructor)
-            prestamo.setRegistroId(registroId);
-            prestamo.setMonto(monto);
-            session.persist(prestamo);
+            //Retirar dinero de la cuenta de origen
+            AccountController.retirarSaldo(titularDniCuentaOrigen, monto);
+            //Agregar dinero a la cuenta de destino
+            AccountController.agregarSaldo(titularDniCuentaDestino, monto);
+
+            //Iniciar creación del registro de la transferencia
+            AccountTransfer transferencia = new AccountTransfer();
+            transferencia.setFechaHora(new Date());
+            transferencia.setMonto(monto);
+            transferencia.setNumeroCuentaDestino(AccountController.obtenerNumeroCuenta(titularDniCuentaDestino));
+            transferencia.setNumeroCuentaOrigen(AccountController.obtenerNumeroCuenta(titularDniCuentaOrigen));
+
+            session.persist(transferencia);
 
             session.getTransaction().commit();
-                
-                return true;
+            
+
+            return true;
         }
 
         catch (Exception e)
@@ -97,24 +109,21 @@ public class PrestamoGrupoControlador
         }
     }
 
-    public static Boolean existePrestamo(int id)
+    public static Boolean existeTransferencia(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLoan.class)
+        .addAnnotatedClass(AccountTransfer.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            session.beginTransaction();
-
-            String sql = "SELECT Count(*) FROM Prestamos WHERE id = :id";
+            String sql = "SELECT count(*) FROM TransferenciaCuenta WHERE id = :id";
             Query<Long> query = session.createQuery(sql, Long.class);
-            query.setParameter(sql, id);
-
-            int count =  ((Number) query.uniqueResult()).intValue();
+            query.setParameter("id", id);
+            int count = Integer.valueOf(query.uniqueResult().toString());
 
             return count > 0;
         }
@@ -132,33 +141,30 @@ public class PrestamoGrupoControlador
         }
     }
 
-    public static GroupLoan obtenerPrestamo(int id)
+    public static AccountTransfer obtenerTransferencia(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLoan.class)
+        .addAnnotatedClass(AccountTransfer.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            //Verificar que exista el prestamo
-            if(!(PrestamoGrupoControlador.existePrestamo(id)))
+            if(!(AccountTransferController.existeTransferencia(id)))
             {
-                throw new IllegalArgumentException("No existe un prestamo con este id.");
+                throw new IllegalArgumentException("No existe una transferencia con este id.");
             }
 
-            //Sino se lanzó la exception, existe el prestamo
             else
             {
                 session.beginTransaction();
+                AccountTransfer transferencia = session.get(AccountTransfer.class, id);
+                session.getTransaction().commit();
 
-                GroupLoan prestamo = session.get(GroupLoan.class, id);
+                return transferencia;
 
-                session.getTransaction().commit();;
-
-                return prestamo;
             }
         }
 
@@ -175,26 +181,29 @@ public class PrestamoGrupoControlador
         }
     }
 
-    public static Boolean eliminarPrestamo(int id)
+    public static Boolean eliminarTransferencia(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(GroupLoan.class)
+        .addAnnotatedClass(AccountTransfer.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         try
         {
-            //Verificar que exista
-            if(!(PrestamoGrupoControlador.existePrestamo(id)))
+            //Verificar si existe
+            if(!(AccountTransferController.existeTransferencia(id)))
             {
-                throw new IllegalArgumentException("No existe un prestamo registrado con este id.");
+                throw new IllegalArgumentException("No existe un registro de transferencia con este id.");
             }
+
             session.beginTransaction();
-            GroupLoan prestamo = PrestamoGrupoControlador.obtenerPrestamo(id);
-            session.remove(prestamo);
+            AccountTransfer transferencia = AccountTransferController.obtenerTransferencia(id);
+
+            session.remove(transferencia);
             session.getTransaction().commit();
+
             return true;
         }
 
@@ -210,5 +219,5 @@ public class PrestamoGrupoControlador
             sessionFactory.close();
         }
     }
-    
+
 }

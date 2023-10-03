@@ -14,8 +14,7 @@ public class DavankApplication
 	{
 		SpringApplication.run(DavankApplication.class, args);
 		System.out.println(Color.color("RED","El servidor local del proyecto Spring Boot está encendido. Todo lo que veas depués de este mensaje son los request"));
-		//double totalDepositado = org.davshaw.Controller.UsuarioControlador.totalDepositos(123, 2);
-		double total = org.davshaw.Controller.DepositoGrupoControlador.totalDepositos(152);
+		double total = org.davshaw.Controller.GroupDepositController.totalDepositos(152);
 		System.out.println(total);
 	}
 }

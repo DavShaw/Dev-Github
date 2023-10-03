@@ -8,7 +8,7 @@ import org.davshaw.Model.pureentities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class UsuarioControlador
+public class UserController
 {
 
     /*
@@ -85,7 +85,7 @@ public class UsuarioControlador
             session.getTransaction().commit();
             
             //Controlador de Cuentas
-            CuentaControlador.crearCuenta(dni);
+            AccountController.crearCuenta(dni);
             
 
             return "Usuario creado correctamente.";
@@ -156,7 +156,7 @@ public class UsuarioControlador
     
         try
         {
-            if((UsuarioControlador.existeUsuario(dni)))
+            if((UserController.existeUsuario(dni)))
             {
                 User usuario = session.get(User.class, dni);
                 
@@ -234,7 +234,7 @@ public class UsuarioControlador
         try
         {
             //Verificar que exista
-            if(UsuarioControlador.existeUsuario(dni))
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -282,7 +282,7 @@ public class UsuarioControlador
         try
         {
             //Verificar que exista
-            if(UsuarioControlador.existeUsuario(dni))
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -330,7 +330,7 @@ public class UsuarioControlador
         try
         {
             //Verificar que exista
-            if(UsuarioControlador.existeUsuario(dni))
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -378,7 +378,7 @@ public class UsuarioControlador
         try
         {
             //Verificar que exista
-            if(UsuarioControlador.existeUsuario(dni))
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
 
@@ -426,7 +426,7 @@ public class UsuarioControlador
         try
         {
             //!Verificar que exista
-            if(UsuarioControlador.existeUsuario(dni))
+            if(UserController.existeUsuario(dni))
             {
                 session.beginTransaction();
                 User usuario = session.get(User.class, dni);
@@ -479,7 +479,7 @@ public class UsuarioControlador
         try
         {
             //Verificar que el usuario exista
-            if(!(UsuarioControlador.existeUsuario(usuariodni)))
+            if(!(UserController.existeUsuario(usuariodni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }
@@ -521,13 +521,13 @@ public class UsuarioControlador
         try
         {
             //Verificar que el grupo exista
-            if(!(GrupoControlador.existeGrupo(grupoid)))
+            if(!(GroupController.existeGrupo(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
             
             //Verificar que el usuario no este en mas de >= 3 grupos
-            else if(UsuarioControlador.contadorGrupos(usuariodni) >= 3)
+            else if(UserController.contadorGrupos(usuariodni) >= 3)
             {
                 throw new IllegalArgumentException("El usuario está en el máximo de grupos permitidos.");
             }
@@ -570,19 +570,19 @@ public class UsuarioControlador
         try
         {
             //Verificar que el usuario este en al menos un grupo
-            if(UsuarioControlador.contadorGrupos(usuariodni) <= 0)
+            if(UserController.contadorGrupos(usuariodni) <= 0)
             {
                 throw new IllegalArgumentException("El usuario no está en ningún grupo.");
             }
 
             //Verificar que el grupo exista
-            else if(!(GrupoControlador.existeGrupo(grupoid)))
+            else if(!(GroupController.existeGrupo(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Obtener ID del registro
-            Integer registroId = UsuarioControlador.obtenerRegistroId(usuariodni, grupoid);
+            Integer registroId = UserController.obtenerRegistroId(usuariodni, grupoid);
 
             //Verificar que el registroId no sea null (No existe el registro)
             if (registroId == null)
@@ -592,7 +592,7 @@ public class UsuarioControlador
 
             session.beginTransaction();
 
-            GroupLog registro = RegistroGrupoControlador.obtenerRegistro(registroId);
+            GroupLog registro = GroupLogController.obtenerRegistro(registroId);
             session.remove(registro);
 
             session.getTransaction().commit();
@@ -625,13 +625,13 @@ public class UsuarioControlador
         try
         {
             //Verificar que el grupo exista
-            if(!(GrupoControlador.existeGrupo(grupoid)))
+            if(!(GroupController.existeGrupo(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Verificar que el usuario exista
-            else if(!(UsuarioControlador.existeUsuario(usuariodni)))
+            else if(!(UserController.existeUsuario(usuariodni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }
