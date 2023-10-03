@@ -14,6 +14,10 @@ Controladores:
         * For Groups
             - Pensar la lógica de ingresos/salidas a grupos... -> DONE
             - Pensar servicio para ingresar registro de grupos no nativos....
+
+    * For controllers
+        * For GroupController
+            - Fix method "obtener participantes"
             
 Notas:
     * Problemas:

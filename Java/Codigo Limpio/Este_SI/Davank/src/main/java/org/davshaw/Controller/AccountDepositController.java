@@ -77,9 +77,9 @@ public class AccountDepositController
 
             //Haciendo el registro del deposito
             AccountDeposit depositoCuenta = new AccountDeposit();
-            depositoCuenta.setCuentaId(AccountController.obtenerNumeroCuenta(titularDniCuenta));
-            depositoCuenta.setFechaHora(new Date());
-            depositoCuenta.setMonto(monto);
+            depositoCuenta.setAccountId(AccountController.obtenerNumeroCuenta(titularDniCuenta));
+            depositoCuenta.setDateTime(new Date());
+            depositoCuenta.setBalance(monto);
 
             //Guardando el registro del deposito
             session.persist(depositoCuenta);

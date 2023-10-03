@@ -82,9 +82,9 @@ public class AccountWithdrawalController
                 AccountController.retirarSaldo(titularDniCuenta, monto);
                 //Crear registro del retiro
                 AccountWithdrawal retiro = new AccountWithdrawal();
-                retiro.setFechaHora(new Date());
-                retiro.setMonto(monto);
-                retiro.setNumeroCuenta(AccountController.obtenerNumeroCuenta(titularDniCuenta));
+                retiro.setDateTime(new Date());
+                retiro.setBalance(monto);
+                retiro.setAccountNumber(AccountController.obtenerNumeroCuenta(titularDniCuenta));
 
                 session.persist(retiro);
                 session.getTransaction().commit();

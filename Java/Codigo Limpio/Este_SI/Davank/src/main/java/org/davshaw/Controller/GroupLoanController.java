@@ -8,44 +8,6 @@ import org.hibernate.query.Query;
 
 public class GroupLoanController
 {
-    /*
-    ! CRUD
-    ! C - Create DONE
-    ! R - Read DONE
-    ! U - Update DOESNT APPLY
-    ! D - Delete  DONE
-
-    ? Hibernate structure
-
-    SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Prestamos.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            session.beginTransaction();
-            session.persist(usuario);
-            session.getTransaction().commit();
-            
-
-            return TORETURN;
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return TORETURN;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    */
 
     public static Boolean hacerPrestamo(int registroId, double monto)
     {
@@ -75,8 +37,8 @@ public class GroupLoanController
 
             GroupLoan prestamo = new GroupLoan();
             //Establecer datos con setters (Reemplazando el constructor)
-            prestamo.setRegistroId(registroId);
-            prestamo.setMonto(monto);
+            prestamo.setLogId(registroId);
+            prestamo.setBalance(monto);
             session.persist(prestamo);
 
             session.getTransaction().commit();

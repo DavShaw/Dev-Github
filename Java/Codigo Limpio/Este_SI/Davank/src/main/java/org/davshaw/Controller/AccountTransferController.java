@@ -83,10 +83,10 @@ public class AccountTransferController
 
             //Iniciar creación del registro de la transferencia
             AccountTransfer transferencia = new AccountTransfer();
-            transferencia.setFechaHora(new Date());
-            transferencia.setMonto(monto);
-            transferencia.setNumeroCuentaDestino(AccountController.obtenerNumeroCuenta(titularDniCuentaDestino));
-            transferencia.setNumeroCuentaOrigen(AccountController.obtenerNumeroCuenta(titularDniCuentaOrigen));
+            transferencia.setDateTime(new Date());
+            transferencia.setBalance(monto);
+            transferencia.setDestinationAccountNumber(AccountController.obtenerNumeroCuenta(titularDniCuentaDestino));
+            transferencia.setOriginAccountNumber(AccountController.obtenerNumeroCuenta(titularDniCuentaOrigen));
 
             session.persist(transferencia);
 

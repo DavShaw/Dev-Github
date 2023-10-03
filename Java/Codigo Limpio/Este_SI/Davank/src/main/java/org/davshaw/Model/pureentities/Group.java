@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "Grupo")
+@Table(name = "Group")
 public class Group
 {
     @Id
@@ -26,12 +26,9 @@ public class Group
     @Column(name = "id")
     private int id;
 
-    @Column(name = "nombre")
-    private String nombre;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "saldo")
-    private double saldo = 0;
-
-    @Column(name = "numeroIntegrantes")
-    private int numeroIntegrantes = 0;
+    @Column(name = "balance")
+    private double balance = 0;
 }

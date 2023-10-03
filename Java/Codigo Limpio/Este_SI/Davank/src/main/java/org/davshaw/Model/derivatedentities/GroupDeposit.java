@@ -23,7 +23,7 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "DepositoGrupo")
+@Table(name = "GroupDeposit")
 public class GroupDeposit
 {
     @Id
@@ -33,16 +33,16 @@ public class GroupDeposit
 
     //? Clave foranea (Con RegistroGrupo)
     @ManyToOne(targetEntity = GroupLog.class)
-    @JoinColumn(name = "registroId", referencedColumnName = "id", insertable = false, updatable = false)
-    private GroupLog registro;
+    @JoinColumn(name = "logId", referencedColumnName = "id", insertable = false, updatable = false)
+    private GroupLog log;
 
-    @Column(name = "registroId")
-    private int registroId;
+    @Column(name = "logId")
+    private int logId;
 
-    @Column(name = "monto")
-    private double monto;
+    @Column(name = "balance")
+    private double balance;
 
-    @Column(name = "fechaHora")
+    @Column(name = "dateTime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHora;
+    private Date dateTime;
 }

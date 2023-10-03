@@ -19,22 +19,22 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "Cuenta")
+@Table(name = "Account")
 public class Account
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "numeroCuenta")
-    private int numeroCuenta;
+    @Column(name = "accountNumber")
+    private int accountNumber;
 
     //? Clave foranea (Con usuario)
     @OneToOne(targetEntity = User.class)
-    @JoinColumn(name = "titularDni", referencedColumnName = "dni", insertable = false, updatable = false)
-    private User titular;
+    @JoinColumn(name = "ownerDni", referencedColumnName = "dni", insertable = false, updatable = false)
+    private User owner;
 
-    @Column(name = "titularDni")
-    private int titularDni;
+    @Column(name = "ownerDni")
+    private int ownerDni;
 
-    @Column(name = "saldo")
-    private double saldo;
+    @Column(name = "balance")
+    private double balance;
 }

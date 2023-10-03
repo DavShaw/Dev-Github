@@ -25,7 +25,7 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "DepositoCuenta")
+@Table(name = "AccountDeposit")
 public class AccountDeposit
 {
     @Id
@@ -35,16 +35,16 @@ public class AccountDeposit
 
     //? Clave foranea (Con cuenta)
     @ManyToOne(targetEntity = Account.class)
-    @JoinColumn(name = "CuentaId", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
-    private Account cuenta;
+    @JoinColumn(name = "accountId", referencedColumnName = "accountNumber", insertable = false, updatable = false)
+    private Account account;
 
-    @Column(name = "cuentaId")
-    private int cuentaId;
+    @Column(name = "accountId")
+    private int accountId;
 
-    @Column(name = "monto")
-    private double monto;
+    @Column(name = "balance")
+    private double balance;
 
-    @Column(name = "fechaHora")
+    @Column(name = "dateTime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHora;
+    private Date dateTime;
 }

@@ -10,46 +10,6 @@ import org.hibernate.SessionFactory;
 
 public class UserController
 {
-
-    /*
-    ! CRUD
-    ! C - Create DONE
-    ! R - Read DONE
-    ! U - Update DONE
-    ! D - Delete  DONE
-
-    ? Hibernate structure
-
-    SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            session.beginTransaction();
-            session.persist(usuario);
-            session.getTransaction().commit();
-            
-
-            return TORETURN;
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return TORETURN;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    */
-
     public static String crearUsuario(
     int dni,
     String primerNombre,
@@ -72,11 +32,11 @@ public class UserController
             
             //Establecer datos con setters (Reemplazando el constructor)
             usuario.setDni(dni);
-            usuario.setPrimerNombre(primerNombre);
-            usuario.setSegundoNombre(segundoNombre);
-            usuario.setPrimerApellido(primerApellido);
-            usuario.setSegundoApellido(segundoApellido);
-            usuario.setContraseña(contraseña);
+            usuario.setFirstName(primerNombre);
+            usuario.setMiddleName(segundoNombre);
+            usuario.setFirstLastName(primerApellido);
+            usuario.setMiddleLastName(segundoApellido);
+            usuario.setPassword(contraseña);
 
             session.beginTransaction();
             
@@ -240,7 +200,7 @@ public class UserController
 
                 User usuario = session.get(User.class, dni);
 
-                usuario.setPrimerNombre(nombre);
+                usuario.setFirstName(nombre);
                 session.merge(usuario);
 
                 session.getTransaction().commit();
@@ -288,7 +248,7 @@ public class UserController
 
                 User usuario = session.get(User.class, dni);
 
-                usuario.setSegundoNombre(nombre);
+                usuario.setMiddleName(nombre);
                 session.merge(usuario);
 
                 session.getTransaction().commit();
@@ -336,7 +296,7 @@ public class UserController
 
                 User usuario = session.get(User.class, dni);
 
-                usuario.setPrimerApellido(apellido);
+                usuario.setFirstLastName(apellido);
                 session.merge(usuario);
 
                 session.getTransaction().commit();
@@ -384,7 +344,7 @@ public class UserController
 
                 User usuario = session.get(User.class, dni);
 
-                usuario.setSegundoApellido(apellido);
+                usuario.setMiddleLastName(apellido);
                 session.merge(usuario);
 
                 session.getTransaction().commit();
@@ -431,9 +391,9 @@ public class UserController
                 session.beginTransaction();
                 User usuario = session.get(User.class, dni);
                 //!Verificar que la contraseña concuerde
-                if(usuario.getContraseña().equals(contrasena))
+                if(usuario.getPassword().equals(contrasena))
                 {
-                    usuario.setContraseña(nuevaContrasena);
+                    usuario.setPassword(nuevaContrasena);
                     session.merge(usuario);
     
                     session.getTransaction().commit();
@@ -534,9 +494,9 @@ public class UserController
             session.beginTransaction();
 
             GroupLog registro = new GroupLog();
-            registro.setGrupoId(grupoid);
-            registro.setNativo(true);
-            registro.setUsuarioDni(usuariodni);
+            registro.setGroupId(grupoid);
+            registro.setNativeFlag(true);
+            registro.setOwnerDni(usuariodni);
 
             session.persist(registro);
 

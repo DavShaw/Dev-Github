@@ -9,45 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-/*
-    ! CRUD
-    ! C - Create DONE
-    ! R - Read DONE
-    ! U - Update DOESNT APPLY
-    ! D - Delete  DONE
-
-    ? Hibernate structure
-
-    SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TransferenciaCuenta.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            session.beginTransaction();
-            session.persist(usuario);
-            session.getTransaction().commit();
-            
-
-            return TORETURN;
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return TORETURN;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    */
-
 public class GroupDepositController
 {
 
@@ -81,9 +42,9 @@ public class GroupDepositController
 
                     //Crear el registro
                     GroupDeposit deposito = new GroupDeposit();
-                    deposito.setFechaHora(new Date());
-                    deposito.setMonto(monto);
-                    deposito.setRegistroId(registroId);
+                    deposito.setDateTime(new Date());
+                    deposito.setBalance(monto);
+                    deposito.setLogId(registroId);
 
                     session.persist(deposito);
 

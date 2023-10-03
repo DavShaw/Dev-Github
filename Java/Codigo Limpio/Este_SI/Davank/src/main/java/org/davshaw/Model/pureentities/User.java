@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "Usuario")
+@Table(name = "User")
 public class User
 {
 
@@ -23,18 +23,18 @@ public class User
     @Column(name = "dni")
     private int dni;
 
-    @Column(name = "primerNombre")
-    private String primerNombre;
+    @Column(name = "firstName")
+    private String firstName;
 
-    @Column(name = "segundoNombre")
-    private String segundoNombre;
+    @Column(name = "middleName")
+    private String middleName;
 
-    @Column(name = "primerApellido")
-    private String primerApellido;
+    @Column(name = "firstLastName")
+    private String firstLastName;
 
-    @Column(name = "segundoApellido")
-    private String segundoApellido;
+    @Column(name = "middleLastName")
+    private String middleLastName;
 
-    @Column(name = "contraseña")
-    private String contraseña;
+    @Column(name = "password")
+    private String password;
 }

@@ -8,45 +8,6 @@ import org.hibernate.query.Query;
 
 public class GroupLogController
 {
-    /*
-    ! CRUD
-    ! C - Create DONE
-    ! R - Read DONE
-    ! U - Update DONE
-    ! D - Delete  DONE
-
-    ? Hibernate structure
-
-    SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupos.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            session.beginTransaction();
-            session.persist(usuario);
-            session.getTransaction().commit();
-            
-
-            return TORETURN;
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return TORETURN;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    */
-
     public static String crearRegistro(int usuarioDni, int grupoId, Boolean nativo)
     {
         SessionFactory sessionFactory = new Configuration()
@@ -75,9 +36,9 @@ public class GroupLogController
 
                 GroupLog registro = new GroupLog();
                 //Establecer datos con setters (Reemplazando el constructor)
-                registro.setUsuarioDni(usuarioDni);
-                registro.setGrupoId(grupoId);
-                registro.setNativo(nativo);
+                registro.setOwnerDni(usuarioDni);
+                registro.setGroupId(grupoId);
+                registro.setNativeFlag(nativo);
 
                 session.persist(registro);
                 session.getTransaction().commit();
@@ -190,7 +151,7 @@ public class GroupLogController
             //Obtener objeto
             GroupLog registro = GroupLogController.obtenerRegistro(id);
 
-            return registro.getUsuarioDni();
+            return registro.getOwnerDni();
         }
 
         catch (Exception e)
@@ -226,7 +187,7 @@ public class GroupLogController
             //Obtener objeto
             GroupLog registro = GroupLogController.obtenerRegistro(id);
 
-            return registro.getGrupoId();
+            return registro.getGroupId();
         }
 
         catch (Exception e)
@@ -262,7 +223,7 @@ public class GroupLogController
             //Obtener objeto
             GroupLog registro = GroupLogController.obtenerRegistro(id);
 
-            return registro.isNativo();
+            return registro.isNativeFlag();
         }
 
         catch (Exception e)

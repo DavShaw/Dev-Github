@@ -24,7 +24,7 @@ import org.davshaw.Model.pureentities.Account;
 @ToString
 
 @Entity
-@Table(name = "RetiroCuenta")
+@Table(name = "AccountWithdrawal")
 public class AccountWithdrawal
 {
     @Id
@@ -34,16 +34,16 @@ public class AccountWithdrawal
 
     //? Clave foranea (Con Cuenta)
     @ManyToOne(targetEntity = Account.class)
-    @JoinColumn(name = "numeroCuenta", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
-    private Account cuenta;
+    @JoinColumn(name = "accountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
+    private Account account;
 
-    @Column(name = "numeroCuenta")
-    private int numeroCuenta;
+    @Column(name = "accountNumber")
+    private int accountNumber;
 
-    @Column(name = "monto")
-    private double monto;
+    @Column(name = "balance")
+    private double balance;
 
-    @Column(name = "fechaHora")
+    @Column(name = "dateTime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHora;
+    private Date dateTime;
 }

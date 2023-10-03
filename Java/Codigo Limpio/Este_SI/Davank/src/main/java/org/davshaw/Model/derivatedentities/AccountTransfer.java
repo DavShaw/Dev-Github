@@ -24,7 +24,7 @@ import org.davshaw.Model.pureentities.Account;
 @ToString
 
 @Entity
-@Table(name = "TransferenciaCuenta")
+@Table(name = "AccountTransfer")
 public class AccountTransfer
 {
     @Id
@@ -34,24 +34,24 @@ public class AccountTransfer
 
     //?Clave foranea (Con cuenta)
     @ManyToOne(targetEntity = Account.class)
-    @JoinColumn(name = "numeroCuentaOrigen", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
-    private Account cuentaOrigen;
+    @JoinColumn(name = "originAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
+    private Account originAccount;
 
-    @Column(name = "numeroCuentaOrigen")
-    private int numeroCuentaOrigen;
+    @Column(name = "originAccountNumber")
+    private int originAccountNumber;
 
     //?Clave foranea (Con cuenta)
     @ManyToOne(targetEntity = Account.class)
-    @JoinColumn(name = "numeroCuentaDestino", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
-    private Account cuentaDestino;
+    @JoinColumn(name = "destinationAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
+    private Account destinationAccount;
 
-    @Column(name = "numeroCuentaDestino")
-    private int numeroCuentaDestino;
+    @Column(name = "destinationAccountNumber")
+    private int destinationAccountNumber;
 
-    @Column(name = "monto")
-    private double monto;
+    @Column(name = "balance")
+    private double balance;
 
-    @Column(name = "fechaHora")
+    @Column(name = "dateTime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHora;
+    private Date dateTime;
 }

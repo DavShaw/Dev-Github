@@ -22,7 +22,7 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "RegistroGrupo")
+@Table(name = "GroupLog")
 public class GroupLog
 {
     @Id
@@ -32,20 +32,20 @@ public class GroupLog
 
     //?Clave foranea (Con grupo)
     @ManyToOne(targetEntity = Group.class)
-    @JoinColumn(name = "grupoId", referencedColumnName = "id", insertable = false, updatable = false)
-    private Group grupo;
+    @JoinColumn(name = "groupId", referencedColumnName = "id", insertable = false, updatable = false)
+    private Group group;
 
-    @Column(name = "grupoId")
-    private int grupoId;
+    @Column(name = "groupId")
+    private int groupId;
 
     //?Clave foranea (Con usuario)
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "usuarioDni", referencedColumnName = "dni", insertable = false, updatable = false)
-    private User usuario;
+    @JoinColumn(name = "ownerDni", referencedColumnName = "dni", insertable = false, updatable = false)
+    private User owner;
 
-    @Column(name = "usuarioDni")
-    private int usuarioDni;
+    @Column(name = "ownerDni")
+    private int ownerDni;
 
-    @Column(name = "nativo")
-    private boolean nativo;
+    @Column(name = "nativeFlag")
+    private boolean nativeFlag;
 }

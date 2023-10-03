@@ -68,7 +68,7 @@ public class AccountController
                 Account cuenta = new Account();
 
                 //Establecer datos con setters (Reemplazando el constructor)
-                cuenta.setTitularDni(dni);
+                cuenta.setOwnerDni(dni);
 
                 session.beginTransaction();
                 session.persist(cuenta);
@@ -238,8 +238,8 @@ public class AccountController
                 Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
 
                 //Obtener saldo actual
-                double nuevoSaldo = cuenta.getSaldo() + monto;
-                cuenta.setSaldo(nuevoSaldo);
+                double nuevoSaldo = cuenta.getBalance() + monto;
+                cuenta.setBalance(nuevoSaldo);
 
                 session.merge(cuenta);
 
@@ -297,8 +297,8 @@ public class AccountController
                 Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
 
                 //Obtener saldo actual
-                double nuevoSaldo = cuenta.getSaldo() - monto;
-                cuenta.setSaldo(nuevoSaldo);
+                double nuevoSaldo = cuenta.getBalance() - monto;
+                cuenta.setBalance(nuevoSaldo);
 
                 session.merge(cuenta);
 
@@ -347,7 +347,7 @@ public class AccountController
             if(AccountController.existeCuenta(titularDni))
             {
                 Account cuenta = AccountController.obtenerCuenta(titularDni);
-                return cuenta.getSaldo();
+                return cuenta.getBalance();
             }
             
             else
