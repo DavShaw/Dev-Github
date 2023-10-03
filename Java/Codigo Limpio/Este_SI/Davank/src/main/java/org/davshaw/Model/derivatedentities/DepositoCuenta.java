@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import org.davshaw.Model.pureentities.Cuenta;
+import org.davshaw.Model.pureentities.Account;
 import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +34,9 @@ public class DepositoCuenta
     private int id;
 
     //? Clave foranea (Con cuenta)
-    @ManyToOne(targetEntity = Cuenta.class)
+    @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "CuentaId", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
-    private Cuenta cuenta;
+    private Account cuenta;
 
     @Column(name = "cuentaId")
     private int cuentaId;

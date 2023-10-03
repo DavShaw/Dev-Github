@@ -16,7 +16,7 @@ import lombok.Setter;
 import lombok.ToString;
 import java.util.Date;
 
-import org.davshaw.Model.pureentities.Cuenta;
+import org.davshaw.Model.pureentities.Account;
 
 @Setter
 @Getter
@@ -33,17 +33,17 @@ public class TransferenciaCuenta
     private int id;
 
     //?Clave foranea (Con cuenta)
-    @ManyToOne(targetEntity = Cuenta.class)
+    @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "numeroCuentaOrigen", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
-    private Cuenta cuentaOrigen;
+    private Account cuentaOrigen;
 
     @Column(name = "numeroCuentaOrigen")
     private int numeroCuentaOrigen;
 
     //?Clave foranea (Con cuenta)
-    @ManyToOne(targetEntity = Cuenta.class)
+    @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "numeroCuentaDestino", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
-    private Cuenta cuentaDestino;
+    private Account cuentaDestino;
 
     @Column(name = "numeroCuentaDestino")
     private int numeroCuentaDestino;

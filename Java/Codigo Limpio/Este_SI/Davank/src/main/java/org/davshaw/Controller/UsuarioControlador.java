@@ -4,7 +4,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import org.davshaw.Model.derivatedentities.RegistroGrupo;
-import org.davshaw.Model.pureentities.Usuario;
+import org.davshaw.Model.pureentities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -60,7 +60,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -68,7 +68,7 @@ public class UsuarioControlador
         try
         {
 
-            Usuario usuario = new Usuario();
+            User usuario = new User();
             
             //Establecer datos con setters (Reemplazando el constructor)
             usuario.setDni(dni);
@@ -110,7 +110,7 @@ public class UsuarioControlador
         SessionFactory sessionFactory = new
         Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -149,7 +149,7 @@ public class UsuarioControlador
         SessionFactory sessionFactory = new
         Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
     
         Session session = sessionFactory.openSession();
@@ -158,7 +158,7 @@ public class UsuarioControlador
         {
             if((UsuarioControlador.existeUsuario(dni)))
             {
-                Usuario usuario = session.get(Usuario.class, dni);
+                User usuario = session.get(User.class, dni);
                 
                 session.beginTransaction();
                 session.remove(usuario);
@@ -189,11 +189,11 @@ public class UsuarioControlador
         }
     }
 
-    public static Usuario obtenerUsuario(int dni)
+    public static User obtenerUsuario(int dni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -202,7 +202,7 @@ public class UsuarioControlador
         {
             session.beginTransaction();
 
-            Usuario usuario = session.get(Usuario.class, dni);
+            User usuario = session.get(User.class, dni);
 
             session.getTransaction().commit();
 
@@ -226,7 +226,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -238,7 +238,7 @@ public class UsuarioControlador
             {
                 session.beginTransaction();
 
-                Usuario usuario = session.get(Usuario.class, dni);
+                User usuario = session.get(User.class, dni);
 
                 usuario.setPrimerNombre(nombre);
                 session.merge(usuario);
@@ -274,7 +274,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -286,7 +286,7 @@ public class UsuarioControlador
             {
                 session.beginTransaction();
 
-                Usuario usuario = session.get(Usuario.class, dni);
+                User usuario = session.get(User.class, dni);
 
                 usuario.setSegundoNombre(nombre);
                 session.merge(usuario);
@@ -322,7 +322,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -334,7 +334,7 @@ public class UsuarioControlador
             {
                 session.beginTransaction();
 
-                Usuario usuario = session.get(Usuario.class, dni);
+                User usuario = session.get(User.class, dni);
 
                 usuario.setPrimerApellido(apellido);
                 session.merge(usuario);
@@ -370,7 +370,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -382,7 +382,7 @@ public class UsuarioControlador
             {
                 session.beginTransaction();
 
-                Usuario usuario = session.get(Usuario.class, dni);
+                User usuario = session.get(User.class, dni);
 
                 usuario.setSegundoApellido(apellido);
                 session.merge(usuario);
@@ -418,7 +418,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -429,7 +429,7 @@ public class UsuarioControlador
             if(UsuarioControlador.existeUsuario(dni))
             {
                 session.beginTransaction();
-                Usuario usuario = session.get(Usuario.class, dni);
+                User usuario = session.get(User.class, dni);
                 //!Verificar que la contraseña concuerde
                 if(usuario.getContraseña().equals(contrasena))
                 {
@@ -471,7 +471,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -513,7 +513,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -562,7 +562,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -617,7 +617,7 @@ public class UsuarioControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Usuario.class)
+        .addAnnotatedClass(User.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();

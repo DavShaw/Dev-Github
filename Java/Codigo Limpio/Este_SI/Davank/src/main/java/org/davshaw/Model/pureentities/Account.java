@@ -20,7 +20,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "Cuenta")
-public class Cuenta
+public class Account
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,9 +28,9 @@ public class Cuenta
     private int numeroCuenta;
 
     //? Clave foranea (Con usuario)
-    @OneToOne(targetEntity = Usuario.class)
+    @OneToOne(targetEntity = User.class)
     @JoinColumn(name = "titularDni", referencedColumnName = "dni", insertable = false, updatable = false)
-    private Usuario titular;
+    private User titular;
 
     @Column(name = "titularDni")
     private int titularDni;

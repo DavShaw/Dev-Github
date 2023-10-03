@@ -16,7 +16,7 @@ import lombok.Setter;
 import lombok.ToString;
 import java.util.Date;
 
-import org.davshaw.Model.pureentities.Cuenta;
+import org.davshaw.Model.pureentities.Account;
 
 @Setter
 @Getter
@@ -33,9 +33,9 @@ public class RetiroCuenta
     private int id;
 
     //? Clave foranea (Con Cuenta)
-    @ManyToOne(targetEntity = Cuenta.class)
+    @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "numeroCuenta", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
-    private Cuenta cuenta;
+    private Account cuenta;
 
     @Column(name = "numeroCuenta")
     private int numeroCuenta;

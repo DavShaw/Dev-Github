@@ -1,6 +1,6 @@
 package org.davshaw.Controller;
 
-import org.davshaw.Model.pureentities.Grupo;
+import org.davshaw.Model.pureentities.Group;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -52,7 +52,7 @@ public class GrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -61,7 +61,7 @@ public class GrupoControlador
         {
             session.beginTransaction();
             
-            Grupo grupo = new Grupo();
+            Group grupo = new Group();
             //Establecer datos con setters (Reemplazando el constructor)
             grupo.setNombre(nombre);
 
@@ -88,7 +88,7 @@ public class GrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -116,11 +116,11 @@ public class GrupoControlador
         }
     }
 
-    public static Grupo obtenerGrupo(int id)
+    public static Group obtenerGrupo(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -131,7 +131,7 @@ public class GrupoControlador
             {
                 session.beginTransaction();
 
-                Grupo grupo = session.get(Grupo.class, id);
+                Group grupo = session.get(Group.class, id);
 
                 session.getTransaction().commit();
 
@@ -161,7 +161,7 @@ public class GrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -172,7 +172,7 @@ public class GrupoControlador
             {
                 session.beginTransaction();
 
-                Grupo grupo = session.get(Grupo.class, id);
+                Group grupo = session.get(Group.class, id);
 
                 session.getTransaction().commit();
 
@@ -202,7 +202,7 @@ public class GrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -213,7 +213,7 @@ public class GrupoControlador
             {
                 session.beginTransaction();
 
-                Grupo grupo = GrupoControlador.obtenerGrupo(id);
+                Group grupo = GrupoControlador.obtenerGrupo(id);
 
                 //Editar número integrantes
                 int nuevoNumeroIntegrantes = grupo.getNumeroIntegrantes() + 1;
@@ -250,7 +250,7 @@ public class GrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -261,7 +261,7 @@ public class GrupoControlador
             {
                 session.beginTransaction();
 
-                Grupo grupo = GrupoControlador.obtenerGrupo(id);
+                Group grupo = GrupoControlador.obtenerGrupo(id);
 
                 //Editar número integrantes
                 int nuevoNumeroIntegrantes = grupo.getNumeroIntegrantes() - 1;
@@ -298,7 +298,7 @@ public class GrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -309,7 +309,7 @@ public class GrupoControlador
             {
                 session.beginTransaction();
 
-                Grupo grupo = session.get(Grupo.class, id);
+                Group grupo = session.get(Group.class, id);
 
                 session.getTransaction().commit();
 
@@ -339,7 +339,7 @@ public class GrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -355,7 +355,7 @@ public class GrupoControlador
             {
                 session.beginTransaction();
 
-                Grupo grupo = GrupoControlador.obtenerGrupo(id);
+                Group grupo = GrupoControlador.obtenerGrupo(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getSaldo() + monto;
@@ -392,7 +392,7 @@ public class GrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Grupo.class)
+        .addAnnotatedClass(Group.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -408,7 +408,7 @@ public class GrupoControlador
             {
                 session.beginTransaction();
 
-                Grupo grupo = GrupoControlador.obtenerGrupo(id);
+                Group grupo = GrupoControlador.obtenerGrupo(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getSaldo() - monto;

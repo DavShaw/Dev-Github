@@ -1,7 +1,7 @@
 package org.davshaw.Model.derivatedentities;
 
-import org.davshaw.Model.pureentities.Grupo;
-import org.davshaw.Model.pureentities.Usuario;
+import org.davshaw.Model.pureentities.Group;
+import org.davshaw.Model.pureentities.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,17 +31,17 @@ public class RegistroGrupo
     private int id;
 
     //?Clave foranea (Con grupo)
-    @ManyToOne(targetEntity = Grupo.class)
+    @ManyToOne(targetEntity = Group.class)
     @JoinColumn(name = "grupoId", referencedColumnName = "id", insertable = false, updatable = false)
-    private Grupo grupo;
+    private Group grupo;
 
     @Column(name = "grupoId")
     private int grupoId;
 
     //?Clave foranea (Con usuario)
-    @ManyToOne(targetEntity = Usuario.class)
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "usuarioDni", referencedColumnName = "dni", insertable = false, updatable = false)
-    private Usuario usuario;
+    private User usuario;
 
     @Column(name = "usuarioDni")
     private int usuarioDni;

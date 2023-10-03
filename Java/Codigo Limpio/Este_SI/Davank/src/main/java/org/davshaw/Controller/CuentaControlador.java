@@ -3,7 +3,7 @@ package org.davshaw.Controller;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.davshaw.External.Color;
-import org.davshaw.Model.pureentities.Cuenta;
+import org.davshaw.Model.pureentities.Account;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -55,7 +55,7 @@ public class CuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
+        .addAnnotatedClass(Account.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -65,7 +65,7 @@ public class CuentaControlador
             //Verificar que no exista otra cuenta con el titularDni igual
             if(!CuentaControlador.existeCuenta(dni))
             {
-                Cuenta cuenta = new Cuenta();
+                Account cuenta = new Account();
 
                 //Establecer datos con setters (Reemplazando el constructor)
                 cuenta.setTitularDni(dni);
@@ -108,7 +108,7 @@ public class CuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
+        .addAnnotatedClass(Account.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -140,7 +140,7 @@ public class CuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
+        .addAnnotatedClass(Account.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -168,11 +168,11 @@ public class CuentaControlador
         }
     }
 
-    public static Cuenta obtenerCuenta(int titularDni)
+    public static Account obtenerCuenta(int titularDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
+        .addAnnotatedClass(Account.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -184,7 +184,7 @@ public class CuentaControlador
             {
                 session.beginTransaction();
 
-                Cuenta cuenta = session.get(Cuenta.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
 
                 session.getTransaction().commit();
                 return cuenta;
@@ -219,7 +219,7 @@ public class CuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
+        .addAnnotatedClass(Account.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -235,7 +235,7 @@ public class CuentaControlador
             {
                 session.beginTransaction();
 
-                Cuenta cuenta = session.get(Cuenta.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
 
                 //Obtener saldo actual
                 double nuevoSaldo = cuenta.getSaldo() + monto;
@@ -278,7 +278,7 @@ public class CuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
+        .addAnnotatedClass(Account.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -294,7 +294,7 @@ public class CuentaControlador
             {
                 session.beginTransaction();
 
-                Cuenta cuenta = session.get(Cuenta.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
 
                 //Obtener saldo actual
                 double nuevoSaldo = cuenta.getSaldo() - monto;
@@ -337,7 +337,7 @@ public class CuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
+        .addAnnotatedClass(Account.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -346,7 +346,7 @@ public class CuentaControlador
         {
             if(CuentaControlador.existeCuenta(titularDni))
             {
-                Cuenta cuenta = CuentaControlador.obtenerCuenta(titularDni);
+                Account cuenta = CuentaControlador.obtenerCuenta(titularDni);
                 return cuenta.getSaldo();
             }
             
@@ -380,7 +380,7 @@ public class CuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
+        .addAnnotatedClass(Account.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -391,7 +391,7 @@ public class CuentaControlador
             {
                 session.beginTransaction();
 
-                Cuenta cuenta = session.get(Cuenta.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, CuentaControlador.obtenerNumeroCuenta(titularDni));
 
                 session.remove(cuenta);
 

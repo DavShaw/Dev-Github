@@ -16,7 +16,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "Usuario")
-public class Usuario
+public class User
 {
 
     @Id
