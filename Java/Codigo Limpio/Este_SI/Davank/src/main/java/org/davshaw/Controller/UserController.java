@@ -65,7 +65,7 @@ public class UserController
 
     }
 
-    public static Boolean userExist(int dni)
+    public static Boolean userExist(int userDni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -78,15 +78,15 @@ public class UserController
 
         try
         {
-            String sql = "SELECT COUNT(*) FROM User WHERE dni = :dni";
+            String sql = "SELECT COUNT(*) FROM User WHERE userDni = :userDni";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
-            query.setParameter("dni", dni);
+            query.setParameter("userDni", userDni);
 
     
-            // Obtener el resultado de la consulta (cantidad de usuarios con el DNI dado)
+            // Obtener el resultado de la consulta (cantidad de usuarios con el userDni dado)
             int count = ((Number) query.uniqueResult()).intValue();
     
-            // Si count es mayor que 0, significa que existe un usuario con ese DNI
+            // Si count es mayor que 0, significa que existe un usuario con ese userDni
             return count > 0;
         }
         
@@ -104,7 +104,7 @@ public class UserController
     
     }
 
-    public String deleteUser(int dni)
+    public String deleteUser(int userDni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -116,9 +116,9 @@ public class UserController
     
         try
         {
-            if((UserController.userExist(dni)))
+            if((UserController.userExist(userDni)))
             {
-                User usuario = session.get(User.class, dni);
+                User usuario = session.get(User.class, userDni);
                 
                 session.beginTransaction();
                 session.remove(usuario);
@@ -149,7 +149,7 @@ public class UserController
         }
     }
 
-    public static User getUser(int dni)
+    public static User getUser(int userDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -162,7 +162,7 @@ public class UserController
         {
             session.beginTransaction();
 
-            User usuario = session.get(User.class, dni);
+            User usuario = session.get(User.class, userDni);
 
             session.getTransaction().commit();
 
@@ -182,7 +182,7 @@ public class UserController
         }
     }
 
-    public static String changeFirstName(int dni, String name)
+    public static String changeFirstName(int userDni, String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -194,11 +194,11 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.userExist(dni))
+            if(UserController.userExist(userDni))
             {
                 session.beginTransaction();
 
-                User usuario = session.get(User.class, dni);
+                User usuario = session.get(User.class, userDni);
 
                 usuario.setFirstName(name);
                 session.merge(usuario);
@@ -212,7 +212,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este DNI");
+                throw new IllegalArgumentException("No existe un usuario con este userDni");
             }
 
         }
@@ -230,7 +230,7 @@ public class UserController
         }
     }
 
-    public static String changeMiddleName(int dni, String name)
+    public static String changeMiddleName(int userDni, String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -242,11 +242,11 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.userExist(dni))
+            if(UserController.userExist(userDni))
             {
                 session.beginTransaction();
 
-                User usuario = session.get(User.class, dni);
+                User usuario = session.get(User.class, userDni);
 
                 usuario.setMiddleName(name);
                 session.merge(usuario);
@@ -260,7 +260,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este DNI");
+                throw new IllegalArgumentException("No existe un usuario con este userDni");
             }
 
         }
@@ -278,7 +278,7 @@ public class UserController
         }
     }
 
-    public static String changeFirstLastName(int dni, String lastName)
+    public static String changeFirstLastName(int userDni, String lastName)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -290,11 +290,11 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.userExist(dni))
+            if(UserController.userExist(userDni))
             {
                 session.beginTransaction();
 
-                User usuario = session.get(User.class, dni);
+                User usuario = session.get(User.class, userDni);
 
                 usuario.setFirstLastName(lastName);
                 session.merge(usuario);
@@ -308,7 +308,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este DNI");
+                throw new IllegalArgumentException("No existe un usuario con este userDni");
             }
 
         }
@@ -326,7 +326,7 @@ public class UserController
         }
     }
 
-    public static String changeMiddleLastName(int dni, String lastName)
+    public static String changeMiddleLastName(int userDni, String lastName)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -338,11 +338,11 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.userExist(dni))
+            if(UserController.userExist(userDni))
             {
                 session.beginTransaction();
 
-                User usuario = session.get(User.class, dni);
+                User usuario = session.get(User.class, userDni);
 
                 usuario.setMiddleLastName(lastName);
                 session.merge(usuario);
@@ -356,7 +356,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este DNI");
+                throw new IllegalArgumentException("No existe un usuario con este userDni");
             }
 
         }
@@ -374,7 +374,7 @@ public class UserController
         }
     }
 
-    public static String changePassword(int dni, String password, String newPassword)
+    public static String changePassword(int userDni, String password, String newPassword)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -386,10 +386,10 @@ public class UserController
         try
         {
             //!Verificar que exista
-            if(UserController.userExist(dni))
+            if(UserController.userExist(userDni))
             {
                 session.beginTransaction();
-                User usuario = session.get(User.class, dni);
+                User usuario = session.get(User.class, userDni);
                 //!Verificar que la contraseña concuerde
                 if(usuario.getPassword().equals(password))
                 {
@@ -409,7 +409,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este DNI");
+                throw new IllegalArgumentException("No existe un usuario con este userDni");
             }
 
         }

@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountDepositController
 {
-    public static Boolean deposit(int ownerDin, double balance)
+    public static Boolean deposit(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -23,7 +23,7 @@ public class AccountDepositController
         try
         {
             //Verificar que la cuenta exista
-            if(!(AccountController.accountExist(ownerDin)))
+            if(!(AccountController.accountExist(ownerDni)))
             {
                 throw new IllegalArgumentException("La cuenta no existen.");
             }
@@ -31,11 +31,11 @@ public class AccountDepositController
             session.beginTransaction();
 
             //Haciendo el deposito
-            AccountController.addBalance(ownerDin, balance);
+            AccountController.addBalance(ownerDni, balance);
 
             //Haciendo el registro del deposito
             AccountDeposit depositoCuenta = new AccountDeposit();
-            depositoCuenta.setAccountId(AccountController.getAccountNumber(ownerDin));
+            depositoCuenta.setAccountId(AccountController.getAccountNumber(ownerDni));
             depositoCuenta.setDateTime(new Date());
             depositoCuenta.setBalance(balance);
 

@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 
 public class GroupLogController
 {
-    public static String createLog(int ownerDni, int groupId, Boolean nativeFlag)
+    public static String createLog(int userDni, int groupId, Boolean nativeFlag)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -20,7 +20,7 @@ public class GroupLogController
         try
         {
             //Verificar que exista el usuario
-            if(!(UserController.userExist(ownerDni)))
+            if(!(UserController.userExist(userDni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este DNI.");
             }
@@ -36,7 +36,7 @@ public class GroupLogController
 
                 GroupLog registro = new GroupLog();
                 //Establecer datos con setters (Reemplazando el constructor)
-                registro.setUserDni(ownerDni);
+                registro.setUserDni(userDni);
                 registro.setGroupId(groupId);
                 registro.setNativeFlag(nativeFlag);
 
