@@ -12,11 +12,11 @@ public class UserController
 {
     public static String createUser(
     int dni,
-    String primerNombre,
-    String segundoNombre,
-    String primerApellido,
-    String segundoApellido,
-    String contraseña)
+    String firstName,
+    String middleName,
+    String firstLastName,
+    String middleLastName,
+    String password)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -32,11 +32,11 @@ public class UserController
             
             //Establecer datos con setters (Reemplazando el constructor)
             usuario.setDni(dni);
-            usuario.setFirstName(primerNombre);
-            usuario.setMiddleName(segundoNombre);
-            usuario.setFirstLastName(primerApellido);
-            usuario.setMiddleLastName(segundoApellido);
-            usuario.setPassword(contraseña);
+            usuario.setFirstName(firstName);
+            usuario.setMiddleName(middleName);
+            usuario.setFirstLastName(firstLastName);
+            usuario.setMiddleLastName(middleLastName);
+            usuario.setPassword(password);
 
             session.beginTransaction();
             
