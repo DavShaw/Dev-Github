@@ -9,48 +9,6 @@ import org.hibernate.SessionFactory;
 
 public class AccountController
 {
-
-    /*
-    ! CRUD
-    ! C - Create DONE
-    ! R - Read DONE
-    ! U - Update DONE
-    ! D - Delete  DONE
-
-    ? Hibernate structure
-
-    SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(Cuenta.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            session.beginTransaction();
-            session.persist(usuario);
-            session.getTransaction().commit();
-            
-
-            return TORETURN;
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return TORETURN;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-        
-
-    */
-
     public static String crearCuenta(int dni)
     {
         SessionFactory sessionFactory = new Configuration()
@@ -430,5 +388,4 @@ public class AccountController
     {
         return AccountController.obtenerSaldo(titularDni) >= monto;
     }
-
 }

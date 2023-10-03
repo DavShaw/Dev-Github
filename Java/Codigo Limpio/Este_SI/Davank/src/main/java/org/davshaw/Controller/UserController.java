@@ -2,11 +2,11 @@ package org.davshaw.Controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import org.davshaw.Model.derivatedentities.GroupLog;
 import org.davshaw.Model.pureentities.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 public class UserController
 {

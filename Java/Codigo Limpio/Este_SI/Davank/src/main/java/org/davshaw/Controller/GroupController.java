@@ -9,7 +9,6 @@ import org.hibernate.query.Query;
 
 public class GroupController
 {
-
     public static String crearGrupo(String nombre)
     {
         SessionFactory sessionFactory = new Configuration()
@@ -265,8 +264,4 @@ public class GroupController
             sessionFactory.close();
         }
     }
-
-
-
-
 }

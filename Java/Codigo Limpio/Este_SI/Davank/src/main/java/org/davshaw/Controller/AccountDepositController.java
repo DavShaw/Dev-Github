@@ -11,48 +11,6 @@ import org.hibernate.SessionFactory;
 
 public class AccountDepositController
 {
-
-    /*
-    ! CRUD
-    ! C - Create DONE
-    ! R - Read DONE
-    ! U - Update DOESNT APPLY
-    ! D - Delete  DONE
-
-    ? Hibernate structure
-
-    SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoCuenta.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            session.beginTransaction();
-            session.persist(usuario);
-            session.getTransaction().commit();
-            
-
-            return TORETURN;
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return TORETURN;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-        
-
-    */
-
     public static Boolean hacerDeposito(int titularDniCuenta, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
@@ -217,5 +175,4 @@ public class AccountDepositController
             sessionFactory.close();
         }
     }
-
 }

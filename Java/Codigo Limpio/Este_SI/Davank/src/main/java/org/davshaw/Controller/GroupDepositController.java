@@ -11,7 +11,6 @@ import org.hibernate.query.Query;
 
 public class GroupDepositController
 {
-
     public static Boolean hacerDeposito(int registroId, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
@@ -236,5 +235,4 @@ public class GroupDepositController
             sessionFactory.close();
         }
     }
-
 }

@@ -12,46 +12,6 @@ import org.hibernate.SessionFactory;
 
 public class AccountWithdrawalController
 {
-
-    /*
-    ! CRUD
-    ! C - Create DONE
-    ! R - Read DONE
-    ! U - Update DOESNT APPLY
-    ! D - Delete  DONE
-
-    ? Hibernate structure
-
-    SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RetiroCuenta.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            session.beginTransaction();
-            session.persist(usuario);
-            session.getTransaction().commit();
-            
-
-            return TORETURN;
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return TORETURN;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    */
-
     public static Boolean hacerRetiro(int titularDniCuenta, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
@@ -224,5 +184,4 @@ public class AccountWithdrawalController
             sessionFactory.close();
         }
     } 
-
 }

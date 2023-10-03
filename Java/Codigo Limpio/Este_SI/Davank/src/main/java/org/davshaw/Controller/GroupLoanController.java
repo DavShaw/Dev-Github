@@ -8,7 +8,6 @@ import org.hibernate.query.Query;
 
 public class GroupLoanController
 {
-
     public static Boolean hacerPrestamo(int registroId, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
@@ -172,5 +171,4 @@ public class GroupLoanController
             sessionFactory.close();
         }
     }
-    
 }
