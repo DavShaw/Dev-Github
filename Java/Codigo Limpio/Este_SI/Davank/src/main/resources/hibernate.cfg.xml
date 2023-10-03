@@ -16,10 +16,11 @@
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
 
-
-
-
+    
     <!-- ? Clases a mapear ? -->
+
+    <!--  
+
     <mapping class="org.davshaw.Model.pureentities.Usuario"/>
     <mapping class="org.davshaw.Model.pureentities.Cuenta"/>
     <mapping class="org.davshaw.Model.derivatedentities.RegistroGrupo"/>
@@ -27,6 +28,19 @@
     <mapping class="org.davshaw.Model.derivatedentities.PrestamoGrupo"/>
     <mapping class="org.davshaw.Model.derivatedentities.RetiroCuenta"/>
     <mapping class="org.davshaw.Model.derivatedentities.DepositoCuenta"/>
+
+    -->
+
+    <mapping class="org.davshaw.Model.pureentities.Account"/>
+    <mapping class="org.davshaw.Model.pureentities.Group"/>
+    <mapping class="org.davshaw.Model.pureentities.User"/>
+
+    <mapping class="org.davshaw.Model.derivatedentities.AccountDeposit"/>
+    <mapping class="org.davshaw.Model.derivatedentities.AccountTransfer"/>
+    <mapping class="org.davshaw.Model.derivatedentities.AccountWithdrawal"/>
+    <mapping class="org.davshaw.Model.derivatedentities.GroupDeposit"/>
+    <mapping class="org.davshaw.Model.derivatedentities.GroupLoan"/>
+    <mapping class="org.davshaw.Model.derivatedentities.GroupLog"/>
 
 
    </session-factory>
