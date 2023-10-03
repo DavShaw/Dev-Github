@@ -1,6 +1,6 @@
 package org.davshaw.Controller;
 
-import org.davshaw.Model.derivatedentities.PrestamoGrupo;
+import org.davshaw.Model.derivatedentities.GroupLoan;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -51,7 +51,7 @@ public class PrestamoGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(PrestamoGrupo.class)
+        .addAnnotatedClass(GroupLoan.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -73,7 +73,7 @@ public class PrestamoGrupoControlador
             //Sino se lanzo alguna exceptión, todo está bien
             session.beginTransaction();
 
-            PrestamoGrupo prestamo = new PrestamoGrupo();
+            GroupLoan prestamo = new GroupLoan();
             //Establecer datos con setters (Reemplazando el constructor)
             prestamo.setRegistroId(registroId);
             prestamo.setMonto(monto);
@@ -101,7 +101,7 @@ public class PrestamoGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(PrestamoGrupo.class)
+        .addAnnotatedClass(GroupLoan.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -132,11 +132,11 @@ public class PrestamoGrupoControlador
         }
     }
 
-    public static PrestamoGrupo obtenerPrestamo(int id)
+    public static GroupLoan obtenerPrestamo(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(PrestamoGrupo.class)
+        .addAnnotatedClass(GroupLoan.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -154,7 +154,7 @@ public class PrestamoGrupoControlador
             {
                 session.beginTransaction();
 
-                PrestamoGrupo prestamo = session.get(PrestamoGrupo.class, id);
+                GroupLoan prestamo = session.get(GroupLoan.class, id);
 
                 session.getTransaction().commit();;
 
@@ -179,7 +179,7 @@ public class PrestamoGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(PrestamoGrupo.class)
+        .addAnnotatedClass(GroupLoan.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -192,7 +192,7 @@ public class PrestamoGrupoControlador
                 throw new IllegalArgumentException("No existe un prestamo registrado con este id.");
             }
             session.beginTransaction();
-            PrestamoGrupo prestamo = PrestamoGrupoControlador.obtenerPrestamo(id);
+            GroupLoan prestamo = PrestamoGrupoControlador.obtenerPrestamo(id);
             session.remove(prestamo);
             session.getTransaction().commit();
             return true;

@@ -3,7 +3,7 @@ package org.davshaw.Controller;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-import org.davshaw.Model.derivatedentities.RegistroGrupo;
+import org.davshaw.Model.derivatedentities.GroupLog;
 import org.davshaw.Model.pureentities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -533,7 +533,7 @@ public class UsuarioControlador
             }
             session.beginTransaction();
 
-            RegistroGrupo registro = new RegistroGrupo();
+            GroupLog registro = new GroupLog();
             registro.setGrupoId(grupoid);
             registro.setNativo(true);
             registro.setUsuarioDni(usuariodni);
@@ -592,7 +592,7 @@ public class UsuarioControlador
 
             session.beginTransaction();
 
-            RegistroGrupo registro = RegistroGrupoControlador.obtenerRegistro(registroId);
+            GroupLog registro = RegistroGrupoControlador.obtenerRegistro(registroId);
             session.remove(registro);
 
             session.getTransaction().commit();

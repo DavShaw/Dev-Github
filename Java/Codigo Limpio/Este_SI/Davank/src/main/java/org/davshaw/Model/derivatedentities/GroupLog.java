@@ -23,7 +23,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "RegistroGrupo")
-public class RegistroGrupo
+public class GroupLog
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

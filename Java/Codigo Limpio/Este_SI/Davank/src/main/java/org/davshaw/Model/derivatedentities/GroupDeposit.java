@@ -1,5 +1,7 @@
 package org.davshaw.Model.derivatedentities;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,11 +12,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
-import java.util.Date;
 
 @Setter
 @Getter
@@ -22,8 +23,8 @@ import java.util.Date;
 @ToString
 
 @Entity
-@Table(name = "PrestamoGrupo")
-public class PrestamoGrupo
+@Table(name = "DepositoGrupo")
+public class GroupDeposit
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,10 +32,10 @@ public class PrestamoGrupo
     private int id;
 
     //? Clave foranea (Con RegistroGrupo)
-    @ManyToOne(targetEntity = RegistroGrupo.class)
+    @ManyToOne(targetEntity = GroupLog.class)
     @JoinColumn(name = "registroId", referencedColumnName = "id", insertable = false, updatable = false)
-    private RegistroGrupo registro;
-    
+    private GroupLog registro;
+
     @Column(name = "registroId")
     private int registroId;
 

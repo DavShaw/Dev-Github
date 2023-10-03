@@ -5,7 +5,7 @@ import org.hibernate.query.Query;
 
 import java.util.Date;
 
-import org.davshaw.Model.derivatedentities.TransferenciaCuenta;
+import org.davshaw.Model.derivatedentities.AccountTransfer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -55,7 +55,7 @@ public class TransferenciaCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TransferenciaCuenta.class)
+        .addAnnotatedClass(AccountTransfer.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -82,7 +82,7 @@ public class TransferenciaCuentaControlador
             CuentaControlador.agregarSaldo(titularDniCuentaDestino, monto);
 
             //Iniciar creación del registro de la transferencia
-            TransferenciaCuenta transferencia = new TransferenciaCuenta();
+            AccountTransfer transferencia = new AccountTransfer();
             transferencia.setFechaHora(new Date());
             transferencia.setMonto(monto);
             transferencia.setNumeroCuentaDestino(CuentaControlador.obtenerNumeroCuenta(titularDniCuentaDestino));
@@ -113,7 +113,7 @@ public class TransferenciaCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TransferenciaCuenta.class)
+        .addAnnotatedClass(AccountTransfer.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -141,11 +141,11 @@ public class TransferenciaCuentaControlador
         }
     }
 
-    public static TransferenciaCuenta obtenerTransferencia(int id)
+    public static AccountTransfer obtenerTransferencia(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TransferenciaCuenta.class)
+        .addAnnotatedClass(AccountTransfer.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -160,7 +160,7 @@ public class TransferenciaCuentaControlador
             else
             {
                 session.beginTransaction();
-                TransferenciaCuenta transferencia = session.get(TransferenciaCuenta.class, id);
+                AccountTransfer transferencia = session.get(AccountTransfer.class, id);
                 session.getTransaction().commit();
 
                 return transferencia;
@@ -185,7 +185,7 @@ public class TransferenciaCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TransferenciaCuenta.class)
+        .addAnnotatedClass(AccountTransfer.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -199,7 +199,7 @@ public class TransferenciaCuentaControlador
             }
 
             session.beginTransaction();
-            TransferenciaCuenta transferencia = TransferenciaCuentaControlador.obtenerTransferencia(id);
+            AccountTransfer transferencia = TransferenciaCuentaControlador.obtenerTransferencia(id);
 
             session.remove(transferencia);
             session.getTransaction().commit();

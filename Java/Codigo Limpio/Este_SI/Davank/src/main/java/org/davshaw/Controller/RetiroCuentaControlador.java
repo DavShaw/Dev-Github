@@ -5,8 +5,8 @@ import org.hibernate.query.Query;
 
 import java.util.Date;
 
-import org.davshaw.Model.derivatedentities.DepositoCuenta;
-import org.davshaw.Model.derivatedentities.RetiroCuenta;
+import org.davshaw.Model.derivatedentities.AccountDeposit;
+import org.davshaw.Model.derivatedentities.AccountWithdrawal;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -56,7 +56,7 @@ public class RetiroCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoCuenta.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -81,7 +81,7 @@ public class RetiroCuentaControlador
 
                 CuentaControlador.retirarSaldo(titularDniCuenta, monto);
                 //Crear registro del retiro
-                RetiroCuenta retiro = new RetiroCuenta();
+                AccountWithdrawal retiro = new AccountWithdrawal();
                 retiro.setFechaHora(new Date());
                 retiro.setMonto(monto);
                 retiro.setNumeroCuenta(CuentaControlador.obtenerNumeroCuenta(titularDniCuenta));
@@ -111,7 +111,7 @@ public class RetiroCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RetiroCuenta.class)
+        .addAnnotatedClass(AccountWithdrawal.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -139,11 +139,11 @@ public class RetiroCuentaControlador
         }
     }
 
-    public static RetiroCuenta obtenerRetiro(int id)
+    public static AccountWithdrawal obtenerRetiro(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RetiroCuenta.class)
+        .addAnnotatedClass(AccountWithdrawal.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -160,7 +160,7 @@ public class RetiroCuentaControlador
             {
                 session.beginTransaction();
 
-                RetiroCuenta retiro = session.get(RetiroCuenta.class, id);
+                AccountWithdrawal retiro = session.get(AccountWithdrawal.class, id);
 
                 session.getTransaction().commit();
 
@@ -185,7 +185,7 @@ public class RetiroCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RetiroCuenta.class)
+        .addAnnotatedClass(AccountWithdrawal.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -202,7 +202,7 @@ public class RetiroCuentaControlador
             {
                 session.beginTransaction();
 
-                RetiroCuenta retiro = RetiroCuentaControlador.obtenerRetiro(id);
+                AccountWithdrawal retiro = RetiroCuentaControlador.obtenerRetiro(id);
                 
                 session.remove(retiro);
                 

@@ -5,7 +5,7 @@ import org.hibernate.query.Query;
 
 import java.util.Date;
 
-import org.davshaw.Model.derivatedentities.DepositoCuenta;
+import org.davshaw.Model.derivatedentities.AccountDeposit;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -57,7 +57,7 @@ public class DepositoCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoCuenta.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -76,7 +76,7 @@ public class DepositoCuentaControlador
             CuentaControlador.agregarSaldo(titularDniCuenta, monto);
 
             //Haciendo el registro del deposito
-            DepositoCuenta depositoCuenta = new DepositoCuenta();
+            AccountDeposit depositoCuenta = new AccountDeposit();
             depositoCuenta.setCuentaId(CuentaControlador.obtenerNumeroCuenta(titularDniCuenta));
             depositoCuenta.setFechaHora(new Date());
             depositoCuenta.setMonto(monto);
@@ -105,7 +105,7 @@ public class DepositoCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoCuenta.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -133,11 +133,11 @@ public class DepositoCuentaControlador
         }
     }
 
-    public static DepositoCuenta obtenerDeposito(int id)
+    public static AccountDeposit obtenerDeposito(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoCuenta.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -154,7 +154,7 @@ public class DepositoCuentaControlador
             {
                 session.beginTransaction();
 
-                DepositoCuenta deposito = session.get(DepositoCuenta.class, id);
+                AccountDeposit deposito = session.get(AccountDeposit.class, id);
 
                 session.getTransaction().commit();
 
@@ -179,7 +179,7 @@ public class DepositoCuentaControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoCuenta.class)
+        .addAnnotatedClass(AccountDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -196,7 +196,7 @@ public class DepositoCuentaControlador
             {
                 session.beginTransaction();
 
-                DepositoCuenta deposito = DepositoCuentaControlador.obtenerDeposito(id);
+                AccountDeposit deposito = DepositoCuentaControlador.obtenerDeposito(id);
                 session.remove(deposito);
 
                 session.getTransaction().commit();

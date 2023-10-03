@@ -2,6 +2,7 @@ package org.davshaw.Model.derivatedentities;
 
 import java.util.Date;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import org.davshaw.Model.pureentities.Account;
 import lombok.Setter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,21 +25,21 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "DepositoGrupo")
-public class DepositoGrupo
+@Table(name = "DepositoCuenta")
+public class AccountDeposit
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
 
-    //? Clave foranea (Con RegistroGrupo)
-    @ManyToOne(targetEntity = RegistroGrupo.class)
-    @JoinColumn(name = "registroId", referencedColumnName = "id", insertable = false, updatable = false)
-    private RegistroGrupo registro;
+    //? Clave foranea (Con cuenta)
+    @ManyToOne(targetEntity = Account.class)
+    @JoinColumn(name = "CuentaId", referencedColumnName = "numeroCuenta", insertable = false, updatable = false)
+    private Account cuenta;
 
-    @Column(name = "registroId")
-    private int registroId;
+    @Column(name = "cuentaId")
+    private int cuentaId;
 
     @Column(name = "monto")
     private double monto;

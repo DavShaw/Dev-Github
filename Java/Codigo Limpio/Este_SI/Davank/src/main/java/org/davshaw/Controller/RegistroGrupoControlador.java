@@ -1,6 +1,6 @@
 package org.davshaw.Controller;
 
-import org.davshaw.Model.derivatedentities.RegistroGrupo;
+import org.davshaw.Model.derivatedentities.GroupLog;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -51,7 +51,7 @@ public class RegistroGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupo.class)
+        .addAnnotatedClass(GroupLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -73,7 +73,7 @@ public class RegistroGrupoControlador
             {
                 session.beginTransaction();
 
-                RegistroGrupo registro = new RegistroGrupo();
+                GroupLog registro = new GroupLog();
                 //Establecer datos con setters (Reemplazando el constructor)
                 registro.setUsuarioDni(usuarioDni);
                 registro.setGrupoId(grupoId);
@@ -104,7 +104,7 @@ public class RegistroGrupoControlador
         SessionFactory sessionFactory = new
         Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupo.class)
+        .addAnnotatedClass(GroupLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -137,11 +137,11 @@ public class RegistroGrupoControlador
         }
     }
 
-    public static RegistroGrupo obtenerRegistro(int id)
+    public static GroupLog obtenerRegistro(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupo.class)
+        .addAnnotatedClass(GroupLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -150,7 +150,7 @@ public class RegistroGrupoControlador
         {
             session.beginTransaction();
 
-            RegistroGrupo registro = session.get(RegistroGrupo.class, id);
+            GroupLog registro = session.get(GroupLog.class, id);
 
             session.getTransaction().commit();
 
@@ -174,7 +174,7 @@ public class RegistroGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupo.class)
+        .addAnnotatedClass(GroupLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -188,7 +188,7 @@ public class RegistroGrupoControlador
             }
 
             //Obtener objeto
-            RegistroGrupo registro = RegistroGrupoControlador.obtenerRegistro(id);
+            GroupLog registro = RegistroGrupoControlador.obtenerRegistro(id);
 
             return registro.getUsuarioDni();
         }
@@ -210,7 +210,7 @@ public class RegistroGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupo.class)
+        .addAnnotatedClass(GroupLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -224,7 +224,7 @@ public class RegistroGrupoControlador
             }
 
             //Obtener objeto
-            RegistroGrupo registro = RegistroGrupoControlador.obtenerRegistro(id);
+            GroupLog registro = RegistroGrupoControlador.obtenerRegistro(id);
 
             return registro.getGrupoId();
         }
@@ -246,7 +246,7 @@ public class RegistroGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(RegistroGrupo.class)
+        .addAnnotatedClass(GroupLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -260,7 +260,7 @@ public class RegistroGrupoControlador
             }
 
             //Obtener objeto
-            RegistroGrupo registro = RegistroGrupoControlador.obtenerRegistro(id);
+            GroupLog registro = RegistroGrupoControlador.obtenerRegistro(id);
 
             return registro.isNativo();
         }

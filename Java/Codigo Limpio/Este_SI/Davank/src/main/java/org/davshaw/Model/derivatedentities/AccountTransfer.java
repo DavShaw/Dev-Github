@@ -25,7 +25,7 @@ import org.davshaw.Model.pureentities.Account;
 
 @Entity
 @Table(name = "TransferenciaCuenta")
-public class TransferenciaCuenta
+public class AccountTransfer
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -3,7 +3,7 @@ package org.davshaw.Controller;
 import java.util.Date;
 import java.util.List;
 
-import org.davshaw.Model.derivatedentities.DepositoGrupo;
+import org.davshaw.Model.derivatedentities.GroupDeposit;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -55,7 +55,7 @@ public class DepositoGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoGrupo.class)
+        .addAnnotatedClass(GroupDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -80,7 +80,7 @@ public class DepositoGrupoControlador
                     GrupoControlador.agregarSaldo(grupoId, monto);
 
                     //Crear el registro
-                    DepositoGrupo deposito = new DepositoGrupo();
+                    GroupDeposit deposito = new GroupDeposit();
                     deposito.setFechaHora(new Date());
                     deposito.setMonto(monto);
                     deposito.setRegistroId(registroId);
@@ -124,7 +124,7 @@ public class DepositoGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoGrupo.class)
+        .addAnnotatedClass(GroupDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -152,11 +152,11 @@ public class DepositoGrupoControlador
         }
     }
 
-    public static DepositoGrupo obtenerDeposito(int id)
+    public static GroupDeposit obtenerDeposito(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoGrupo.class)
+        .addAnnotatedClass(GroupDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -170,7 +170,7 @@ public class DepositoGrupoControlador
             }
             session.beginTransaction();
 
-            DepositoGrupo deposito = session.get(DepositoGrupo.class, id);
+            GroupDeposit deposito = session.get(GroupDeposit.class, id);
             session.getTransaction().commit();
             return deposito;
         }
@@ -192,7 +192,7 @@ public class DepositoGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoGrupo.class)
+        .addAnnotatedClass(GroupDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -207,7 +207,7 @@ public class DepositoGrupoControlador
             }
 
             session.beginTransaction();
-            DepositoGrupo deposito = DepositoGrupoControlador.obtenerDeposito(id);
+            GroupDeposit deposito = DepositoGrupoControlador.obtenerDeposito(id);
             session.remove(deposito);
             session.getTransaction().commit();
 
@@ -231,7 +231,7 @@ public class DepositoGrupoControlador
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(DepositoGrupo.class)
+        .addAnnotatedClass(GroupDeposit.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
