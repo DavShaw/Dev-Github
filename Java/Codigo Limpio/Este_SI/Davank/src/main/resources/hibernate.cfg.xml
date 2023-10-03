@@ -13,15 +13,15 @@
     
     <!-- ? Clases a mapear ? -->
     <mapping class="org.davshaw.Model.pureentities.Account"/>
-    <mapping class="org.davshaw.Model.pureentities.Group"/>
+    <mapping class="org.davshaw.Model.pureentities.Team"/>
     <mapping class="org.davshaw.Model.pureentities.User"/>
 
     <mapping class="org.davshaw.Model.derivatedentities.AccountDeposit"/>
     <mapping class="org.davshaw.Model.derivatedentities.AccountTransfer"/>
     <mapping class="org.davshaw.Model.derivatedentities.AccountWithdrawal"/>
-    <mapping class="org.davshaw.Model.derivatedentities.GroupDeposit"/>
-    <mapping class="org.davshaw.Model.derivatedentities.GroupLoan"/>
-    <mapping class="org.davshaw.Model.derivatedentities.teamLog"/>
+    <mapping class="org.davshaw.Model.derivatedentities.TeamDeposit"/>
+    <mapping class="org.davshaw.Model.derivatedentities.TeamLoan"/>
+    <mapping class="org.davshaw.Model.derivatedentities.TeamLog"/>
 
 
    </session-factory>

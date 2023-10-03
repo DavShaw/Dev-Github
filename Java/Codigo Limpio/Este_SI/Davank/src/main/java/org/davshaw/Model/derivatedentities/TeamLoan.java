@@ -22,7 +22,7 @@ import java.util.Date;
 @ToString
 
 @Entity
-@Table(name = "GroupLoan")
+@Table(name = "TeamLoan")
 public class TeamLoan
 {
     @Id

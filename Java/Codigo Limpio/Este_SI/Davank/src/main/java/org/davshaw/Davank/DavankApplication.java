@@ -23,16 +23,16 @@ public class DavankApplication
 		// "Torres",
 		// "asfafLFvaSf25");
 
-		// org.davshaw.Controller.UserController.createUser(
-		// 1995209519,
-		// "Manuel",
-		// "Alfonso",
-		// "Martinez",
-		// "Guzman",
-		// "JafsaaGsLA512");
+		org.davshaw.Controller.UserController.createUser(
+		1995209519,
+		"Manuel",
+		"Alfonso",
+		"Martinez",
+		"Guzman",
+		"JafsaaGsLA512");
 
-		Boolean result = org.davshaw.Controller.AccountController.accountExist(1067592686);
-		System.out.println(result);
+		// Boolean result = org.davshaw.Controller.AccountController.accountExist(1067592686);
+		// System.out.println(result);
 	
 	}
 }

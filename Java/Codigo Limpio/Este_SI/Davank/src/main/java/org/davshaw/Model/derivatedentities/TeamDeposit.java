@@ -23,7 +23,7 @@ import lombok.ToString;
 @ToString
 
 @Entity
-@Table(name = "GroupDeposit")
+@Table(name = "TeamDeposit")
 public class TeamDeposit
 {
     @Id
