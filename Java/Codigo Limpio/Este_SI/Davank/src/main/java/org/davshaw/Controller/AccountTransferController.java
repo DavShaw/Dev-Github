@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountTransferController
 {
-    public static Boolean transfer(int titularDniCuentaOrigen, int titularDniCuentaDestino, double monto)
+    public static Boolean transfer(int originOwnerDni, int destinationOwnerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -23,13 +23,13 @@ public class AccountTransferController
         try
         {
             //Verificar si las dos cuentas existen
-            if(!(AccountController.accountExist(titularDniCuentaOrigen)) || !(AccountController.accountExist(titularDniCuentaDestino)))
+            if(!(AccountController.accountExist(originOwnerDni)) || !(AccountController.accountExist(destinationOwnerDni)))
             {
                 throw new IllegalArgumentException("La cuenta ingresada no existe.");
             }
 
             //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
-            else if (AccountController.getBalance(titularDniCuentaOrigen) < monto)
+            else if (AccountController.getBalance(originOwnerDni) < balance)
             {
                 throw new IllegalArgumentException("La cuenta de origen tiene el saldo");
             }
@@ -37,16 +37,16 @@ public class AccountTransferController
             session.beginTransaction();
 
             //Retirar dinero de la cuenta de origen
-            AccountController.withdrawalBalance(titularDniCuentaOrigen, monto);
+            AccountController.withdrawalBalance(originOwnerDni, balance);
             //Agregar dinero a la cuenta de destino
-            AccountController.addBalance(titularDniCuentaDestino, monto);
+            AccountController.addBalance(destinationOwnerDni, balance);
 
             //Iniciar creación del registro de la transferencia
             AccountTransfer transferencia = new AccountTransfer();
             transferencia.setDateTime(new Date());
-            transferencia.setBalance(monto);
-            transferencia.setDestinationAccountNumber(AccountController.getAccountNumber(titularDniCuentaDestino));
-            transferencia.setOriginAccountNumber(AccountController.getAccountNumber(titularDniCuentaOrigen));
+            transferencia.setBalance(balance);
+            transferencia.setDestinationAccountNumber(AccountController.getAccountNumber(destinationOwnerDni));
+            transferencia.setOriginAccountNumber(AccountController.getAccountNumber(originOwnerDni));
 
             session.persist(transferencia);
 

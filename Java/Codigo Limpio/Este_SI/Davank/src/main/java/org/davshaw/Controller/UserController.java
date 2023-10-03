@@ -182,7 +182,7 @@ public class UserController
         }
     }
 
-    public static String changeFirstName(int dni, String nombre)
+    public static String changeFirstName(int dni, String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -200,12 +200,12 @@ public class UserController
 
                 User usuario = session.get(User.class, dni);
 
-                usuario.setFirstName(nombre);
+                usuario.setFirstName(name);
                 session.merge(usuario);
 
                 session.getTransaction().commit();
 
-                return "Primer nombre cambiado con éxito.";
+                return "Primer name cambiado con éxito.";
                 
 
             }
@@ -230,7 +230,7 @@ public class UserController
         }
     }
 
-    public static String changeMiddleName(int dni, String nombre)
+    public static String changeMiddleName(int dni, String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -248,12 +248,12 @@ public class UserController
 
                 User usuario = session.get(User.class, dni);
 
-                usuario.setMiddleName(nombre);
+                usuario.setMiddleName(name);
                 session.merge(usuario);
 
                 session.getTransaction().commit();
 
-                return "Segundo nombre cambiado con éxito.";
+                return "Segundo name cambiado con éxito.";
                 
 
             }
@@ -278,7 +278,7 @@ public class UserController
         }
     }
 
-    public static String changeFirstLastName(int dni, String apellido)
+    public static String changeFirstLastName(int dni, String lastName)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -296,12 +296,12 @@ public class UserController
 
                 User usuario = session.get(User.class, dni);
 
-                usuario.setFirstLastName(apellido);
+                usuario.setFirstLastName(lastName);
                 session.merge(usuario);
 
                 session.getTransaction().commit();
 
-                return "Primer apellido cambiado con éxito.";
+                return "Primer lastName cambiado con éxito.";
                 
 
             }
@@ -326,7 +326,7 @@ public class UserController
         }
     }
 
-    public static String changeMiddleLastName(int dni, String apellido)
+    public static String changeMiddleLastName(int dni, String lastName)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -344,12 +344,12 @@ public class UserController
 
                 User usuario = session.get(User.class, dni);
 
-                usuario.setMiddleLastName(apellido);
+                usuario.setMiddleLastName(lastName);
                 session.merge(usuario);
 
                 session.getTransaction().commit();
 
-                return "Segundo appelido cambiado con éxito.";
+                return "Segundo lastName cambiado con éxito.";
                 
 
             }
@@ -374,7 +374,7 @@ public class UserController
         }
     }
 
-    public static String changePassword(int dni, String contrasena, String nuevaContrasena)
+    public static String changePassword(int dni, String password, String newPassword)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -391,9 +391,9 @@ public class UserController
                 session.beginTransaction();
                 User usuario = session.get(User.class, dni);
                 //!Verificar que la contraseña concuerde
-                if(usuario.getPassword().equals(contrasena))
+                if(usuario.getPassword().equals(password))
                 {
-                    usuario.setPassword(nuevaContrasena);
+                    usuario.setPassword(newPassword);
                     session.merge(usuario);
     
                     session.getTransaction().commit();
@@ -427,7 +427,7 @@ public class UserController
         }
     }
 
-    public static Integer countGroup(int usuariodni)
+    public static Integer countGroup(int userDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -439,16 +439,16 @@ public class UserController
         try
         {
             //Verificar que el usuario exista
-            if(!(UserController.userExist(usuariodni)))
+            if(!(UserController.userExist(userDni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }
 
             session.beginTransaction();
 
-            String sql = "SELECT Count(*) FROM groupLog WHERE (ownerDni = :ownerDni and nativeFlag = :nativeFlag)";
+            String sql = "SELECT Count(*) FROM groupLog WHERE (userDni = :userDni and nativeFlag = :nativeFlag)";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
-            query.setParameter("usuariodni", usuariodni);
+            query.setParameter("userDni", userDni);
             query.setParameter("nativo", true);
             session.getTransaction().commit();
 
@@ -469,7 +469,7 @@ public class UserController
         }
     }
 
-    public static Boolean joinGroup(int usuariodni, int grupoid)
+    public static Boolean joinGroup(int userDni, int groupId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -481,22 +481,22 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(GroupController.groupExist(grupoid)))
+            if(!(GroupController.groupExist(groupId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
             
             //Verificar que el usuario no este en mas de >= 3 grupos
-            else if(UserController.countGroup(usuariodni) >= 3)
+            else if(UserController.countGroup(userDni) >= 3)
             {
                 throw new IllegalArgumentException("El usuario está en el máximo de grupos permitidos.");
             }
             session.beginTransaction();
 
             GroupLog registro = new GroupLog();
-            registro.setGroupId(grupoid);
+            registro.setGroupId(groupId);
             registro.setNativeFlag(true);
-            registro.setOwnerDni(usuariodni);
+            registro.setUserDni(userDni);
 
             session.persist(registro);
 
@@ -518,7 +518,7 @@ public class UserController
         }
     }
 
-    public static Boolean leaveGroup(int usuariodni, int grupoid)
+    public static Boolean leaveGroup(int userDni, int groupId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -530,19 +530,19 @@ public class UserController
         try
         {
             //Verificar que el usuario este en al menos un grupo
-            if(UserController.countGroup(usuariodni) <= 0)
+            if(UserController.countGroup(userDni) <= 0)
             {
                 throw new IllegalArgumentException("El usuario no está en ningún grupo.");
             }
 
             //Verificar que el grupo exista
-            else if(!(GroupController.groupExist(grupoid)))
+            else if(!(GroupController.groupExist(groupId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Obtener ID del registro
-            Integer registroId = UserController.getLogId(usuariodni, grupoid);
+            Integer registroId = UserController.getLogId(userDni, groupId);
 
             //Verificar que el registroId no sea null (No existe el registro)
             if (registroId == null)
@@ -573,7 +573,7 @@ public class UserController
         }
     }
 
-    public static Integer getLogId(int usuariodni, int grupoid)
+    public static Integer getLogId(int userDni, int groupId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -585,13 +585,13 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(GroupController.groupExist(grupoid)))
+            if(!(GroupController.groupExist(groupId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Verificar que el usuario exista
-            else if(!(UserController.userExist(usuariodni)))
+            else if(!(UserController.userExist(userDni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }
@@ -600,8 +600,8 @@ public class UserController
 
             String sql = "SELECT id FROM groupLog WHERE (groupid = :groupid AND ownerDni = :ownerDni AND nativeFlag = :nativeFlag)";
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
-            query.setParameter("usuariodni", usuariodni);
-            query.setParameter("grupoid", grupoid);
+            query.setParameter("userDni", userDni);
+            query.setParameter("groupId", groupId);
             query.setParameter("nativo", true);
 
 

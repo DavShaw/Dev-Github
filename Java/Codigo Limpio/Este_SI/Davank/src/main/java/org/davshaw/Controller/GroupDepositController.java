@@ -11,7 +11,7 @@ import org.hibernate.query.Query;
 
 public class GroupDepositController
 {
-    public static Boolean deposit(int registroId, double monto)
+    public static Boolean deposit(int logId, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -23,27 +23,27 @@ public class GroupDepositController
         try
         {
             //Verificar que el registro exista
-            if(GroupLogController.logExist(registroId))
+            if(GroupLogController.logExist(logId))
             {
                 session.beginTransaction();
 
                 //Obtener id del grupo y dni del usuario
-                int grupoId = GroupLogController.getGroupId(registroId);
-                int titularDni = GroupLogController.getOwnerDni(registroId);
+                int grupoId = GroupLogController.getGroupId(logId);
+                int titularDni = GroupLogController.getOwnerDni(logId);
                 
                 //Verificar que la cuenta tenga el dinero para depositar
-                if(AccountController.hasEnough(titularDni, monto))
+                if(AccountController.hasEnough(titularDni, balance))
                 {
                     //Retirar cantidad de la cuenta
-                    AccountController.withdrawalBalance(titularDni, monto);
+                    AccountController.withdrawalBalance(titularDni, balance);
                     //Agregar cantidad al grupo
-                    GroupController.addBalance(grupoId, monto);
+                    GroupController.addBalance(grupoId, balance);
 
                     //Crear el registro
                     GroupDeposit deposito = new GroupDeposit();
                     deposito.setDateTime(new Date());
-                    deposito.setBalance(monto);
-                    deposito.setLogId(registroId);
+                    deposito.setBalance(balance);
+                    deposito.setLogId(logId);
 
                     session.persist(deposito);
 
@@ -187,7 +187,7 @@ public class GroupDepositController
         }
     }
 
-    public static Double totalDeposit(int registroId)
+    public static Double totalDeposit(int logId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -199,15 +199,15 @@ public class GroupDepositController
         try
         {
             //Verificar que el registro exista
-            if(!(GroupLogController.logExist(registroId)))
+            if(!(GroupLogController.logExist(logId)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
-            //Obtener ID de registro de depositos que cumplan con el registroId
+            //Obtener ID de registro de depositos que cumplan con el logId
             String sql = "SELECT monto FROM groupDeposit WHERE (logId = :logId)";
             Query<Double> query = session.createNativeQuery(sql, Double.class);
-            query.setParameter("registroId", registroId);
+            query.setParameter("logId", logId);
 
                         // Cambia de Double[] a List<Double>
             List<Double> totalesList = query.list();

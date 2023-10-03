@@ -40,11 +40,11 @@ public class GroupLog
 
     //?Clave foranea (Con usuario)
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "ownerDni", referencedColumnName = "dni", insertable = false, updatable = false)
-    private User owner;
+    @JoinColumn(name = "userDni", referencedColumnName = "dni", insertable = false, updatable = false)
+    private User user;
 
-    @Column(name = "ownerDni")
-    private int ownerDni;
+    @Column(name = "userDni")
+    private int userDni;
 
     @Column(name = "nativeFlag")
     private boolean nativeFlag;

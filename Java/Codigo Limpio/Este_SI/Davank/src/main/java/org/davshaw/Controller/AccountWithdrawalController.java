@@ -12,7 +12,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountWithdrawalController
 {
-    public static Boolean withdrawal(int titularDniCuenta, double monto)
+    public static Boolean withdrawal(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -24,14 +24,14 @@ public class AccountWithdrawalController
         try
         {
             //Verificar si existe una cuenta asociada a este dni
-            if(!(AccountController.accountExist(titularDniCuenta)))
+            if(!(AccountController.accountExist(ownerDni)))
             {
                 throw new IllegalArgumentException("No existe una cuenta asociada a este dni.");
             }
-            //Verificar que el monto de la cuenta sea mayor o igual al monto a retirar
-            if(!(AccountController.getBalance(titularDniCuenta) >= monto))
+            //Verificar que el balance de la cuenta sea mayor o igual al balance a retirar
+            if(!(AccountController.getBalance(ownerDni) >= balance))
             {
-                throw new IllegalArgumentException("El monto a retirar supera el saldo de la cuenta.");
+                throw new IllegalArgumentException("El balance a retirar supera el saldo de la cuenta.");
             }
 
             //Si ninguna de las anteriores se lanzó, podemos hacer el retiro
@@ -39,12 +39,12 @@ public class AccountWithdrawalController
             {
                 session.beginTransaction();
 
-                AccountController.withdrawalBalance(titularDniCuenta, monto);
+                AccountController.withdrawalBalance(ownerDni, balance);
                 //Crear registro del retiro
                 AccountWithdrawal retiro = new AccountWithdrawal();
                 retiro.setDateTime(new Date());
-                retiro.setBalance(monto);
-                retiro.setAccountNumber(AccountController.getAccountNumber(titularDniCuenta));
+                retiro.setBalance(balance);
+                retiro.setAccountNumber(AccountController.getAccountNumber(ownerDni));
 
                 session.persist(retiro);
                 session.getTransaction().commit();

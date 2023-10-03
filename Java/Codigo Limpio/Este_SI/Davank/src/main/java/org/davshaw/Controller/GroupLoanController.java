@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 
 public class GroupLoanController
 {
-    public static Boolean loan(int registroId, double monto)
+    public static Boolean loan(int logId, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -20,13 +20,13 @@ public class GroupLoanController
         try
         {
             //verificar que exista el registro
-            if(!(GroupLogController.logExist(registroId)))
+            if(!(GroupLogController.logExist(logId)))
             {
                 throw new IllegalArgumentException("No existe ningún registro con este ID.");
             }
 
             //Verificar que la cantidad a prestar < depositos históricos
-            else if(GroupDepositController.totalDeposit(registroId) < monto)
+            else if(GroupDepositController.totalDeposit(logId) < balance)
             {
                 throw new IllegalArgumentException("El usuario ha depositado menos del valor a prestar.");
             }
@@ -36,8 +36,8 @@ public class GroupLoanController
 
             GroupLoan prestamo = new GroupLoan();
             //Establecer datos con setters (Reemplazando el constructor)
-            prestamo.setLogId(registroId);
-            prestamo.setBalance(monto);
+            prestamo.setLogId(logId);
+            prestamo.setBalance(balance);
             session.persist(prestamo);
 
             session.getTransaction().commit();

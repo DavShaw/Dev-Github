@@ -9,7 +9,7 @@ import org.hibernate.query.Query;
 
 public class GroupController
 {
-    public static String createGroup(String nombre)
+    public static String createGroup(String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -24,7 +24,7 @@ public class GroupController
             
             Group grupo = new Group();
             //Establecer datos con setters (Reemplazando el constructor)
-            grupo.setName(nombre);
+            grupo.setName(name);
 
             session.persist(grupo);
 
@@ -159,7 +159,7 @@ public class GroupController
         }
     }
 
-    public static String addBalance(int id, double monto)
+    public static String addBalance(int id, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -170,7 +170,7 @@ public class GroupController
 
         try
         {
-            if(monto < 0)
+            if(balance < 0)
             {
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
@@ -182,7 +182,7 @@ public class GroupController
                 Group grupo = GroupController.getGroup(id);
 
                 //Editar saldo
-                double nuevoSaldo = grupo.getBalance() + monto;
+                double nuevoSaldo = grupo.getBalance() + balance;
                 grupo.setBalance(nuevoSaldo);
 
                 session.merge(grupo);
@@ -212,7 +212,7 @@ public class GroupController
         }
     }
 
-    public static String withdrawalBalance(int id, double monto)
+    public static String withdrawalBalance(int id, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -223,7 +223,7 @@ public class GroupController
 
         try
         {
-            if(monto < 0)
+            if(balance < 0)
             {
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
@@ -235,7 +235,7 @@ public class GroupController
                 Group grupo = GroupController.getGroup(id);
 
                 //Editar saldo
-                double nuevoSaldo = grupo.getBalance() - monto;
+                double nuevoSaldo = grupo.getBalance() - balance;
                 grupo.setBalance(nuevoSaldo);
 
                 session.merge(grupo);
