@@ -80,7 +80,7 @@ public class AccountTransferController
 
         try
         {
-            String sql = "SELECT count(*) FROM accountTransfer WHERE id = :id";
+            String sql = "SELECT count(*) FROM AccountTransfer WHERE id = :id";
             Query<Long> query = session.createQuery(sql, Long.class);
             query.setParameter("id", id);
             int count = Integer.valueOf(query.uniqueResult().toString());

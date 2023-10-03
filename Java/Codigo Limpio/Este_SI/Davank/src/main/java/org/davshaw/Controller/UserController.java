@@ -29,8 +29,7 @@ public class UserController
         {
 
             User usuario = new User();
-            
-            //Establecer datos con setters (Reemplazando el constructor)
+
             usuario.setDni(dni);
             usuario.setFirstName(firstName);
             usuario.setMiddleName(middleName);
@@ -44,7 +43,6 @@ public class UserController
             
             session.getTransaction().commit();
             
-            //Controlador de Cuentas
             AccountController.createAccount(dni);
             
 
@@ -446,7 +444,8 @@ public class UserController
 
             session.beginTransaction();
 
-            String sql = "SELECT Count(*) FROM groupLog WHERE (userDni = :userDni and nativeFlag = :nativeFlag)";
+            String sql = "SELECT Count(*) FROM GroupLog WHERE userDni = :userDni AND nativeFlag = :nativeFlag";
+
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("userDni", userDni);
             query.setParameter("nativo", true);
@@ -591,14 +590,14 @@ public class UserController
             }
 
             //Verificar que el usuario exista
-            else if(!(UserController.userExist(userDni)))
+            if(!(UserController.userExist(userDni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }
 
             session.beginTransaction();
 
-            String sql = "SELECT id FROM groupLog WHERE (groupid = :groupid AND ownerDni = :ownerDni AND nativeFlag = :nativeFlag)";
+            String sql = "SELECT id FROM GroupLog WHERE groupId = :groupId AND userDni = :userDni AND nativeFlag = :nativeFlag";
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
             query.setParameter("userDni", userDni);
             query.setParameter("groupId", groupId);

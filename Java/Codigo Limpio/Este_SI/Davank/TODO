@@ -21,6 +21,6 @@ Controladores:
             
 Notas:
     * Problemas:
-        - Hacer que todos los métodos del controlador devuelvan un Boolean si es posible (o null)
+        - Hacer que todos los métodos del controlador devuelvan requestResult
         
 

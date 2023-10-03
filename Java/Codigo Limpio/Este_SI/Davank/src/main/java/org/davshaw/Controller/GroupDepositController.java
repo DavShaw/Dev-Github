@@ -91,7 +91,7 @@ public class GroupDepositController
 
         try
         {
-            String sql = "SELECT count(*) FROM groupDeposit WHERE id = :id";
+            String sql = "SELECT count(*) FROM GroupDeposit WHERE id = :id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
             int count = ((Number) query.uniqueResult()).intValue();
@@ -205,22 +205,13 @@ public class GroupDepositController
             }
 
             //Obtener ID de registro de depositos que cumplan con el logId
-            String sql = "SELECT monto FROM groupDeposit WHERE (logId = :logId)";
+            String sql = "SELECT SUM(monto) FROM GroupDeposit WHERE logId = :logId";
             Query<Double> query = session.createNativeQuery(sql, Double.class);
             query.setParameter("logId", logId);
 
-                        // Cambia de Double[] a List<Double>
-            List<Double> totalesList = query.list();
-
-            Double totalDepositado = 0.0;
-
-            for (Double monto : totalesList)
-            {
-                totalDepositado += monto;
-            }
-
-            return totalDepositado;
-
+            double total = query.uniqueResult();
+            
+            return total;
         }
 
         catch (Exception e)

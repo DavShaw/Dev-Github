@@ -22,6 +22,14 @@ public class DavankApplication
 		"Carrillo",
 		"Torres",
 		"asfafLFvaSf25");
+
+		// org.davshaw.Controller.UserController.createUser(
+		// 1995209519,
+		// "Manuel",
+		// "Alfonso",
+		// "Martinez",
+		// "Guzman",
+		// "JafsaaGsLA512");
 	
 	
 	}

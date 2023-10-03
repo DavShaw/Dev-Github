@@ -71,7 +71,7 @@ public class GroupLoanController
         {
             session.beginTransaction();
 
-            String sql = "SELECT Count(*) FROM groupLoan WHERE id = :id";
+            String sql = "SELECT Count(*) FROM GroupLoan WHERE id = :id";
             Query<Long> query = session.createQuery(sql, Long.class);
             query.setParameter(sql, id);
 

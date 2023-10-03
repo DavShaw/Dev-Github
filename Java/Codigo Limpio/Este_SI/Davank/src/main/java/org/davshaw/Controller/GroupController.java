@@ -56,7 +56,7 @@ public class GroupController
 
         try
         {
-            String sql = "SELECT count(*) FROM Group WHERE id = :id";
+            String sql = "SELECT count(*) FROM `Group` WHERE id = :id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
             int count = ((Number) query.uniqueResult()).intValue();
