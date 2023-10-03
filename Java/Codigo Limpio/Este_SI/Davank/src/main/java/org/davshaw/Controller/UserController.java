@@ -78,7 +78,7 @@ public class UserController
 
         try
         {
-            String sql = "SELECT COUNT(*) FROM Usuario WHERE dni = :dni";
+            String sql = "SELECT COUNT(*) FROM User WHERE dni = :dni";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("dni", dni);
 
@@ -446,7 +446,7 @@ public class UserController
 
             session.beginTransaction();
 
-            String sql = "SELECT Count(*) FROM RegistroGrupo WHERE (usuariodni = :usuariodni and nativo = :nativo)";
+            String sql = "SELECT Count(*) FROM groupLog WHERE (ownerDni = :ownerDni and nativeFlag = :nativeFlag)";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("usuariodni", usuariodni);
             query.setParameter("nativo", true);
@@ -598,7 +598,7 @@ public class UserController
 
             session.beginTransaction();
 
-            String sql = "SELECT id FROM RegistroGrupo WHERE (grupoid = :grupoid AND usuariodni = :usuariodni AND nativo = :nativo)";
+            String sql = "SELECT id FROM groupLog WHERE (groupid = :groupid AND ownerDni = :ownerDni AND nativeFlag = :nativeFlag)";
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
             query.setParameter("usuariodni", usuariodni);
             query.setParameter("grupoid", grupoid);

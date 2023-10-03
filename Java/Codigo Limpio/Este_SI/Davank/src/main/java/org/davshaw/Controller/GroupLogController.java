@@ -73,7 +73,7 @@ public class GroupLogController
 
         try
         {
-            String sql = "SELECT COUNT(*) FROM RegistroGrupo WHERE id = :id";
+            String sql = "SELECT COUNT(*) FROM groupLog WHERE id = :id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
 

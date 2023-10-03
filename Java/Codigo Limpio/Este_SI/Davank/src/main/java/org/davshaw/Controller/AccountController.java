@@ -73,7 +73,7 @@ public class AccountController
 
         try
         {
-            String sql = "SELECT count(*) FROM Cuenta WHERE titularDni = :titularDni";
+            String sql = "SELECT count(*) FROM account WHERE ownerDni = :ownerDni";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("titularDni", titularDni);
             int count = ((Number) query.uniqueResult()).intValue();
@@ -105,7 +105,7 @@ public class AccountController
 
         try
         {
-            String sql = "SELECT numeroCuenta FROM Cuenta WHERE titularDni = :titularDni LIMIT 1;";
+            String sql = "SELECT accountNumber FROM account WHERE ownerDni = :ownerDni LIMIT 1;";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("titularDni", titularDni);
             int numeroCuenta = ((Number) query.uniqueResult()).intValue();
