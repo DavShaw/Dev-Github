@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 
 public class GroupLoanController
 {
-    public static Boolean hacerPrestamo(int registroId, double monto)
+    public static Boolean loan(int registroId, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -20,13 +20,13 @@ public class GroupLoanController
         try
         {
             //verificar que exista el registro
-            if(!(GroupLogController.existeRegistro(registroId)))
+            if(!(GroupLogController.logExist(registroId)))
             {
                 throw new IllegalArgumentException("No existe ningún registro con este ID.");
             }
 
             //Verificar que la cantidad a prestar < depositos históricos
-            else if(GroupDepositController.totalDepositos(registroId) < monto)
+            else if(GroupDepositController.totalDeposit(registroId) < monto)
             {
                 throw new IllegalArgumentException("El usuario ha depositado menos del valor a prestar.");
             }
@@ -58,7 +58,7 @@ public class GroupLoanController
         }
     }
 
-    public static Boolean existePrestamo(int id)
+    public static Boolean loanExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -93,7 +93,7 @@ public class GroupLoanController
         }
     }
 
-    public static GroupLoan obtenerPrestamo(int id)
+    public static GroupLoan getLoan(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -105,7 +105,7 @@ public class GroupLoanController
         try
         {
             //Verificar que exista el prestamo
-            if(!(GroupLoanController.existePrestamo(id)))
+            if(!(GroupLoanController.loanExist(id)))
             {
                 throw new IllegalArgumentException("No existe un prestamo con este id.");
             }
@@ -136,7 +136,7 @@ public class GroupLoanController
         }
     }
 
-    public static Boolean eliminarPrestamo(int id)
+    public static Boolean deleteLoan(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -148,12 +148,12 @@ public class GroupLoanController
         try
         {
             //Verificar que exista
-            if(!(GroupLoanController.existePrestamo(id)))
+            if(!(GroupLoanController.loanExist(id)))
             {
                 throw new IllegalArgumentException("No existe un prestamo registrado con este id.");
             }
             session.beginTransaction();
-            GroupLoan prestamo = GroupLoanController.obtenerPrestamo(id);
+            GroupLoan prestamo = GroupLoanController.getLoan(id);
             session.remove(prestamo);
             session.getTransaction().commit();
             return true;

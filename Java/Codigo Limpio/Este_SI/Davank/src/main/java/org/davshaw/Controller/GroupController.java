@@ -9,7 +9,7 @@ import org.hibernate.query.Query;
 
 public class GroupController
 {
-    public static String crearGrupo(String nombre)
+    public static String createGroup(String nombre)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -45,7 +45,7 @@ public class GroupController
         }
     }
 
-    public static Boolean existeGrupo(int id)
+    public static Boolean groupExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -77,7 +77,7 @@ public class GroupController
         }
     }
 
-    public static Group obtenerGrupo(int id)
+    public static Group getGroup(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -88,7 +88,7 @@ public class GroupController
 
         try
         {
-            if(GroupController.existeGrupo(id))
+            if(GroupController.groupExist(id))
             {
                 session.beginTransaction();
 
@@ -118,7 +118,7 @@ public class GroupController
         }
     }
 
-    public static Double obtenersaldo(int id)
+    public static Double getBalance(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -129,7 +129,7 @@ public class GroupController
 
         try
         {
-            if(GroupController.existeGrupo(id))
+            if(GroupController.groupExist(id))
             {
                 session.beginTransaction();
 
@@ -159,7 +159,7 @@ public class GroupController
         }
     }
 
-    public static String agregarSaldo(int id, double monto)
+    public static String addBalance(int id, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -175,11 +175,11 @@ public class GroupController
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(GroupController.existeGrupo(id))
+            else if(GroupController.groupExist(id))
             {
                 session.beginTransaction();
 
-                Group grupo = GroupController.obtenerGrupo(id);
+                Group grupo = GroupController.getGroup(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getBalance() + monto;
@@ -212,7 +212,7 @@ public class GroupController
         }
     }
 
-    public static String retirarSaldo(int id, double monto)
+    public static String withdrawalBalance(int id, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -228,11 +228,11 @@ public class GroupController
                 throw new IllegalArgumentException("El monto no puede ser negativo.");
             }
 
-            else if(GroupController.existeGrupo(id))
+            else if(GroupController.groupExist(id))
             {
                 session.beginTransaction();
 
-                Group grupo = GroupController.obtenerGrupo(id);
+                Group grupo = GroupController.getGroup(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getBalance() - monto;

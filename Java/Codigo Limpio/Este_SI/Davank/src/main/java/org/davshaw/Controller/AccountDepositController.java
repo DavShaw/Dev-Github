@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountDepositController
 {
-    public static Boolean hacerDeposito(int titularDniCuenta, double monto)
+    public static Boolean deposit(int titularDniCuenta, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -23,7 +23,7 @@ public class AccountDepositController
         try
         {
             //Verificar que la cuenta exista
-            if(!(AccountController.existeCuenta(titularDniCuenta)))
+            if(!(AccountController.accountExist(titularDniCuenta)))
             {
                 throw new IllegalArgumentException("La cuenta no existen.");
             }
@@ -31,11 +31,11 @@ public class AccountDepositController
             session.beginTransaction();
 
             //Haciendo el deposito
-            AccountController.agregarSaldo(titularDniCuenta, monto);
+            AccountController.addBalance(titularDniCuenta, monto);
 
             //Haciendo el registro del deposito
             AccountDeposit depositoCuenta = new AccountDeposit();
-            depositoCuenta.setAccountId(AccountController.obtenerNumeroCuenta(titularDniCuenta));
+            depositoCuenta.setAccountId(AccountController.getAccountNumber(titularDniCuenta));
             depositoCuenta.setDateTime(new Date());
             depositoCuenta.setBalance(monto);
 
@@ -59,7 +59,7 @@ public class AccountDepositController
         }
     }
     
-    public static Boolean existeDeposito(int id)
+    public static Boolean depositExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -91,7 +91,7 @@ public class AccountDepositController
         }
     }
 
-    public static AccountDeposit obtenerDeposito(int id)
+    public static AccountDeposit getDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -103,7 +103,7 @@ public class AccountDepositController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountDepositController.existeDeposito(id)))
+            if(!(AccountDepositController.depositExist(id)))
             {
                 throw new IllegalArgumentException("No existe un deposito registrado con este id.");
             }
@@ -133,7 +133,7 @@ public class AccountDepositController
         }
     }
 
-    public static Boolean eliminarDeposito (int id)
+    public static Boolean deleteDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -145,7 +145,7 @@ public class AccountDepositController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountDepositController.existeDeposito(id)))
+            if(!(AccountDepositController.depositExist(id)))
             {
                 throw new IllegalArgumentException("No existe un deposito registrado con este id.");
             }
@@ -154,7 +154,7 @@ public class AccountDepositController
             {
                 session.beginTransaction();
 
-                AccountDeposit deposito = AccountDepositController.obtenerDeposito(id);
+                AccountDeposit deposito = AccountDepositController.getDeposit(id);
                 session.remove(deposito);
 
                 session.getTransaction().commit();

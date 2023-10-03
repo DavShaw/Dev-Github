@@ -10,7 +10,7 @@ import org.davshaw.Model.pureentities.User;
 
 public class UserController
 {
-    public static String crearUsuario(
+    public static String createUser(
     int dni,
     String primerNombre,
     String segundoNombre,
@@ -45,7 +45,7 @@ public class UserController
             session.getTransaction().commit();
             
             //Controlador de Cuentas
-            AccountController.crearCuenta(dni);
+            AccountController.createAccount(dni);
             
 
             return "Usuario creado correctamente.";
@@ -65,7 +65,7 @@ public class UserController
 
     }
 
-    public static Boolean existeUsuario(int dni)
+    public static Boolean userExist(int dni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -104,7 +104,7 @@ public class UserController
     
     }
 
-    public String eliminarUsuario(int dni)
+    public String deleteUser(int dni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -116,7 +116,7 @@ public class UserController
     
         try
         {
-            if((UserController.existeUsuario(dni)))
+            if((UserController.userExist(dni)))
             {
                 User usuario = session.get(User.class, dni);
                 
@@ -149,7 +149,7 @@ public class UserController
         }
     }
 
-    public static User obtenerUsuario(int dni)
+    public static User getUser(int dni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -182,7 +182,7 @@ public class UserController
         }
     }
 
-    public static String cambiarPrimerNombre(int dni, String nombre)
+    public static String changeFirstName(int dni, String nombre)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -194,7 +194,7 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UserController.userExist(dni))
             {
                 session.beginTransaction();
 
@@ -230,7 +230,7 @@ public class UserController
         }
     }
 
-    public static String cambiarSegundoNombre(int dni, String nombre)
+    public static String changeMiddleName(int dni, String nombre)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -242,7 +242,7 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UserController.userExist(dni))
             {
                 session.beginTransaction();
 
@@ -278,7 +278,7 @@ public class UserController
         }
     }
 
-    public static String cambiarPrimerApellido(int dni, String apellido)
+    public static String changeFirstLastName(int dni, String apellido)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -290,7 +290,7 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UserController.userExist(dni))
             {
                 session.beginTransaction();
 
@@ -326,7 +326,7 @@ public class UserController
         }
     }
 
-    public static String cambiarSegundoApellido(int dni, String apellido)
+    public static String changeMiddleLastName(int dni, String apellido)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -338,7 +338,7 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UserController.userExist(dni))
             {
                 session.beginTransaction();
 
@@ -374,7 +374,7 @@ public class UserController
         }
     }
 
-    public static String cambiarContrasena(int dni, String contrasena, String nuevaContrasena)
+    public static String changePassword(int dni, String contrasena, String nuevaContrasena)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -386,7 +386,7 @@ public class UserController
         try
         {
             //!Verificar que exista
-            if(UserController.existeUsuario(dni))
+            if(UserController.userExist(dni))
             {
                 session.beginTransaction();
                 User usuario = session.get(User.class, dni);
@@ -427,7 +427,7 @@ public class UserController
         }
     }
 
-    public static Integer contadorGrupos(int usuariodni)
+    public static Integer countGroup(int usuariodni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -439,7 +439,7 @@ public class UserController
         try
         {
             //Verificar que el usuario exista
-            if(!(UserController.existeUsuario(usuariodni)))
+            if(!(UserController.userExist(usuariodni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }
@@ -469,7 +469,7 @@ public class UserController
         }
     }
 
-    public static Boolean entrarGrupo(int usuariodni, int grupoid)
+    public static Boolean joinGroup(int usuariodni, int grupoid)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -481,13 +481,13 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(GroupController.existeGrupo(grupoid)))
+            if(!(GroupController.groupExist(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
             
             //Verificar que el usuario no este en mas de >= 3 grupos
-            else if(UserController.contadorGrupos(usuariodni) >= 3)
+            else if(UserController.countGroup(usuariodni) >= 3)
             {
                 throw new IllegalArgumentException("El usuario está en el máximo de grupos permitidos.");
             }
@@ -518,7 +518,7 @@ public class UserController
         }
     }
 
-    public static Boolean salirGrupo(int usuariodni, int grupoid)
+    public static Boolean leaveGroup(int usuariodni, int grupoid)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -530,19 +530,19 @@ public class UserController
         try
         {
             //Verificar que el usuario este en al menos un grupo
-            if(UserController.contadorGrupos(usuariodni) <= 0)
+            if(UserController.countGroup(usuariodni) <= 0)
             {
                 throw new IllegalArgumentException("El usuario no está en ningún grupo.");
             }
 
             //Verificar que el grupo exista
-            else if(!(GroupController.existeGrupo(grupoid)))
+            else if(!(GroupController.groupExist(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Obtener ID del registro
-            Integer registroId = UserController.obtenerRegistroId(usuariodni, grupoid);
+            Integer registroId = UserController.getLogId(usuariodni, grupoid);
 
             //Verificar que el registroId no sea null (No existe el registro)
             if (registroId == null)
@@ -552,7 +552,7 @@ public class UserController
 
             session.beginTransaction();
 
-            GroupLog registro = GroupLogController.obtenerRegistro(registroId);
+            GroupLog registro = GroupLogController.getLog(registroId);
             session.remove(registro);
 
             session.getTransaction().commit();
@@ -573,7 +573,7 @@ public class UserController
         }
     }
 
-    public static Integer obtenerRegistroId(int usuariodni, int grupoid)
+    public static Integer getLogId(int usuariodni, int grupoid)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -585,13 +585,13 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(GroupController.existeGrupo(grupoid)))
+            if(!(GroupController.groupExist(grupoid)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este id.");
             }
 
             //Verificar que el usuario exista
-            else if(!(UserController.existeUsuario(usuariodni)))
+            else if(!(UserController.userExist(usuariodni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este dni.");
             }

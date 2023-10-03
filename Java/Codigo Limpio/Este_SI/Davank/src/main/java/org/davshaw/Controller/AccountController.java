@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountController
 {
-    public static String crearCuenta(int dni)
+    public static String createAccount(int dni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -21,7 +21,7 @@ public class AccountController
         try
         {
             //Verificar que no exista otra cuenta con el titularDni igual
-            if(!AccountController.existeCuenta(dni))
+            if(!AccountController.accountExist(dni))
             {
                 Account cuenta = new Account();
 
@@ -62,7 +62,7 @@ public class AccountController
         }
     }
     
-    public static Boolean existeCuenta(int titularDni)
+    public static Boolean accountExist(int titularDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -94,7 +94,7 @@ public class AccountController
         }
     }
 
-    public static Integer obtenerNumeroCuenta(int titularDni)
+    public static Integer getAccountNumber(int titularDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -126,7 +126,7 @@ public class AccountController
         }
     }
 
-    public static Account obtenerCuenta(int titularDni)
+    public static Account getAccount(int titularDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -138,11 +138,11 @@ public class AccountController
         try
         {
             //Verificar si existe cuenta con titularDni
-            if(AccountController.existeCuenta(titularDni))
+            if(AccountController.accountExist(titularDni))
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, AccountController.getAccountNumber(titularDni));
 
                 session.getTransaction().commit();
                 return cuenta;
@@ -173,7 +173,7 @@ public class AccountController
         }
     }
 
-    public static String agregarSaldo(int titularDni, double monto)
+    public static String addBalance(int titularDni, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -189,11 +189,11 @@ public class AccountController
                 throw new IllegalArgumentException("El monto no puede ser negativo");
             }
 
-            else if(AccountController.existeCuenta(titularDni))
+            else if(AccountController.accountExist(titularDni))
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, AccountController.getAccountNumber(titularDni));
 
                 //Obtener saldo actual
                 double nuevoSaldo = cuenta.getBalance() + monto;
@@ -232,7 +232,7 @@ public class AccountController
         }
     }
 
-    public static String retirarSaldo(int titularDni, double monto)
+    public static String withdrawalBalance(int titularDni, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -248,11 +248,11 @@ public class AccountController
                 throw new IllegalArgumentException("El monto no puede ser negativo");
             }
 
-            else if(AccountController.existeCuenta(titularDni))
+            else if(AccountController.accountExist(titularDni))
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, AccountController.getAccountNumber(titularDni));
 
                 //Obtener saldo actual
                 double nuevoSaldo = cuenta.getBalance() - monto;
@@ -291,7 +291,7 @@ public class AccountController
         }
     }
 
-    public static Double obtenerSaldo(int titularDni)
+    public static Double getBalance(int titularDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -302,9 +302,9 @@ public class AccountController
 
         try
         {
-            if(AccountController.existeCuenta(titularDni))
+            if(AccountController.accountExist(titularDni))
             {
-                Account cuenta = AccountController.obtenerCuenta(titularDni);
+                Account cuenta = AccountController.getAccount(titularDni);
                 return cuenta.getBalance();
             }
             
@@ -334,7 +334,7 @@ public class AccountController
         }
     }
 
-    public static String eliminarCuenta(int titularDni)
+    public static String deleteAccount(int titularDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -345,11 +345,11 @@ public class AccountController
 
         try
         {
-            if(AccountController.existeCuenta(titularDni))
+            if(AccountController.accountExist(titularDni))
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, AccountController.obtenerNumeroCuenta(titularDni));
+                Account cuenta = session.get(Account.class, AccountController.getAccount(titularDni));
 
                 session.remove(cuenta);
 
@@ -384,8 +384,8 @@ public class AccountController
         }
     }
 
-    public static Boolean tieneCantidad(int titularDni, double monto)
+    public static Boolean hasEnough(int titularDni, double monto)
     {
-        return AccountController.obtenerSaldo(titularDni) >= monto;
+        return AccountController.getBalance(titularDni) >= monto;
     }
 }

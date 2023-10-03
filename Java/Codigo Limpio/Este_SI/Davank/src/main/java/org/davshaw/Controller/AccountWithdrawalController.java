@@ -12,7 +12,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountWithdrawalController
 {
-    public static Boolean hacerRetiro(int titularDniCuenta, double monto)
+    public static Boolean withdrawal(int titularDniCuenta, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -24,12 +24,12 @@ public class AccountWithdrawalController
         try
         {
             //Verificar si existe una cuenta asociada a este dni
-            if(!(AccountController.existeCuenta(titularDniCuenta)))
+            if(!(AccountController.accountExist(titularDniCuenta)))
             {
                 throw new IllegalArgumentException("No existe una cuenta asociada a este dni.");
             }
             //Verificar que el monto de la cuenta sea mayor o igual al monto a retirar
-            if(!(AccountController.obtenerSaldo(titularDniCuenta) >= monto))
+            if(!(AccountController.getBalance(titularDniCuenta) >= monto))
             {
                 throw new IllegalArgumentException("El monto a retirar supera el saldo de la cuenta.");
             }
@@ -39,12 +39,12 @@ public class AccountWithdrawalController
             {
                 session.beginTransaction();
 
-                AccountController.retirarSaldo(titularDniCuenta, monto);
+                AccountController.withdrawalBalance(titularDniCuenta, monto);
                 //Crear registro del retiro
                 AccountWithdrawal retiro = new AccountWithdrawal();
                 retiro.setDateTime(new Date());
                 retiro.setBalance(monto);
-                retiro.setAccountNumber(AccountController.obtenerNumeroCuenta(titularDniCuenta));
+                retiro.setAccountNumber(AccountController.getAccountNumber(titularDniCuenta));
 
                 session.persist(retiro);
                 session.getTransaction().commit();
@@ -67,7 +67,7 @@ public class AccountWithdrawalController
         }
     }
 
-    public static Boolean existeRetiro(int id)
+    public static Boolean withdrawalExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -99,7 +99,7 @@ public class AccountWithdrawalController
         }
     }
 
-    public static AccountWithdrawal obtenerRetiro(int id)
+    public static AccountWithdrawal getWithdrawal(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -111,7 +111,7 @@ public class AccountWithdrawalController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountWithdrawalController.existeRetiro(id)))
+            if(!(AccountWithdrawalController.withdrawalExist(id)))
             {
                 throw new IllegalArgumentException("No existe un retiro registrado con este id.");
             }
@@ -141,7 +141,7 @@ public class AccountWithdrawalController
         }
     } 
 
-    public static Boolean eliminarRetiro(int id)
+    public static Boolean deleteWithdrawal(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -153,7 +153,7 @@ public class AccountWithdrawalController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountWithdrawalController.existeRetiro(id)))
+            if(!(AccountWithdrawalController.withdrawalExist(id)))
             {
                 throw new IllegalArgumentException("No existe un retiro registrado con este id.");
             }
@@ -162,7 +162,7 @@ public class AccountWithdrawalController
             {
                 session.beginTransaction();
 
-                AccountWithdrawal retiro = AccountWithdrawalController.obtenerRetiro(id);
+                AccountWithdrawal retiro = AccountWithdrawalController.getWithdrawal(id);
                 
                 session.remove(retiro);
                 

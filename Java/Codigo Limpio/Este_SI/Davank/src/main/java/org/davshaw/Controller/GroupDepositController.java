@@ -11,7 +11,7 @@ import org.hibernate.query.Query;
 
 public class GroupDepositController
 {
-    public static Boolean hacerDeposito(int registroId, double monto)
+    public static Boolean deposit(int registroId, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -23,21 +23,21 @@ public class GroupDepositController
         try
         {
             //Verificar que el registro exista
-            if(GroupLogController.existeRegistro(registroId))
+            if(GroupLogController.logExist(registroId))
             {
                 session.beginTransaction();
 
                 //Obtener id del grupo y dni del usuario
-                int grupoId = GroupLogController.obtenerGrupoId(registroId);
-                int titularDni = GroupLogController.obtenerUsuarioDni(registroId);
+                int grupoId = GroupLogController.getGroupId(registroId);
+                int titularDni = GroupLogController.getOwnerDni(registroId);
                 
                 //Verificar que la cuenta tenga el dinero para depositar
-                if(AccountController.tieneCantidad(titularDni, monto))
+                if(AccountController.hasEnough(titularDni, monto))
                 {
                     //Retirar cantidad de la cuenta
-                    AccountController.retirarSaldo(titularDni, monto);
+                    AccountController.withdrawalBalance(titularDni, monto);
                     //Agregar cantidad al grupo
-                    GroupController.agregarSaldo(grupoId, monto);
+                    GroupController.addBalance(grupoId, monto);
 
                     //Crear el registro
                     GroupDeposit deposito = new GroupDeposit();
@@ -80,7 +80,7 @@ public class GroupDepositController
         }
     }
 
-    public static Boolean existeDeposito(int id)
+    public static Boolean depositExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -112,7 +112,7 @@ public class GroupDepositController
         }
     }
 
-    public static GroupDeposit obtenerDeposito(int id)
+    public static GroupDeposit getDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -124,7 +124,7 @@ public class GroupDepositController
         try
         {
             //Verificar si existe el registro del deposito
-            if(!(GroupDepositController.existeDeposito(id)))
+            if(!(GroupDepositController.depositExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro de deposito con este id.");
             }
@@ -148,7 +148,7 @@ public class GroupDepositController
         }
     } 
 
-    public static Boolean eliminarDeposito(int id)
+    public static Boolean deleteDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -161,13 +161,13 @@ public class GroupDepositController
         {
 
             //Verificar que exista el deposito
-            if(!(GroupDepositController.existeDeposito(id)))
+            if(!(GroupDepositController.depositExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro de deposito con este id.");
             }
 
             session.beginTransaction();
-            GroupDeposit deposito = GroupDepositController.obtenerDeposito(id);
+            GroupDeposit deposito = GroupDepositController.getDeposit(id);
             session.remove(deposito);
             session.getTransaction().commit();
 
@@ -187,7 +187,7 @@ public class GroupDepositController
         }
     }
 
-    public static Double totalDepositos(int registroId)
+    public static Double totalDeposit(int registroId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -199,7 +199,7 @@ public class GroupDepositController
         try
         {
             //Verificar que el registro exista
-            if(!(GroupLogController.existeRegistro(registroId)))
+            if(!(GroupLogController.logExist(registroId)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }

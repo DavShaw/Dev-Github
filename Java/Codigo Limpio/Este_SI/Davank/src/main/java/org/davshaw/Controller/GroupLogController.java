@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 
 public class GroupLogController
 {
-    public static String crearRegistro(int usuarioDni, int grupoId, Boolean nativo)
+    public static String createLog(int usuarioDni, int grupoId, Boolean nativo)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -20,12 +20,12 @@ public class GroupLogController
         try
         {
             //Verificar que exista el usuario
-            if(!(UserController.existeUsuario(usuarioDni)))
+            if(!(UserController.userExist(usuarioDni)))
             {
                 throw new IllegalArgumentException("No existe un usuario con este DNI.");
             }
             //Verificar que exista el grupo
-            else if (!(GroupController.existeGrupo(grupoId)))
+            else if (!(GroupController.groupExist(grupoId)))
             {
                 throw new IllegalArgumentException("No existe un grupo con este ID.");
             }
@@ -60,7 +60,7 @@ public class GroupLogController
         }
     }
 
-    public static boolean existeRegistro(int id)
+    public static boolean logExist(int id)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -98,7 +98,7 @@ public class GroupLogController
         }
     }
 
-    public static GroupLog obtenerRegistro(int id)
+    public static GroupLog getLog(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -131,7 +131,7 @@ public class GroupLogController
         }
     }
 
-    public static Integer obtenerUsuarioDni(int id)
+    public static Integer getOwnerDni(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -143,13 +143,13 @@ public class GroupLogController
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogController.existeRegistro(id)))
+            if(!(GroupLogController.logExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = GroupLogController.obtenerRegistro(id);
+            GroupLog registro = GroupLogController.getLog(id);
 
             return registro.getOwnerDni();
         }
@@ -167,7 +167,7 @@ public class GroupLogController
         }
     }
 
-    public static Integer obtenerGrupoId(int id)
+    public static Integer getGroupId(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -179,13 +179,13 @@ public class GroupLogController
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogController.existeRegistro(id)))
+            if(!(GroupLogController.logExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = GroupLogController.obtenerRegistro(id);
+            GroupLog registro = GroupLogController.getLog(id);
 
             return registro.getGroupId();
         }
@@ -203,7 +203,7 @@ public class GroupLogController
         }
     }
 
-    public static Boolean obtenerNatividad(int id)
+    public static Boolean getNativeFlag(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -215,13 +215,13 @@ public class GroupLogController
         try
         {
             //Verificar que exista el registro
-            if(!(GroupLogController.existeRegistro(id)))
+            if(!(GroupLogController.logExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro con este id.");
             }
 
             //Obtener objeto
-            GroupLog registro = GroupLogController.obtenerRegistro(id);
+            GroupLog registro = GroupLogController.getLog(id);
 
             return registro.isNativeFlag();
         }

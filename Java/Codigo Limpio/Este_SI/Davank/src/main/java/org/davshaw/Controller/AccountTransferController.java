@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountTransferController
 {
-    public static Boolean hacerTransferencia(int titularDniCuentaOrigen, int titularDniCuentaDestino, double monto)
+    public static Boolean transfer(int titularDniCuentaOrigen, int titularDniCuentaDestino, double monto)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -23,13 +23,13 @@ public class AccountTransferController
         try
         {
             //Verificar si las dos cuentas existen
-            if(!(AccountController.existeCuenta(titularDniCuentaOrigen)) || !(AccountController.existeCuenta(titularDniCuentaDestino)))
+            if(!(AccountController.accountExist(titularDniCuentaOrigen)) || !(AccountController.accountExist(titularDniCuentaDestino)))
             {
                 throw new IllegalArgumentException("La cuenta ingresada no existe.");
             }
 
             //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
-            else if (AccountController.obtenerSaldo(titularDniCuentaOrigen) < monto)
+            else if (AccountController.getBalance(titularDniCuentaOrigen) < monto)
             {
                 throw new IllegalArgumentException("La cuenta de origen tiene el saldo");
             }
@@ -37,16 +37,16 @@ public class AccountTransferController
             session.beginTransaction();
 
             //Retirar dinero de la cuenta de origen
-            AccountController.retirarSaldo(titularDniCuentaOrigen, monto);
+            AccountController.withdrawalBalance(titularDniCuentaOrigen, monto);
             //Agregar dinero a la cuenta de destino
-            AccountController.agregarSaldo(titularDniCuentaDestino, monto);
+            AccountController.addBalance(titularDniCuentaDestino, monto);
 
             //Iniciar creación del registro de la transferencia
             AccountTransfer transferencia = new AccountTransfer();
             transferencia.setDateTime(new Date());
             transferencia.setBalance(monto);
-            transferencia.setDestinationAccountNumber(AccountController.obtenerNumeroCuenta(titularDniCuentaDestino));
-            transferencia.setOriginAccountNumber(AccountController.obtenerNumeroCuenta(titularDniCuentaOrigen));
+            transferencia.setDestinationAccountNumber(AccountController.getAccountNumber(titularDniCuentaDestino));
+            transferencia.setOriginAccountNumber(AccountController.getAccountNumber(titularDniCuentaOrigen));
 
             session.persist(transferencia);
 
@@ -69,7 +69,7 @@ public class AccountTransferController
         }
     }
 
-    public static Boolean existeTransferencia(int id)
+    public static Boolean transferExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -101,7 +101,7 @@ public class AccountTransferController
         }
     }
 
-    public static AccountTransfer obtenerTransferencia(int id)
+    public static AccountTransfer getTransfer(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -112,7 +112,7 @@ public class AccountTransferController
 
         try
         {
-            if(!(AccountTransferController.existeTransferencia(id)))
+            if(!(AccountTransferController.transferExist(id)))
             {
                 throw new IllegalArgumentException("No existe una transferencia con este id.");
             }
@@ -141,7 +141,7 @@ public class AccountTransferController
         }
     }
 
-    public static Boolean eliminarTransferencia(int id)
+    public static Boolean deleteTransfer(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -153,13 +153,13 @@ public class AccountTransferController
         try
         {
             //Verificar si existe
-            if(!(AccountTransferController.existeTransferencia(id)))
+            if(!(AccountTransferController.transferExist(id)))
             {
                 throw new IllegalArgumentException("No existe un registro de transferencia con este id.");
             }
 
             session.beginTransaction();
-            AccountTransfer transferencia = AccountTransferController.obtenerTransferencia(id);
+            AccountTransfer transferencia = AccountTransferController.getTransfer(id);
 
             session.remove(transferencia);
             session.getTransaction().commit();
