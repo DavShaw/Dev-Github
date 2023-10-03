@@ -1,6 +1,5 @@
 package org.davshaw.Davank;
 
-import org.davshaw.Controller.RegistroGrupoControlador;
 import org.davshaw.External.Color;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

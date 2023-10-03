@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.davshaw.Model.derivatedentities.DepositoGrupo;
-import org.davshaw.Model.pureentities.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

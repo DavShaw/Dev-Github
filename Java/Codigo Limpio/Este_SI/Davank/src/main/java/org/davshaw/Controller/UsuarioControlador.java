@@ -3,8 +3,6 @@ package org.davshaw.Controller;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-import java.util.List;
-
 import org.davshaw.Model.derivatedentities.RegistroGrupo;
 import org.davshaw.Model.pureentities.Usuario;
 import org.hibernate.Session;

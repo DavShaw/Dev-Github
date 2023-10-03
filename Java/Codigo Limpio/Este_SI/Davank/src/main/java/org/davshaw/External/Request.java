@@ -2,14 +2,12 @@ package org.davshaw.External;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
 @Getter
 @AllArgsConstructor
 public class Request<Generic>
 {
-    private Boolean success;
-    private String message = "";
+    private Boolean okay;
     private Generic result = null;
+    private String message = "";
 }
