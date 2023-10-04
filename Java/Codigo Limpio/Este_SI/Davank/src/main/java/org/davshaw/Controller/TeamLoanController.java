@@ -31,6 +31,12 @@ public class TeamLoanController
                 throw new IllegalArgumentException("El usuario ha depositado menos del valor a prestar.");
             }
 
+            //Verificar que el grupo tenga la cantidad necesaria
+            else if(TeamLogController.getLog(logId).getGroup().getBalance() < balance)
+            {
+                throw new IllegalArgumentException("El grupo no tiene el dinero suficiente");
+            }
+
             //Sino se lanzo alguna exceptión, todo está bien
             session.beginTransaction();
 
@@ -39,6 +45,15 @@ public class TeamLoanController
             prestamo.setLogId(logId);
             prestamo.setBalance(balance);
             session.persist(prestamo);
+
+            //Retirar saldo del equipo
+            int teamId = TeamLogController.getLog(logId).getTeamId();
+            TeamController.withdrawalBalance(teamId, balance);
+
+            //Añadir saldo a la cuenta
+            int ownerDni = TeamLogController.getLog(logId).getUserDni();
+            AccountController.addBalance(ownerDni, balance);
+            
 
             session.getTransaction().commit();
                 
@@ -73,7 +88,7 @@ public class TeamLoanController
 
             String sql = "SELECT Count(*) FROM TeamLoan WHERE id = :id";
             Query<Long> query = session.createQuery(sql, Long.class);
-            query.setParameter(sql, id);
+            query.setParameter("id", id);
 
             int count =  ((Number) query.uniqueResult()).intValue();
 
@@ -152,10 +167,12 @@ public class TeamLoanController
             {
                 throw new IllegalArgumentException("No existe un prestamo registrado con este id.");
             }
+
             session.beginTransaction();
             TeamLoan prestamo = TeamLoanController.getLoan(id);
             session.remove(prestamo);
             session.getTransaction().commit();
+
             return true;
         }
 
