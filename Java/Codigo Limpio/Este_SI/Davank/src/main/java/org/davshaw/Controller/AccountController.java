@@ -349,8 +349,7 @@ public class AccountController
             {
                 session.beginTransaction();
 
-                Account cuenta = session.get(Account.class, AccountController.getAccount(ownerDni));
-
+                Account cuenta = AccountController.getAccount(ownerDni);
                 session.remove(cuenta);
 
                 session.getTransaction().commit();
@@ -367,7 +366,7 @@ public class AccountController
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
-    e.printStackTrace();
+            e.printStackTrace();
             return "Error al eliminar cuenta.";
         }
 

@@ -14,25 +14,5 @@ public class DavankApplication
 	{
 		SpringApplication.run(DavankApplication.class, args);
 		System.out.println(Color.color("RED","El servidor local del proyecto Spring Boot está encendido. Todo lo que veas depués de este mensaje son los request"));
-	
-		// org.davshaw.Controller.UserController.createUser(
-		// 1067592686,
-		// "Juan",
-		// "David",
-		// "Carrillo",
-		// "Torres",
-		// "asfafLFvaSf25");
-
-		org.davshaw.Controller.UserController.createUser(
-		1995209519,
-		"Manuel",
-		"Alfonso",
-		"Martinez",
-		"Guzman",
-		"JafsaaGsLA512");
-
-		// Boolean result = org.davshaw.Controller.AccountController.accountExist(1067592686);
-		// System.out.println(result);
-	
 	}
 }

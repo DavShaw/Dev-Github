@@ -27,6 +27,11 @@ public class UserController
 
         try
         {
+            //Verificar que no exista otro usuario con el mismo dni
+            if(UserController.userExist(dni))
+            {
+                throw new IllegalArgumentException("Ya existe un usuario con este mismo dni.");
+            }
 
             User usuario = new User();
 
@@ -63,7 +68,7 @@ public class UserController
 
     }
 
-    public static Boolean userExist(int userDni)
+    public static Boolean userExist(int dni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -76,15 +81,15 @@ public class UserController
 
         try
         {
-            String sql = "SELECT COUNT(*) FROM User WHERE userDni = :userDni";
+            String sql = "SELECT COUNT(*) FROM User WHERE dni = :dni";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
-            query.setParameter("userDni", userDni);
+            query.setParameter("dni", dni);
 
     
-            // Obtener el resultado de la consulta (cantidad de usuarios con el userDni dado)
+            // Obtener el resultado de la consulta (cantidad de usuarios con el dni dado)
             int count = ((Number) query.uniqueResult()).intValue();
     
-            // Si count es mayor que 0, significa que existe un usuario con ese userDni
+            // Si count es mayor que 0, significa que existe un usuario con ese userdni
             return count > 0;
         }
         
@@ -386,23 +391,32 @@ public class UserController
             //!Verificar que exista
             if(UserController.userExist(userDni))
             {
-                session.beginTransaction();
-                User usuario = session.get(User.class, userDni);
-                //!Verificar que la contraseña concuerde
-                if(usuario.getPassword().equals(password))
+                User user = UserController.getUser(userDni);
+
+                if(user.getPassword() == null)
                 {
-                    usuario.setPassword(newPassword);
-                    session.merge(usuario);
-    
+                    session.beginTransaction();
+                    user.setPassword(newPassword);
+                    session.merge(user);
                     session.getTransaction().commit();
-    
                     return "Contraseña cambiado con éxito.";
                 }
 
+                else if(user.getPassword().equals(password))
+                {
+                    session.beginTransaction();
+                    user.setPassword(newPassword);
+                    session.merge(user);
+                    session.getTransaction().commit();
+                    return "Contraseña cambiado con éxito.";
+                }
+                
                 else
                 {
-                throw new IllegalArgumentException("Credenciales inválidas.");
+                    throw new IllegalArgumentException("Credenciales no válidas.");
                 }
+
+                
             }
 
             else
