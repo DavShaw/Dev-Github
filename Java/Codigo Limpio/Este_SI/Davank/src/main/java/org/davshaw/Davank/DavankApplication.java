@@ -19,7 +19,7 @@ public class DavankApplication
 
 		//org.davshaw.Controller.UserController.createUser(106,"Juan", "David", "Carrillo", "Torres", "ASD");
 		//org.davshaw.Controller.UserController.createUser(759, "Santiago", "", "Carrillo", "Torres", "DSA");
-		System.out.println(org.davshaw.Controller.AccountTransferController.getTransfer(1));
+		org.davshaw.Controller.AccountWithdrawalController.deleteWithdrawal(1);
 
 
 	}

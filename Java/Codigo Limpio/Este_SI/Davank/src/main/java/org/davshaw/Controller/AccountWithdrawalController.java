@@ -78,7 +78,7 @@ public class AccountWithdrawalController
 
         try
         {
-            String sql = "SELECT count(*) FROM withdrawalAccount WHERE id = :id";
+            String sql = "SELECT count(*) FROM AccountWithdrawal WHERE id = :id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
             int count = ((Number) query.uniqueResult()).intValue();
