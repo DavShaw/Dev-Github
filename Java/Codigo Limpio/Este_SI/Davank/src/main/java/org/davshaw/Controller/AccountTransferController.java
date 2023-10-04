@@ -22,16 +22,22 @@ public class AccountTransferController
 
         try
         {
-            //Verificar si las dos cuentas existen
-            if(!(AccountController.accountExist(originOwnerDni)) || !(AccountController.accountExist(destinationOwnerDni)))
+            //Verificar si la cuenta origen existe
+            if(!(AccountController.accountExist(originOwnerDni)))
             {
-                throw new IllegalArgumentException("La cuenta ingresada no existe.");
+                throw new IllegalArgumentException("La cuenta ingresada no existe (Origen).");
+            }
+
+            //Verificar si cuenta destino existe
+            else if(!(AccountController.accountExist(destinationOwnerDni)))
+            {
+                throw new IllegalArgumentException("La cuenta ingresada no existe (Destinatario).");
             }
 
             //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
             else if (AccountController.getBalance(originOwnerDni) < balance)
             {
-                throw new IllegalArgumentException("La cuenta de origen tiene el saldo");
+                throw new IllegalArgumentException("La cuenta de origen no tiene el saldo suficiente");
             }
 
             session.beginTransaction();
