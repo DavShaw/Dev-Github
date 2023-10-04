@@ -16,7 +16,7 @@ public class DavankApplication
 		System.out.println(Color.color("RED","El servidor local del proyecto Spring Boot está encendido. Todo lo que veas depués de este mensaje son los request"));
 
 
-		org.davshaw.Controller.TeamController.withdrawalBalance(52, 300);
+		System.out.println(org.davshaw.Controller.TeamDepositController.totalDeposit(1));
 
 
 	}

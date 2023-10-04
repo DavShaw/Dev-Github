@@ -462,7 +462,7 @@ public class UserController
 
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("userDni", userDni);
-            query.setParameter("nativo", true);
+            query.setParameter("nativeFlag", true);
             session.getTransaction().commit();
 
             int count = Integer.valueOf(query.uniqueResult().toString());
@@ -615,7 +615,7 @@ public class UserController
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
             query.setParameter("userDni", userDni);
             query.setParameter("teamId", teamId);
-            query.setParameter("nativo", true);
+            query.setParameter("nativeFlag", true);
 
 
             Integer id = (Integer) query.uniqueResult();

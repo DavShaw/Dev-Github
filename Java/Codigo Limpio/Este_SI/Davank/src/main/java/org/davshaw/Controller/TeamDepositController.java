@@ -204,13 +204,14 @@ public class TeamDepositController
             }
 
             //Obtener ID de registro de depositos que cumplan con el logId
-            String sql = "SELECT SUM(monto) FROM TeamDeposit WHERE logId = :logId";
+            String sql = "SELECT SUM(balance) FROM TeamDeposit WHERE logId = :logId";
             Query<Double> query = session.createNativeQuery(sql, Double.class);
             query.setParameter("logId", logId);
 
-            double total = query.uniqueResult();
+            Double total = query.uniqueResult();
             
-            return total;
+            //Return condition ? valueIfTrue : valueIfFalse -> Conditional operator
+            return (total != null) ? total : 0.0;
         }
 
         catch (Exception e)
