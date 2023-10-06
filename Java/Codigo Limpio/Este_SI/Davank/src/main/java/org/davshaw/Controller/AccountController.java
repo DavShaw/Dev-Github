@@ -235,7 +235,7 @@ public class AccountController
         }
     }
 
-    public static String withdrawalBalance(int ownerDni, double balance)
+    public static String withdrawBalance(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")

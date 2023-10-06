@@ -36,7 +36,7 @@ public class TeamDepositController
                 if(AccountController.hasEnough(titularDni, balance))
                 {
                     //Retirar cantidad de la cuenta
-                    AccountController.withdrawalBalance(titularDni, balance);
+                    AccountController.withdrawBalance(titularDni, balance);
                     //Agregar cantidad al grupo
                     TeamController.addBalance(grupoId, balance);
 

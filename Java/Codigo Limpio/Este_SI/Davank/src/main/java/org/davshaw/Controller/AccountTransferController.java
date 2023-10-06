@@ -46,7 +46,7 @@ public class AccountTransferController
             session.beginTransaction();
 
             //Retirar dinero de la cuenta de origen
-            AccountController.withdrawalBalance(originOwnerDni, balance);
+            AccountController.withdrawBalance(originOwnerDni, balance);
             //Agregar dinero a la cuenta de destino
             AccountController.addBalance(destinationOwnerDni, balance);
 

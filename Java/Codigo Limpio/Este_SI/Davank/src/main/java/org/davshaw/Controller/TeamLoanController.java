@@ -50,7 +50,7 @@ public class TeamLoanController
 
             //Retirar saldo del equipo
             int teamId = TeamLogController.getLog(logId).getTeamId();
-            TeamController.withdrawalBalance(teamId, balance);
+            TeamController.withdrawBalance(teamId, balance);
 
             //Añadir saldo a la cuenta
             int ownerDni = TeamLogController.getLog(logId).getUserDni();

@@ -15,7 +15,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountWithdrawalController
 {
-    public static Boolean withdrawal(int ownerDni, double balance)
+    public static Boolean withdraw(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -42,7 +42,7 @@ public class AccountWithdrawalController
             {
                 session.beginTransaction();
 
-                AccountController.withdrawalBalance(ownerDni, balance);
+                AccountController.withdrawBalance(ownerDni, balance);
                 //Crear registro del retiro
                 AccountWithdrawal retiro = new AccountWithdrawal();
                 retiro.setDateTime(new Date());
@@ -70,7 +70,7 @@ public class AccountWithdrawalController
         }
     }
 
-    public static Boolean withdrawalExist(int id)
+    public static Boolean withdrawExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -114,7 +114,7 @@ public class AccountWithdrawalController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountWithdrawalController.withdrawalExist(id)))
+            if(!(AccountWithdrawalController.withdrawExist(id)))
             {
                 throw new RecordNotFoundException();
             }
@@ -156,7 +156,7 @@ public class AccountWithdrawalController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountWithdrawalController.withdrawalExist(id)))
+            if(!(AccountWithdrawalController.withdrawExist(id)))
             {
                 throw new RecordNotFoundException();
             }
