@@ -27,7 +27,6 @@ public class Account
     @Column(name = "accountNumber")
     private int accountNumber;
 
-    //? Clave foranea (Con usuario)
     @OneToOne(targetEntity = User.class)
     @JoinColumn(name = "ownerDni", referencedColumnName = "dni", insertable = false, updatable = false)
     private User owner;

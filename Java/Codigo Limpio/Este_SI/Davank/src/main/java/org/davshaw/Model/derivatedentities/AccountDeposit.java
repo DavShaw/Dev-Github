@@ -33,7 +33,6 @@ public class AccountDeposit
     @Column(name = "id")
     private int id;
 
-    //? Clave foranea (Con cuenta)
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "accountId", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account account;

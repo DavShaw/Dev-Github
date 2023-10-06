@@ -30,7 +30,6 @@ public class TeamLoan
     @Column(name = "id")
     private int id;
 
-    //? Clave foranea (Con RegistroGrupo)
     @ManyToOne(targetEntity = TeamLog.class)
     @JoinColumn(name = "logId", referencedColumnName = "id", insertable = false, updatable = false)
     private TeamLog log;

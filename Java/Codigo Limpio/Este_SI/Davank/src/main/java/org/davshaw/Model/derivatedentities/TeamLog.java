@@ -30,10 +30,9 @@ public class TeamLog
     @Column(name = "id")
     private int id;
 
-    //?Clave foranea (Con grupo)
     @ManyToOne(targetEntity = Team.class)
     @JoinColumn(name = "teamId", referencedColumnName = "id", insertable = false, updatable = false)
-    private Team group;
+    private Team team;
 
     @Column(name = "teamId")
     private int teamId;

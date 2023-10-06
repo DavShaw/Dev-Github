@@ -32,7 +32,6 @@ public class AccountWithdrawal
     @Column(name = "id")
     private int id;
 
-    //? Clave foranea (Con Cuenta)
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "accountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account account;

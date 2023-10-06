@@ -32,7 +32,6 @@ public class AccountTransfer
     @Column(name = "id")
     private int id;
 
-    //?Clave foranea (Con cuenta)
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "originAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account originAccount;
@@ -40,7 +39,6 @@ public class AccountTransfer
     @Column(name = "originAccountNumber")
     private int originAccountNumber;
 
-    //?Clave foranea (Con cuenta)
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "destinationAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account destinationAccount;

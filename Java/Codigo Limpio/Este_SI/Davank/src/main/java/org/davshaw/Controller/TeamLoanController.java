@@ -34,7 +34,7 @@ public class TeamLoanController
             }
 
             //Verificar que el grupo tenga la cantidad necesaria
-            else if(TeamLogController.getLog(logId).getGroup().getBalance() < balance)
+            else if(TeamLogController.getLog(logId).getTeam().getBalance() < balance)
             {
                 throw new InsufficientBalanceException();
             }

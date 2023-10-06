@@ -11,7 +11,7 @@ import org.hibernate.query.Query;
 
 public class TeamController
 {
-    public static String createGroup(String name)
+    public static String createTeam(String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -47,7 +47,7 @@ public class TeamController
         }
     }
 
-    public static Boolean groupExist(int id)
+    public static Boolean teamExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -79,7 +79,7 @@ public class TeamController
         }
     }
 
-    public static Team getGroup(int id)
+    public static Team getTeam(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -90,7 +90,7 @@ public class TeamController
 
         try
         {
-            if(TeamController.groupExist(id))
+            if(TeamController.teamExist(id))
             {
                 session.beginTransaction();
 
@@ -131,7 +131,7 @@ public class TeamController
 
         try
         {
-            if(TeamController.groupExist(id))
+            if(TeamController.teamExist(id))
             {
                 session.beginTransaction();
 
@@ -177,11 +177,11 @@ public class TeamController
                 throw new NegativeAmountException();
             }
 
-            else if(TeamController.groupExist(id))
+            else if(TeamController.teamExist(id))
             {
                 session.beginTransaction();
 
-                Team grupo = TeamController.getGroup(id);
+                Team grupo = TeamController.getTeam(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getBalance() + balance;
@@ -230,11 +230,11 @@ public class TeamController
                 throw new NegativeAmountException();
             }
 
-            else if(TeamController.groupExist(id))
+            else if(TeamController.teamExist(id))
             {
                 session.beginTransaction();
 
-                Team grupo = TeamController.getGroup(id);
+                Team grupo = TeamController.getTeam(id);
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getBalance() - balance;

@@ -448,7 +448,7 @@ public class UserController
         }
     }
 
-    public static Integer countGroup(int userDni)
+    public static Integer countTeam(int userDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -491,7 +491,7 @@ public class UserController
         }
     }
 
-    public static Boolean joinGroup(int userDni, int teamId)
+    public static Boolean joinTeam(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -503,13 +503,13 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(TeamController.groupExist(teamId)))
+            if(!(TeamController.teamExist(teamId)))
             {
                 throw new TeamNotFoundException();
             }
             
             //Verificar que el usuario no este en mas de >= 3 grupos
-            else if(UserController.countGroup(userDni) >= 3)
+            else if(UserController.countTeam(userDni) >= 3)
             {
                 throw new UserAlreadyInTeamsException();
             }
@@ -540,7 +540,7 @@ public class UserController
         }
     }
 
-    public static Boolean leaveGroup(int userDni, int teamId)
+    public static Boolean leaveTeam(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -552,13 +552,13 @@ public class UserController
         try
         {
             //Verificar que el usuario este en al menos un grupo
-            if(UserController.countGroup(userDni) <= 0)
+            if(UserController.countTeam(userDni) <= 0)
             {
                 throw new UserNotInAnyTeamException();
             }
 
             //Verificar que el grupo exista
-            else if(!(TeamController.groupExist(teamId)))
+            else if(!(TeamController.teamExist(teamId)))
             {
                 throw new TeamNotFoundException();
             }
@@ -607,7 +607,7 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(TeamController.groupExist(teamId)))
+            if(!(TeamController.teamExist(teamId)))
             {
                 throw new TeamNotFoundException();
             }
@@ -665,7 +665,7 @@ public class UserController
                 throw new UserNotFoundException();
             }
 
-            String sql = "SELECT groupId FROM TeamLog WHERE(userDni = :userDni and nativeFlag = :nativeFlag)";
+            String sql = "SELECT teamId FROM TeamLog WHERE(userDni = :userDni and nativeFlag = :nativeFlag)";
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
             query.setParameter("nativeFlag", true);
             query.setParameter("userDni", userDni);
