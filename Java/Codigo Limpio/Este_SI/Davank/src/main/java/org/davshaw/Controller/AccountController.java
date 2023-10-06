@@ -2,17 +2,19 @@ package org.davshaw.Controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.davshaw.Exception.AccountNotFoundException;
 import org.davshaw.Exception.AccountOwnerNotFoundException;
 import org.davshaw.Exception.DuplicateAccountOwnerException;
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.External.Color;
+import org.davshaw.External.RequestResult;
 import org.davshaw.Model.pureentities.Account;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public class AccountController
 {
-    public static String createAccount(int ownerDni)
+    public static RequestResult<Boolean> createAccount(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -24,7 +26,7 @@ public class AccountController
         try
         {
             //Checking account exist
-            if(!AccountController.accountExist(ownerDni))
+            if(!AccountController.accountExist(ownerDni).getResult())
             {
                 Account cuenta = new Account();
 
@@ -34,7 +36,8 @@ public class AccountController
                 session.beginTransaction();
                 session.persist(cuenta);
                 session.getTransaction().commit();
-                return "Cuenta creada con éxito.";
+                
+                return new RequestResult<Boolean>(true, null, "Account created successfully.");
             }
 
             else
@@ -48,14 +51,14 @@ public class AccountController
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
-    e.printStackTrace();
-            return "Error al crear cuenta.";
+            e.printStackTrace();
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al crear cuenta.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -65,7 +68,7 @@ public class AccountController
         }
     }
     
-    public static Boolean accountExist(int ownerDni)
+    public static RequestResult<Boolean> accountExist(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -80,14 +83,23 @@ public class AccountController
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("ownerDni", ownerDni);
             int count = ((Number) query.uniqueResult()).intValue();
+            
+            if (count > 0)
+            {
+                return new RequestResult<Boolean>(true, true, "Account found.");
+            }
 
-            return count > 0;
+            else
+            {
+                return new RequestResult<Boolean>(true, false, new AccountNotFoundException().getMessage());
+            }
+
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -97,7 +109,7 @@ public class AccountController
         }
     }
 
-    public static Integer getAccountNumber(int ownerDni)
+    public static RequestResult<Integer> getAccountNumber(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -111,15 +123,16 @@ public class AccountController
             String sql = "SELECT accountNumber FROM Account WHERE ownerDni = :ownerDni";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("ownerDni", ownerDni);
-            int numeroCuenta = ((Number) query.uniqueResult()).intValue();
+            Integer numeroCuenta = ((Number) query.uniqueResult()).intValue();
 
-            return numeroCuenta;
+            return new RequestResult<Integer>(true, numeroCuenta, "Account number found.");
+            
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Integer>(false, null, "Account number not found.");
         }
 
         finally
@@ -129,7 +142,7 @@ public class AccountController
         }
     }
 
-    public static Account getAccount(int ownerDni)
+    public static RequestResult<Account> getAccount(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -141,14 +154,15 @@ public class AccountController
         try
         {
             //Verificar si existe cuenta con titularDni
-            if(AccountController.accountExist(ownerDni))
+            if(AccountController.accountExist(ownerDni).getResult())
             {
                 session.beginTransaction();
 
                 Account cuenta = session.get(Account.class, AccountController.getAccountNumber(ownerDni));
 
                 session.getTransaction().commit();
-                return cuenta;
+                
+                return new RequestResult<Account>(true, cuenta, "Account found.");
             }
             else
             {
@@ -159,8 +173,8 @@ public class AccountController
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
-    e.printStackTrace();
-            return null;
+            e.printStackTrace();
+            return new RequestResult<Account>(false, null, "Account not found.");
         }
 
         catch (Exception e)
@@ -176,7 +190,7 @@ public class AccountController
         }
     }
 
-    public static String addBalance(int ownerDni, double balance)
+    public static RequestResult<Boolean> addBalance(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -192,40 +206,38 @@ public class AccountController
                 throw new NegativeAmountException();
             }
 
-            if(AccountController.accountExist(ownerDni))
-            {
-                session.beginTransaction();
-
-                Account cuenta = session.get(Account.class, AccountController.getAccountNumber(ownerDni));
-
-                //Obtener saldo actual
-                double nuevoSaldo = cuenta.getBalance() + balance;
-                cuenta.setBalance(nuevoSaldo);
-
-                session.merge(cuenta);
-
-                session.getTransaction().commit();
-
-                return "Saldo añadido con éxito.";
-            }
-            
-            else
+            if(!(AccountController.accountExist(ownerDni).getResult()))
             {
                 throw new AccountOwnerNotFoundException();
             }
+
+            session.beginTransaction();
+
+            Account cuenta = session.get(Account.class, AccountController.getAccountNumber(ownerDni));
+
+            //Obtener saldo actual
+            double nuevoSaldo = cuenta.getBalance() + balance;
+            cuenta.setBalance(nuevoSaldo);
+
+            session.merge(cuenta);
+
+            session.getTransaction().commit();
+
+            return new RequestResult<Boolean>(true, null, "Balance added successfully");
+            
         }
 
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
-    e.printStackTrace();
-            return "Error al agregar saldo.";
+            e.printStackTrace();
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al agregar saldo.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -235,7 +247,7 @@ public class AccountController
         }
     }
 
-    public static String withdrawBalance(int ownerDni, double balance)
+    public static RequestResult<Boolean> withdrawBalance(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -251,40 +263,37 @@ public class AccountController
                 throw new NegativeAmountException();
             }
 
-            if(AccountController.accountExist(ownerDni))
-            {
-                session.beginTransaction();
-
-                Account cuenta = session.get(Account.class, AccountController.getAccountNumber(ownerDni));
-
-                //Obtener saldo actual
-                double nuevoSaldo = cuenta.getBalance() - balance;
-                cuenta.setBalance(nuevoSaldo);
-
-                session.merge(cuenta);
-
-                session.getTransaction().commit();
-
-                return "Saldo retirado con éxito.";
-            }
-            
-            else
+            if(!(AccountController.accountExist(ownerDni).getResult()))
             {
                 throw new AccountOwnerNotFoundException();
             }
+
+            session.beginTransaction();
+    
+            Account cuenta = session.get(Account.class, AccountController.getAccountNumber(ownerDni));
+    
+            //Obtener saldo actual
+            double nuevoSaldo = cuenta.getBalance() - balance;
+            cuenta.setBalance(nuevoSaldo);
+    
+            session.merge(cuenta);
+    
+            session.getTransaction().commit();
+    
+            return new RequestResult<Boolean>(true, null, "Balance withdrawn successfully");
         }
 
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
-    e.printStackTrace();
-            return "Error al retirar saldo.";
+            e.printStackTrace();
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al retirar saldo.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -294,7 +303,7 @@ public class AccountController
         }
     }
 
-    public static Double getBalance(int ownerDni)
+    public static RequestResult<Double> getBalance(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -305,29 +314,27 @@ public class AccountController
 
         try
         {
-            if(AccountController.accountExist(ownerDni))
-            {
-                Account cuenta = AccountController.getAccount(ownerDni);
-                return cuenta.getBalance();
-            }
-            
-            else
+            if(!(AccountController.accountExist(ownerDni).getResult()))
             {
                 throw new AccountOwnerNotFoundException();
             }
+
+            Account cuenta = AccountController.getAccount(ownerDni).getResult();
+
+            return new RequestResult<Double>(true, cuenta.getBalance(), "Balance got successfully.");
         }
 
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
-    e.printStackTrace();
-            return null;
+            e.printStackTrace();
+            return new RequestResult<Double>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Double>(false, null, e.getMessage());
         }
 
         finally
@@ -337,7 +344,7 @@ public class AccountController
         }
     }
 
-    public static String deleteAccount(int ownerDni)
+    public static RequestResult<Boolean> deleteAccount(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -348,35 +355,33 @@ public class AccountController
 
         try
         {
-            if(AccountController.accountExist(ownerDni))
-            {
-                session.beginTransaction();
-
-                Account cuenta = AccountController.getAccount(ownerDni);
-                session.remove(cuenta);
-
-                session.getTransaction().commit();
-
-                return "Cuenta eliminada con éxito.";
-            }
-            
-            else
+            if(!(AccountController.accountExist(ownerDni)).getResult())
             {
                 throw new AccountOwnerNotFoundException();
             }
+
+            session.beginTransaction();
+
+            Account cuenta = AccountController.getAccount(ownerDni).getResult();
+            session.remove(cuenta);
+
+            session.getTransaction().commit();
+
+            return new RequestResult<Boolean>(true, null, "Account deleted successfully.");
+
         }
 
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
             e.printStackTrace();
-            return "Error al eliminar cuenta.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al eliminar cuenta.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -386,8 +391,9 @@ public class AccountController
         }
     }
 
-    public static Boolean hasEnough(int ownerDni, double balance)
+    public static RequestResult<Boolean> hasEnough(int ownerDni, double balance)
     {
-        return AccountController.getBalance(ownerDni) >= balance;
+        Boolean theResult = AccountController.getBalance(ownerDni).getResult() >= balance;
+        return new RequestResult<Boolean>(true, theResult, "Account has enough balance.");
     }
 }

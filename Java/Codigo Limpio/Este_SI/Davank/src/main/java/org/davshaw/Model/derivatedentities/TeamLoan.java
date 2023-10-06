@@ -28,17 +28,17 @@ public class TeamLoan
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @ManyToOne(targetEntity = TeamLog.class)
     @JoinColumn(name = "logId", referencedColumnName = "id", insertable = false, updatable = false)
     private TeamLog log;
     
     @Column(name = "logId")
-    private int logId;
+    private Integer logId;
 
     @Column(name = "balance")
-    private double balance;
+    private Double balance;
 
     @Column(name = "dateTime")
     @Temporal(TemporalType.TIMESTAMP)

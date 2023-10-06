@@ -30,17 +30,17 @@ public class AccountWithdrawal
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "accountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account account;
 
     @Column(name = "accountNumber")
-    private int accountNumber;
+    private Integer accountNumber;
 
     @Column(name = "balance")
-    private double balance;
+    private Double balance;
 
     @Column(name = "dateTime")
     @Temporal(TemporalType.TIMESTAMP)

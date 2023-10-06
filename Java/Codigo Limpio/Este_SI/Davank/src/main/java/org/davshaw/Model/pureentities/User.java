@@ -21,7 +21,7 @@ public class User
 
     @Id
     @Column(name = "dni")
-    private int dni;
+    private Integer dni;
 
     @Column(name = "firstName")
     private String firstName;

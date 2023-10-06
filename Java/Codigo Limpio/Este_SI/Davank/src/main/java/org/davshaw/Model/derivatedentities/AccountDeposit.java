@@ -31,17 +31,17 @@ public class AccountDeposit
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "accountId", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account account;
 
     @Column(name = "accountId")
-    private int accountId;
+    private Integer accountId;
 
     @Column(name = "balance")
-    private double balance;
+    private Double balance;
 
     @Column(name = "dateTime")
     @Temporal(TemporalType.TIMESTAMP)

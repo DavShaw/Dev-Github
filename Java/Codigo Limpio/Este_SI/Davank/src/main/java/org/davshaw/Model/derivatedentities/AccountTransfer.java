@@ -30,24 +30,24 @@ public class AccountTransfer
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "originAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account originAccount;
 
     @Column(name = "originAccountNumber")
-    private int originAccountNumber;
+    private Integer originAccountNumber;
 
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "destinationAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account destinationAccount;
 
     @Column(name = "destinationAccountNumber")
-    private int destinationAccountNumber;
+    private Integer destinationAccountNumber;
 
     @Column(name = "balance")
-    private double balance;
+    private Double balance;
 
     @Column(name = "dateTime")
     @Temporal(TemporalType.TIMESTAMP)

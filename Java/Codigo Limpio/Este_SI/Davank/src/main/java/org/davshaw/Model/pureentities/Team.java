@@ -24,11 +24,11 @@ public class Team
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "balance")
-    private double balance = 0;
+    private Double balance = 0;
 }

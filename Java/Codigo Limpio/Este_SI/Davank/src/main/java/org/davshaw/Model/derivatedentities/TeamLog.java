@@ -28,14 +28,14 @@ public class TeamLog
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @ManyToOne(targetEntity = Team.class)
     @JoinColumn(name = "teamId", referencedColumnName = "id", insertable = false, updatable = false)
     private Team team;
 
     @Column(name = "teamId")
-    private int teamId;
+    private Integer teamId;
 
     //?Clave foranea (Con usuario)
     @ManyToOne(targetEntity = User.class)
@@ -43,8 +43,8 @@ public class TeamLog
     private User user;
 
     @Column(name = "userDni")
-    private int userDni;
+    private Integer userDni;
 
     @Column(name = "nativeFlag")
-    private boolean nativeFlag;
+    private Boolean nativeFlag;
 }

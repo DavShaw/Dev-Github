@@ -25,15 +25,15 @@ public class Account
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "accountNumber")
-    private int accountNumber;
+    private Integer accountNumber;
 
     @OneToOne(targetEntity = User.class)
     @JoinColumn(name = "ownerDni", referencedColumnName = "dni", insertable = false, updatable = false)
     private User owner;
 
     @Column(name = "ownerDni")
-    private int ownerDni;
+    private Integer ownerDni;
 
     @Column(name = "balance")
-    private double balance;
+    private Double balance;
 }
