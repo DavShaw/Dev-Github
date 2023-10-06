@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Request<Generic>
+public class Result<Generic>
 {
     private Boolean okay;
     private Generic result = null;

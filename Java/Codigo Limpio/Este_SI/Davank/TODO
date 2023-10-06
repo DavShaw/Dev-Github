@@ -21,6 +21,6 @@ Controladores:
             
 Notas:
     * Problemas:
-        - Hacer que todos los métodos del controlador devuelvan requestResult
+        - Hacer que todos los métodos del controlador devuelvan Result
         
 
