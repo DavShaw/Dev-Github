@@ -8,13 +8,14 @@ import java.util.Date;
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.davshaw.Exception.RecordNotFoundException;
+import org.davshaw.External.RequestResult;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public class AccountDepositController
 {
-    public static Boolean deposit(int ownerDni, double balance)
+    public static RequestResult<Boolean> deposit(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -26,7 +27,7 @@ public class AccountDepositController
         try
         {
             //Verificar que la cuenta exista
-            if(!(AccountController.accountExist(ownerDni)))
+            if(!(AccountController.accountExist(ownerDni).getResult()))
             {
                 throw new AccountNotFoundException();
             }
@@ -38,7 +39,7 @@ public class AccountDepositController
 
             //Haciendo el registro del deposito
             AccountDeposit depositoCuenta = new AccountDeposit();
-            depositoCuenta.setAccountId(AccountController.getAccountNumber(ownerDni));
+            depositoCuenta.setAccountId(AccountController.getAccountNumber(ownerDni).getResult());
             depositoCuenta.setDateTime(new Date());
             depositoCuenta.setBalance(balance);
 
@@ -46,13 +47,14 @@ public class AccountDepositController
             session.persist(depositoCuenta);
 
             session.getTransaction().commit();
-            return true;
+
+            return new RequestResult<Boolean>(true, true, "The deposit has been done.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(true, true, e.getMessage());
         }
 
         finally
@@ -62,7 +64,7 @@ public class AccountDepositController
         }
     }
     
-    public static Boolean depositExist(int id)
+    public static RequestResult<Boolean> depositExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -78,13 +80,21 @@ public class AccountDepositController
             query.setParameter("id", id);
             int count = ((Number) query.uniqueResult()).intValue();
 
-            return count > 0;
+            if (count > 0)
+            {
+                return new RequestResult<Boolean>(true, true, "Deposit found.");
+            }
+
+            else
+            {
+                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+            }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -94,7 +104,7 @@ public class AccountDepositController
         }
     }
 
-    public static AccountDeposit getDeposit(int id)
+    public static RequestResult<AccountDeposit> getDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -106,27 +116,24 @@ public class AccountDepositController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountDepositController.depositExist(id)))
+            if(!(AccountDepositController.depositExist(id)).getResult())
             {
                 throw new RecordNotFoundException();
             }
 
-            else
-            {
-                session.beginTransaction();
+            session.beginTransaction();
 
-                AccountDeposit deposito = session.get(AccountDeposit.class, id);
+            AccountDeposit deposito = session.get(AccountDeposit.class, id);
 
-                session.getTransaction().commit();
+            session.getTransaction().commit();
 
-                return deposito;
-            }
+            return new RequestResult<AccountDeposit>(true, deposito, "Deposit found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<AccountDeposit>(false, null, e.getMessage());
         }
 
         finally
@@ -136,7 +143,7 @@ public class AccountDepositController
         }
     }
 
-    public static Boolean deleteDeposit(int id)
+    public static RequestResult<Boolean> deleteDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -148,28 +155,25 @@ public class AccountDepositController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountDepositController.depositExist(id)))
+            if(!(AccountDepositController.depositExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
-            else
-            {
-                session.beginTransaction();
+            session.beginTransaction();
 
-                AccountDeposit deposito = AccountDepositController.getDeposit(id);
-                session.remove(deposito);
+            AccountDeposit deposito = AccountDepositController.getDeposit(id).getResult();
+            session.remove(deposito);
 
-                session.getTransaction().commit();
+            session.getTransaction().commit();
 
-                return true;
-            }
+            return new RequestResult<Boolean>(true, null, "The deposit has been deleted.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally

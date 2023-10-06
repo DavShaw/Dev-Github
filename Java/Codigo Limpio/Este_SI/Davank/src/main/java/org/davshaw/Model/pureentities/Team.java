@@ -30,5 +30,5 @@ public class Team
     private String name;
 
     @Column(name = "balance")
-    private Double balance = 0;
+    private Double balance = 0.0;
 }

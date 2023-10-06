@@ -1,26 +1,2 @@
-Controladores:
-    * For pureentities
-        - Cuenta -> Done -> Refactorizar (Quizá) 
-        - Grupo -> Done
-        - Usuario -> Done
-    * For derivatedentities
-        - DepositoCuenta -> Done
-        - DepositoGrupo -> Done
-        - PrestamoGrupo -> Done
-        - RegistroGrupo -> Done
-        - RetiroCuenta -> Done
-        - TransferenciaCuenta -> Done
-    * For services
-        * For Groups
-            - Pensar la lógica de ingresos/salidas a grupos... -> DONE
-            - Pensar servicio para ingresar registro de grupos no nativos....
-
-    * For controllers
-        * For GroupController
-            - Fix method "obtener participantes"
-            
-Notas:
-    * Problemas:
-        - Hacer que todos los métodos del controlador devuelvan Result
-        
-
+-> Cambiar el catch exception a las exceptions específicas
+-> Controlar exceptions no esperadas
