@@ -13,7 +13,7 @@ import org.davshaw.Exception.TeamNotFoundException;
 import org.davshaw.Exception.UserAlreadyInTeamsException;
 import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.Exception.UserNotInAnyTeamException;
-import org.davshaw.External.Result;
+import org.davshaw.External.RequestResult;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.davshaw.Model.pureentities.User;
 
@@ -647,7 +647,7 @@ public class UserController
         }
     }
 
-    public static Result<List<Integer>> getTeamList(int userDni)
+    public static RequestResult<List<Integer>> getTeamList(int userDni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -672,14 +672,14 @@ public class UserController
 
             List<Integer> result = query.getResultList();
 
-            return new Result<>(true, result, "There's team list.");
+            return new RequestResult<>(true, result, "There's team list.");
             
         }
         
         catch (Exception e)
         {
             e.printStackTrace();
-            return new Result<>(false, null, e.getMessage());
+            return new RequestResult<>(false, null, e.getMessage());
         }
         
         finally

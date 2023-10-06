@@ -23,12 +23,12 @@ public class AccountController
 
         try
         {
-            //Verificar que no exista otra cuenta con el titularDni igual
+            //Checking account exist
             if(!AccountController.accountExist(ownerDni))
             {
                 Account cuenta = new Account();
 
-                //Establecer datos con setters (Reemplazando el constructor)
+                //Setting data
                 cuenta.setOwnerDni(ownerDni);
 
                 session.beginTransaction();
