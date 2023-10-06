@@ -411,7 +411,7 @@ public class UserController
                     return "Contraseña cambiado con éxito.";
                 }
 
-                else if(user.getPassword().equals(password))
+                if(user.getPassword().equals(password))
                 {
                     session.beginTransaction();
                     user.setPassword(newPassword);
@@ -509,7 +509,7 @@ public class UserController
             }
             
             //Verificar que el usuario no este en mas de >= 3 grupos
-            else if(UserController.countTeam(userDni) >= 3)
+            if(UserController.countTeam(userDni) >= 3)
             {
                 throw new UserAlreadyInTeamsException();
             }
@@ -558,7 +558,7 @@ public class UserController
             }
 
             //Verificar que el grupo exista
-            else if(!(TeamController.teamExist(teamId)))
+            if(!(TeamController.teamExist(teamId)))
             {
                 throw new TeamNotFoundException();
             }

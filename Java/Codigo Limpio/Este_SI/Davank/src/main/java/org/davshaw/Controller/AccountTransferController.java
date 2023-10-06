@@ -32,13 +32,13 @@ public class AccountTransferController
             }
 
             //Verificar si cuenta destino existe
-            else if(!(AccountController.accountExist(destinationOwnerDni)))
+            if(!(AccountController.accountExist(destinationOwnerDni)))
             {
                 throw new AccountNotFoundException();
             }
 
             //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
-            else if (AccountController.getBalance(originOwnerDni) < balance)
+            if (AccountController.getBalance(originOwnerDni) < balance)
             {
                 throw new InsufficientBalanceException();
             }

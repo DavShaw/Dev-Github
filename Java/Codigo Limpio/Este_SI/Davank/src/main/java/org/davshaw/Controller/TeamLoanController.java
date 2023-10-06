@@ -28,13 +28,13 @@ public class TeamLoanController
             }
 
             //Verificar que la cantidad a prestar < depositos históricos
-            else if(TeamDepositController.totalDeposit(logId) < balance)
+            if(TeamDepositController.totalDeposit(logId) < balance)
             {
                 throw new InsufficientBalanceException();
             }
 
             //Verificar que el grupo tenga la cantidad necesaria
-            else if(TeamLogController.getLog(logId).getTeam().getBalance() < balance)
+            if(TeamLogController.getLog(logId).getTeam().getBalance() < balance)
             {
                 throw new InsufficientBalanceException();
             }

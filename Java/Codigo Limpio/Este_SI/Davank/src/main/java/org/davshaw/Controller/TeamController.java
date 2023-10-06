@@ -177,7 +177,7 @@ public class TeamController
                 throw new NegativeAmountException();
             }
 
-            else if(TeamController.teamExist(id))
+            if(TeamController.teamExist(id))
             {
                 session.beginTransaction();
 
@@ -230,7 +230,7 @@ public class TeamController
                 throw new NegativeAmountException();
             }
 
-            else if(TeamController.teamExist(id))
+            if(TeamController.teamExist(id))
             {
                 session.beginTransaction();
 

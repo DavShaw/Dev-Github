@@ -28,7 +28,7 @@ public class TeamLogController
                 throw new UserNotFoundException();
             }
             //Verificar que exista el grupo
-            else if (!(TeamController.teamExist(teamId)))
+            if (!(TeamController.teamExist(teamId)))
             {
                 throw new TeamNotFoundException();
             }

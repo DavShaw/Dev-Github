@@ -192,7 +192,7 @@ public class AccountController
                 throw new NegativeAmountException();
             }
 
-            else if(AccountController.accountExist(ownerDni))
+            if(AccountController.accountExist(ownerDni))
             {
                 session.beginTransaction();
 
@@ -251,7 +251,7 @@ public class AccountController
                 throw new NegativeAmountException();
             }
 
-            else if(AccountController.accountExist(ownerDni))
+            if(AccountController.accountExist(ownerDni))
             {
                 session.beginTransaction();
 
