@@ -9,12 +9,13 @@ import org.davshaw.Exception.AccountNotFoundException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Model.derivatedentities.AccountTransfer;
+import org.davshaw.External.RequestResult;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public class AccountTransferController
 {
-    public static Boolean transfer(int originOwnerDni, int destinationOwnerDni, double balance)
+    public static RequestResult<Boolean> transfer(int originOwnerDni, int destinationOwnerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -26,19 +27,19 @@ public class AccountTransferController
         try
         {
             //Verificar si la cuenta origen existe
-            if(!(AccountController.accountExist(originOwnerDni)))
+            if(!(AccountController.accountExist(originOwnerDni).getResult()))
             {
                 throw new AccountNotFoundException();
             }
 
             //Verificar si cuenta destino existe
-            if(!(AccountController.accountExist(destinationOwnerDni)))
+            if(!(AccountController.accountExist(destinationOwnerDni).getResult()))
             {
                 throw new AccountNotFoundException();
             }
 
             //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
-            if (AccountController.getBalance(originOwnerDni) < balance)
+            if (AccountController.getBalance(originOwnerDni).getResult() < balance)
             {
                 throw new InsufficientBalanceException();
             }
@@ -54,21 +55,25 @@ public class AccountTransferController
             AccountTransfer transferencia = new AccountTransfer();
             transferencia.setDateTime(new Date());
             transferencia.setBalance(balance);
-            transferencia.setDestinationAccountNumber(AccountController.getAccountNumber(destinationOwnerDni));
-            transferencia.setOriginAccountNumber(AccountController.getAccountNumber(originOwnerDni));
+
+            Integer originAccount = AccountController.getAccountNumber(originOwnerDni).getResult();
+            Integer destinationAccount = AccountController.getAccountNumber(destinationOwnerDni).getResult();
+
+            transferencia.setOriginAccountNumber(originAccount);
+            transferencia.setDestinationAccountNumber(destinationAccount);
 
             session.persist(transferencia);
 
             session.getTransaction().commit();
             
 
-            return true;
+            return new RequestResult<Boolean>(true, null, "The transfer has been done.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -78,7 +83,7 @@ public class AccountTransferController
         }
     }
 
-    public static Boolean transferExist(int id)
+    public static RequestResult<Boolean> transferExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -94,13 +99,21 @@ public class AccountTransferController
             query.setParameter("id", id);
             int count = Integer.valueOf(query.uniqueResult().toString());
 
-            return count > 0;
+            if (count > 0)
+            {
+                return new RequestResult<Boolean>(true, true, "Transfer found.");
+            }
+
+            else
+            {
+                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+            }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -110,7 +123,7 @@ public class AccountTransferController
         }
     }
 
-    public static AccountTransfer getTransfer(int id)
+    public static RequestResult<AccountTransfer> getTransfer(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -121,26 +134,23 @@ public class AccountTransferController
 
         try
         {
-            if(!(AccountTransferController.transferExist(id)))
+            if(!(AccountTransferController.transferExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
-            else
-            {
-                session.beginTransaction();
-                AccountTransfer transferencia = session.get(AccountTransfer.class, id);
-                session.getTransaction().commit();
+            session.beginTransaction();
+            AccountTransfer transferencia = session.get(AccountTransfer.class, id);
+            session.getTransaction().commit();
 
-                return transferencia;
+            return new RequestResult<AccountTransfer>(true, transferencia, "Transfer found.");
 
-            }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<AccountTransfer>(false, null, e.getMessage());
         }
 
         finally
@@ -150,7 +160,7 @@ public class AccountTransferController
         }
     }
 
-    public static Boolean deleteTransfer(int id)
+    public static RequestResult<Boolean> deleteTransfer(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -162,24 +172,25 @@ public class AccountTransferController
         try
         {
             //Verificar si existe
-            if(!(AccountTransferController.transferExist(id)))
+            if(!(AccountTransferController.transferExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
             session.beginTransaction();
-            AccountTransfer transferencia = AccountTransferController.getTransfer(id);
+
+            AccountTransfer transferencia = AccountTransferController.getTransfer(id).getResult();
 
             session.remove(transferencia);
             session.getTransaction().commit();
 
-            return true;
+            return new RequestResult<Boolean>(true, null, "The transfer has been deleted successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
