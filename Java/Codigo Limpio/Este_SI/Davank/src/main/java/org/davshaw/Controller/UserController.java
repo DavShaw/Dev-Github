@@ -4,7 +4,16 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import java.util.List;
 
+import org.davshaw.Exception.DuplicateUserDNIException;
+import org.davshaw.Exception.InvalidLoginException;
+import org.davshaw.Exception.RecordNotFoundException;
+import org.davshaw.Exception.TeamNotFoundException;
+import org.davshaw.Exception.UserAlreadyInTeamsException;
+import org.davshaw.Exception.UserNotFoundException;
+import org.davshaw.Exception.UserNotInAnyTeamException;
+import org.davshaw.External.Request;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.davshaw.Model.pureentities.User;
 
@@ -30,7 +39,7 @@ public class UserController
             //Verificar que no exista otro usuario con el mismo dni
             if(UserController.userExist(dni))
             {
-                throw new IllegalArgumentException("Ya existe un usuario con este mismo dni.");
+                throw new DuplicateUserDNIException();
             }
 
             User usuario = new User();
@@ -133,7 +142,7 @@ public class UserController
 
             else
             {
-                throw new IllegalStateException("Aja");
+                throw new UserNotFoundException();
             }
             
 
@@ -215,7 +224,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este userDni");
+                throw new UserNotFoundException();
             }
 
         }
@@ -263,7 +272,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este userDni");
+                throw new UserNotFoundException();
             }
 
         }
@@ -311,7 +320,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este userDni");
+                throw new UserNotFoundException();
             }
 
         }
@@ -359,7 +368,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este userDni");
+                throw new UserNotFoundException();
             }
 
         }
@@ -413,7 +422,7 @@ public class UserController
                 
                 else
                 {
-                    throw new IllegalArgumentException("Credenciales no válidas.");
+                    throw new InvalidLoginException();
                 }
 
                 
@@ -421,7 +430,7 @@ public class UserController
 
             else
             {
-                throw new IllegalArgumentException("No existe un usuario con este userDni");
+                throw new UserNotFoundException();
             }
 
         }
@@ -453,7 +462,7 @@ public class UserController
             //Verificar que el usuario exista
             if(!(UserController.userExist(userDni)))
             {
-                throw new IllegalArgumentException("No existe un usuario con este dni.");
+                throw new UserNotFoundException();
             }
 
             session.beginTransaction();
@@ -496,13 +505,13 @@ public class UserController
             //Verificar que el grupo exista
             if(!(TeamController.groupExist(teamId)))
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new TeamNotFoundException();
             }
             
             //Verificar que el usuario no este en mas de >= 3 grupos
             else if(UserController.countGroup(userDni) >= 3)
             {
-                throw new IllegalArgumentException("El usuario está en el máximo de grupos permitidos.");
+                throw new UserAlreadyInTeamsException();
             }
             session.beginTransaction();
 
@@ -545,13 +554,13 @@ public class UserController
             //Verificar que el usuario este en al menos un grupo
             if(UserController.countGroup(userDni) <= 0)
             {
-                throw new IllegalArgumentException("El usuario no está en ningún grupo.");
+                throw new UserNotInAnyTeamException();
             }
 
             //Verificar que el grupo exista
             else if(!(TeamController.groupExist(teamId)))
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new TeamNotFoundException();
             }
 
             //Obtener ID del registro
@@ -560,7 +569,7 @@ public class UserController
             //Verificar que el registroId no sea null (No existe el registro)
             if (registroId == null)
             {
-                throw new IllegalArgumentException("No se encontró que el usuario éste en un grupo con este id.");
+                throw new RecordNotFoundException();
             }
 
             session.beginTransaction();
@@ -600,13 +609,13 @@ public class UserController
             //Verificar que el grupo exista
             if(!(TeamController.groupExist(teamId)))
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new TeamNotFoundException();
             }
 
             //Verificar que el usuario exista
             if(!(UserController.userExist(userDni)))
             {
-                throw new IllegalArgumentException("No existe un usuario con este dni.");
+                throw new UserNotFoundException();
             }
 
             session.beginTransaction();
@@ -631,6 +640,48 @@ public class UserController
             return null;
         }
 
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
+    public static Request<List<Integer>> getTeamList(int userDni)
+    {
+        SessionFactory sessionFactory = new
+        Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(User.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+    
+        try
+        {
+            //Verify that user exist!
+            if(!(UserController.userExist(userDni)))
+            {
+                throw new UserNotFoundException();
+            }
+
+            String sql = "SELECT groupId FROM TeamLog WHERE(userDni = :userDni and nativeFlag = :nativeFlag)";
+            Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+            query.setParameter("nativeFlag", true);
+            query.setParameter("userDni", userDni);
+
+            List<Integer> result = query.getResultList();
+
+            return new Request<>(true, result, "There's team list.");
+            
+        }
+        
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new Request<>(false, null, e.getMessage());
+        }
+        
         finally
         {
             session.close();

@@ -1,5 +1,7 @@
 package org.davshaw.Controller;
 
+import org.davshaw.Exception.NegativeAmountException;
+import org.davshaw.Exception.TeamNotFoundException;
 import org.davshaw.Model.pureentities.Team;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -101,7 +103,7 @@ public class TeamController
             
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new TeamNotFoundException();
             }
         }
 
@@ -142,7 +144,7 @@ public class TeamController
             
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new TeamNotFoundException();
             }
         }
 
@@ -172,7 +174,7 @@ public class TeamController
         {
             if(balance < 0)
             {
-                throw new IllegalArgumentException("El monto no puede ser negativo.");
+                throw new NegativeAmountException();
             }
 
             else if(TeamController.groupExist(id))
@@ -195,7 +197,7 @@ public class TeamController
             
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new TeamNotFoundException();
             }
         }
 
@@ -225,7 +227,7 @@ public class TeamController
         {
             if(balance < 0)
             {
-                throw new IllegalArgumentException("El monto no puede ser negativo.");
+                throw new NegativeAmountException();
             }
 
             else if(TeamController.groupExist(id))
@@ -248,7 +250,7 @@ public class TeamController
             
             else
             {
-                throw new IllegalArgumentException("No existe un grupo con este id.");
+                throw new TeamNotFoundException();
             }
         }
 

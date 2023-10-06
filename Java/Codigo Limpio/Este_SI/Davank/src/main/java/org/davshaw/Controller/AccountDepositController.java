@@ -5,6 +5,9 @@ import org.hibernate.query.Query;
 
 import java.util.Date;
 
+import javax.security.auth.login.AccountNotFoundException;
+
+import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,7 +28,7 @@ public class AccountDepositController
             //Verificar que la cuenta exista
             if(!(AccountController.accountExist(ownerDni)))
             {
-                throw new IllegalArgumentException("La cuenta no existen.");
+                throw new AccountNotFoundException();
             }
             //Sino se lanzan las exceptions, entonces se procede
             session.beginTransaction();
@@ -105,7 +108,7 @@ public class AccountDepositController
             //Verificar que exista el registro del deposito
             if(!(AccountDepositController.depositExist(id)))
             {
-                throw new IllegalArgumentException("No existe un deposito registrado con este id.");
+                throw new RecordNotFoundException();
             }
 
             else
@@ -147,7 +150,7 @@ public class AccountDepositController
             //Verificar que exista el registro del deposito
             if(!(AccountDepositController.depositExist(id)))
             {
-                throw new IllegalArgumentException("No existe un deposito registrado con este id.");
+                throw new RecordNotFoundException();
             }
 
             else

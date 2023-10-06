@@ -2,6 +2,8 @@ package org.davshaw.Controller;
 
 import java.util.Date;
 
+import org.davshaw.Exception.InsufficientBalanceException;
+import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Model.derivatedentities.TeamDeposit;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -56,13 +58,13 @@ public class TeamDepositController
                 
                 else
                 {
-                    throw new IllegalArgumentException("No hay suficientes fondos para hacer el deposito.");
+                    throw new InsufficientBalanceException();
                 }
             }
 
             else
             {
-                throw new IllegalArgumentException("No existe un registro de grupo con este id.");
+                throw new RecordNotFoundException();
             }
         }
 
@@ -125,7 +127,7 @@ public class TeamDepositController
             //Verificar si existe el registro del deposito
             if(!(TeamDepositController.depositExist(id)))
             {
-                throw new IllegalArgumentException("No existe un registro de deposito con este id.");
+                throw new RecordNotFoundException();
             }
             session.beginTransaction();
 
@@ -162,7 +164,7 @@ public class TeamDepositController
             //Verificar que exista el deposito
             if(!(TeamDepositController.depositExist(id)))
             {
-                throw new IllegalArgumentException("No existe un registro de deposito con este id.");
+                throw new RecordNotFoundException();
             }
 
             session.beginTransaction();
@@ -200,7 +202,7 @@ public class TeamDepositController
             //Verificar que el registro exista
             if(!(TeamLogController.logExist(logId)))
             {
-                throw new IllegalArgumentException("No existe un registro con este id.");
+                throw new RecordNotFoundException();
             }
 
             //Obtener ID de registro de depositos que cumplan con el logId

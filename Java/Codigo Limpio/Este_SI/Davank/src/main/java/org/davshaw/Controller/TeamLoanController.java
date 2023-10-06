@@ -1,5 +1,7 @@
 package org.davshaw.Controller;
 
+import org.davshaw.Exception.InsufficientBalanceException;
+import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Model.derivatedentities.TeamLoan;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,19 +24,19 @@ public class TeamLoanController
             //verificar que exista el registro
             if(!(TeamLogController.logExist(logId)))
             {
-                throw new IllegalArgumentException("No existe ningún registro con este ID.");
+                throw new RecordNotFoundException();
             }
 
             //Verificar que la cantidad a prestar < depositos históricos
             else if(TeamDepositController.totalDeposit(logId) < balance)
             {
-                throw new IllegalArgumentException("El usuario ha depositado menos del valor a prestar.");
+                throw new InsufficientBalanceException();
             }
 
             //Verificar que el grupo tenga la cantidad necesaria
             else if(TeamLogController.getLog(logId).getGroup().getBalance() < balance)
             {
-                throw new IllegalArgumentException("El grupo no tiene el dinero suficiente");
+                throw new InsufficientBalanceException();
             }
 
             //Sino se lanzo alguna exceptión, todo está bien
@@ -122,7 +124,7 @@ public class TeamLoanController
             //Verificar que exista el prestamo
             if(!(TeamLoanController.loanExist(id)))
             {
-                throw new IllegalArgumentException("No existe un prestamo con este id.");
+                throw new RecordNotFoundException();
             }
 
             //Sino se lanzó la exception, existe el prestamo
@@ -165,7 +167,7 @@ public class TeamLoanController
             //Verificar que exista
             if(!(TeamLoanController.loanExist(id)))
             {
-                throw new IllegalArgumentException("No existe un prestamo registrado con este id.");
+                throw new RecordNotFoundException();
             }
 
             session.beginTransaction();

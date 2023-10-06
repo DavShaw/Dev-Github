@@ -5,6 +5,9 @@ import org.hibernate.query.Query;
 
 import java.util.Date;
 
+import org.davshaw.Exception.AccountNotFoundException;
+import org.davshaw.Exception.InsufficientBalanceException;
+import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
 import org.davshaw.Model.derivatedentities.AccountWithdrawal;
 import org.hibernate.Session;
@@ -26,12 +29,12 @@ public class AccountWithdrawalController
             //Verificar si existe una cuenta asociada a este dni
             if(!(AccountController.accountExist(ownerDni)))
             {
-                throw new IllegalArgumentException("No existe una cuenta asociada a este dni.");
+                throw new AccountNotFoundException();
             }
             //Verificar que el balance de la cuenta sea mayor o igual al balance a retirar
             if(!(AccountController.getBalance(ownerDni) >= balance))
             {
-                throw new IllegalArgumentException("El balance a retirar supera el saldo de la cuenta.");
+                throw new InsufficientBalanceException();
             }
 
             //Si ninguna de las anteriores se lanzó, podemos hacer el retiro
@@ -113,7 +116,7 @@ public class AccountWithdrawalController
             //Verificar que exista el registro del deposito
             if(!(AccountWithdrawalController.withdrawalExist(id)))
             {
-                throw new IllegalArgumentException("No existe un retiro registrado con este id.");
+                throw new RecordNotFoundException();
             }
 
             else
@@ -155,7 +158,7 @@ public class AccountWithdrawalController
             //Verificar que exista el registro del deposito
             if(!(AccountWithdrawalController.withdrawalExist(id)))
             {
-                throw new IllegalArgumentException("No existe un retiro registrado con este id.");
+                throw new RecordNotFoundException();
             }
 
             else

@@ -2,6 +2,9 @@ package org.davshaw.Controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.davshaw.Exception.AccountOwnerNotFoundException;
+import org.davshaw.Exception.DuplicateAccountOwnerException;
+import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.External.Color;
 import org.davshaw.Model.pureentities.Account;
 import org.hibernate.Session;
@@ -36,7 +39,7 @@ public class AccountController
 
             else
             {
-                throw new IllegalArgumentException("Ya existe una cuenta asociada a este usuario.");
+                throw new DuplicateAccountOwnerException();
             }
             
 
@@ -149,7 +152,7 @@ public class AccountController
             }
             else
             {
-                throw new IllegalArgumentException("No existe una cuenta asociada a este titular.");
+                throw new AccountOwnerNotFoundException();
             }
         }
 
@@ -186,7 +189,7 @@ public class AccountController
         {
             if (balance < 0)
             {
-                throw new IllegalArgumentException("El monto no puede ser negativo");
+                throw new NegativeAmountException();
             }
 
             else if(AccountController.accountExist(ownerDni))
@@ -208,7 +211,7 @@ public class AccountController
             
             else
             {
-                throw new IllegalArgumentException("No existe una cuenta asociada a este titular.");
+                throw new AccountOwnerNotFoundException();
             }
         }
 
@@ -245,7 +248,7 @@ public class AccountController
         {
             if (balance < 0)
             {
-                throw new IllegalArgumentException("El monto no puede ser negativo");
+                throw new NegativeAmountException();
             }
 
             else if(AccountController.accountExist(ownerDni))
@@ -267,7 +270,7 @@ public class AccountController
             
             else
             {
-                throw new IllegalArgumentException("No existe una cuenta asociada a este titular.");
+                throw new AccountOwnerNotFoundException();
             }
         }
 
@@ -310,7 +313,7 @@ public class AccountController
             
             else
             {
-                throw new IllegalArgumentException("No existe una cuenta asociada a este titular.");
+                throw new AccountOwnerNotFoundException();
             }
         }
 
@@ -359,7 +362,7 @@ public class AccountController
             
             else
             {
-                throw new IllegalArgumentException("No existe una cuenta asociada a este titular.");
+                throw new AccountOwnerNotFoundException();
             }
         }
 

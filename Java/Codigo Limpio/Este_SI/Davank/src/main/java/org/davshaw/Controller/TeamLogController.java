@@ -1,5 +1,8 @@
 package org.davshaw.Controller;
 
+import org.davshaw.Exception.RecordNotFoundException;
+import org.davshaw.Exception.TeamNotFoundException;
+import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,12 +25,12 @@ public class TeamLogController
             //Verificar que exista el usuario
             if(!(UserController.userExist(userDni)))
             {
-                throw new IllegalArgumentException("No existe un usuario con este DNI.");
+                throw new UserNotFoundException();
             }
             //Verificar que exista el grupo
             else if (!(TeamController.groupExist(teamId)))
             {
-                throw new IllegalArgumentException("No existe un grupo con este ID.");
+                throw new TeamNotFoundException();
             }
             //Sino se lanzaron esas exceptions, entonces tenemos todo lo necesario
             else
@@ -145,7 +148,7 @@ public class TeamLogController
             //Verificar que exista el registro
             if(!(TeamLogController.logExist(id)))
             {
-                throw new IllegalArgumentException("No existe un registro con este id.");
+                throw new RecordNotFoundException();
             }
 
             //Obtener objeto
@@ -181,7 +184,7 @@ public class TeamLogController
             //Verificar que exista el registro
             if(!(TeamLogController.logExist(id)))
             {
-                throw new IllegalArgumentException("No existe un registro con este id.");
+                throw new RecordNotFoundException();
             }
 
             //Obtener objeto
@@ -217,7 +220,7 @@ public class TeamLogController
             //Verificar que exista el registro
             if(!(TeamLogController.logExist(id)))
             {
-                throw new IllegalArgumentException("No existe un registro con este id.");
+                throw new RecordNotFoundException();
             }
 
             //Obtener objeto

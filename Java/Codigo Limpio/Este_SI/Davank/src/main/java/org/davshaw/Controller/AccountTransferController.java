@@ -5,6 +5,9 @@ import org.hibernate.query.Query;
 
 import java.util.Date;
 
+import org.davshaw.Exception.AccountNotFoundException;
+import org.davshaw.Exception.InsufficientBalanceException;
+import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Model.derivatedentities.AccountTransfer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,19 +28,19 @@ public class AccountTransferController
             //Verificar si la cuenta origen existe
             if(!(AccountController.accountExist(originOwnerDni)))
             {
-                throw new IllegalArgumentException("La cuenta ingresada no existe (Origen).");
+                throw new AccountNotFoundException();
             }
 
             //Verificar si cuenta destino existe
             else if(!(AccountController.accountExist(destinationOwnerDni)))
             {
-                throw new IllegalArgumentException("La cuenta ingresada no existe (Destinatario).");
+                throw new AccountNotFoundException();
             }
 
             //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
             else if (AccountController.getBalance(originOwnerDni) < balance)
             {
-                throw new IllegalArgumentException("La cuenta de origen no tiene el saldo suficiente");
+                throw new InsufficientBalanceException();
             }
 
             session.beginTransaction();
@@ -120,7 +123,7 @@ public class AccountTransferController
         {
             if(!(AccountTransferController.transferExist(id)))
             {
-                throw new IllegalArgumentException("No existe una transferencia con este id.");
+                throw new RecordNotFoundException();
             }
 
             else
@@ -161,7 +164,7 @@ public class AccountTransferController
             //Verificar si existe
             if(!(AccountTransferController.transferExist(id)))
             {
-                throw new IllegalArgumentException("No existe un registro de transferencia con este id.");
+                throw new RecordNotFoundException();
             }
 
             session.beginTransaction();
