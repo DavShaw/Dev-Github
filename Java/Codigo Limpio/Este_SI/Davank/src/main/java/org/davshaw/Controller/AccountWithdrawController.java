@@ -13,7 +13,7 @@ import org.davshaw.Model.derivatedentities.AccountWithdrawal;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-public class AccountWithdrawalController
+public class AccountWithdrawController
 {
     public static Boolean withdraw(int ownerDni, double balance)
     {
@@ -114,7 +114,7 @@ public class AccountWithdrawalController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountWithdrawalController.withdrawExist(id)))
+            if(!(AccountWithdrawController.withdrawExist(id)))
             {
                 throw new RecordNotFoundException();
             }
@@ -156,7 +156,7 @@ public class AccountWithdrawalController
         try
         {
             //Verificar que exista el registro del deposito
-            if(!(AccountWithdrawalController.withdrawExist(id)))
+            if(!(AccountWithdrawController.withdrawExist(id)))
             {
                 throw new RecordNotFoundException();
             }
@@ -165,7 +165,7 @@ public class AccountWithdrawalController
             {
                 session.beginTransaction();
 
-                AccountWithdrawal retiro = AccountWithdrawalController.getWithdrawal(id);
+                AccountWithdrawal retiro = AccountWithdrawController.getWithdrawal(id);
                 
                 session.remove(retiro);
                 
