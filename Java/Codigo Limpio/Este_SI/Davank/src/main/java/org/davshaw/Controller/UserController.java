@@ -19,7 +19,7 @@ import org.davshaw.Model.pureentities.User;
 
 public class UserController
 {
-    public static String createUser(
+    public static RequestResult<Boolean> createUser(
     int dni,
     String firstName,
     String middleName,
@@ -37,7 +37,7 @@ public class UserController
         try
         {
             //Verificar que no exista otro usuario con el mismo dni
-            if(UserController.userExist(dni))
+            if(UserController.userExist(dni).getResult())
             {
                 throw new DuplicateUserDNIException();
             }
@@ -60,13 +60,13 @@ public class UserController
             AccountController.createAccount(dni);
             
 
-            return "Usuario creado correctamente.";
+            return new RequestResult<Boolean>(true, null, "The user has been created successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al crear usuario.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -77,7 +77,7 @@ public class UserController
 
     }
 
-    public static Boolean userExist(int dni)
+    public static RequestResult<Boolean> userExist(int dni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -99,13 +99,21 @@ public class UserController
             int count = ((Number) query.uniqueResult()).intValue();
     
             // Si count es mayor que 0, significa que existe un usuario con ese userdni
-            return count > 0;
+            if (count > 0)
+            {
+                return new RequestResult<Boolean>(true, true, "User found.");
+            }
+
+            else
+            {
+                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+            }
         }
         
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, false, e.getMessage());
         }
         
         finally
@@ -116,7 +124,7 @@ public class UserController
     
     }
 
-    public String deleteUser(int userDni)
+    public RequestResult<Boolean> deleteUser(int userDni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -128,30 +136,26 @@ public class UserController
     
         try
         {
-            if((UserController.userExist(userDni)))
+            if(!(UserController.userExist(userDni).getResult()))
             {
-                User usuario = session.get(User.class, userDni);
-                
-                session.beginTransaction();
-                session.remove(usuario);
-                session.getTransaction().commit();
-                sessionFactory.close();
-                
-                return "Usuario eliminado con éxito.";    
+                throw new UserNotFoundException();   
             }
 
-            else
-            {
-                throw new UserNotFoundException();
-            }
-            
+            User usuario = session.get(User.class, userDni);
+
+            session.beginTransaction();
+            session.remove(usuario);
+            session.getTransaction().commit();
+            sessionFactory.close();            
+
+            return new RequestResult<Boolean>(true, null, "The user has been deleted successfully");
 
         }
         
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al eliminar usuario.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
         
         finally
@@ -161,7 +165,7 @@ public class UserController
         }
     }
 
-    public static User getUser(int userDni)
+    public static RequestResult<User> getUser(int userDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -172,19 +176,23 @@ public class UserController
 
         try
         {
+            if(!(UserController.userExist(userDni).getResult()))
+            {
+                throw new UserNotFoundException();
+            }
             session.beginTransaction();
 
             User usuario = session.get(User.class, userDni);
 
             session.getTransaction().commit();
 
-            return usuario;
+            return new RequestResult<User>(true, usuario, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<User>(false, null, e.getMessage());
         }
 
         finally
@@ -194,7 +202,7 @@ public class UserController
         }
     }
 
-    public static String changeFirstName(int userDni, String name)
+    public static RequestResult<Boolean> changeFirstName(int userDni, String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -206,33 +214,27 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.userExist(userDni))
-            {
-                session.beginTransaction();
-
-                User usuario = session.get(User.class, userDni);
-
-                usuario.setFirstName(name);
-                session.merge(usuario);
-
-                session.getTransaction().commit();
-
-                return "Primer name cambiado con éxito.";
-                
-
-            }
-
-            else
+            if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
             }
 
-        }
+            session.beginTransaction();
 
+            User usuario = session.get(User.class, userDni);
+
+            usuario.setFirstName(name);
+            session.merge(usuario);
+
+            session.getTransaction().commit();
+            return new RequestResult<Boolean>(true, null, "User found.");
+
+        }
+            
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al cambiar el primer nombre.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -242,7 +244,7 @@ public class UserController
         }
     }
 
-    public static String changeMiddleName(int userDni, String name)
+    public static RequestResult<Boolean> changeMiddleName(int userDni, String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -254,33 +256,27 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.userExist(userDni))
+            if(!(UserController.userExist(userDni).getResult()))
             {
-                session.beginTransaction();
-
-                User usuario = session.get(User.class, userDni);
-
-                usuario.setMiddleName(name);
-                session.merge(usuario);
-
-                session.getTransaction().commit();
-
-                return "Segundo name cambiado con éxito.";
-                
-
+                throw new UserNotFoundException();   
             }
+            
+            session.beginTransaction();
 
-            else
-            {
-                throw new UserNotFoundException();
-            }
+            User usuario = session.get(User.class, userDni);
 
+            usuario.setMiddleName(name);
+            session.merge(usuario);
+
+            session.getTransaction().commit();
+
+            return new RequestResult<Boolean>(true, null, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al cambiar el segundo nombre.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -290,7 +286,7 @@ public class UserController
         }
     }
 
-    public static String changeFirstLastName(int userDni, String lastName)
+    public static RequestResult<Boolean> changeFirstLastName(int userDni, String lastName)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -302,33 +298,27 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.userExist(userDni))
+            if(!(UserController.userExist(userDni).getResult()))
             {
-                session.beginTransaction();
-
-                User usuario = session.get(User.class, userDni);
-
-                usuario.setFirstLastName(lastName);
-                session.merge(usuario);
-
-                session.getTransaction().commit();
-
-                return "Primer lastName cambiado con éxito.";
-                
-
+                throw new UserNotFoundException();   
             }
+            
+            session.beginTransaction();
 
-            else
-            {
-                throw new UserNotFoundException();
-            }
+            User usuario = session.get(User.class, userDni);
 
+            usuario.setFirstLastName(lastName);
+            session.merge(usuario);
+
+            session.getTransaction().commit();
+
+            return new RequestResult<Boolean>(true, null, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al cambiar el primer apellido.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -338,7 +328,7 @@ public class UserController
         }
     }
 
-    public static String changeMiddleLastName(int userDni, String lastName)
+    public static RequestResult<Boolean> changeMiddleLastName(int userDni, String lastName)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -350,33 +340,27 @@ public class UserController
         try
         {
             //Verificar que exista
-            if(UserController.userExist(userDni))
+            if(!(UserController.userExist(userDni).getResult()))
             {
-                session.beginTransaction();
-
-                User usuario = session.get(User.class, userDni);
-
-                usuario.setMiddleLastName(lastName);
-                session.merge(usuario);
-
-                session.getTransaction().commit();
-
-                return "Segundo lastName cambiado con éxito.";
-                
-
+                throw new UserNotFoundException();   
             }
+            
+            session.beginTransaction();
 
-            else
-            {
-                throw new UserNotFoundException();
-            }
+            User usuario = session.get(User.class, userDni);
 
+            usuario.setMiddleLastName(lastName);
+            session.merge(usuario);
+
+            session.getTransaction().commit();
+
+            return new RequestResult<Boolean>(true, null, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al cambiar el segundo apellido.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -386,7 +370,7 @@ public class UserController
         }
     }
 
-    public static String changePassword(int userDni, String password, String newPassword)
+    public static RequestResult<Boolean> changePassword(int userDni, String password, String newPassword)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -397,48 +381,37 @@ public class UserController
 
         try
         {
-            //!Verificar que exista
-            if(UserController.userExist(userDni))
-            {
-                User user = UserController.getUser(userDni);
-
-                if(user.getPassword() == null)
-                {
-                    session.beginTransaction();
-                    user.setPassword(newPassword);
-                    session.merge(user);
-                    session.getTransaction().commit();
-                    return "Contraseña cambiado con éxito.";
-                }
-
-                if(user.getPassword().equals(password))
-                {
-                    session.beginTransaction();
-                    user.setPassword(newPassword);
-                    session.merge(user);
-                    session.getTransaction().commit();
-                    return "Contraseña cambiado con éxito.";
-                }
-                
-                else
-                {
-                    throw new InvalidLoginException();
-                }
-
-                
-            }
-
-            else
+            //Checking if user exists
+            if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
             }
 
+            //!(This check depends on the previous)
+            //Checking if pass is correct
+
+            String currentPassword = UserController.getUser(userDni).getResult().getPassword();
+
+            if(currentPassword != password)
+            {
+                throw new InvalidLoginException();
+            }
+
+            session.beginTransaction();
+
+            User user = UserController.getUser(userDni).getResult();
+
+            user.setPassword(newPassword);
+            session.merge(user);
+            session.getTransaction().commit();
+
+            return new RequestResult<Boolean>(true, null, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al cambiar la contraseña.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -448,7 +421,7 @@ public class UserController
         }
     }
 
-    public static Integer countTeam(int userDni)
+    public static RequestResult<Integer> countTeam(int userDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -460,7 +433,7 @@ public class UserController
         try
         {
             //Verificar que el usuario exista
-            if(!(UserController.userExist(userDni)))
+            if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
             }
@@ -474,14 +447,19 @@ public class UserController
             query.setParameter("nativeFlag", true);
             session.getTransaction().commit();
 
-            int count = Integer.valueOf(query.uniqueResult().toString());
-            return count;
+            Integer count = Integer.valueOf(query.uniqueResult().toString());
+
+            //Return condition ? valueIfTrue : valueIfFalse -> Conditional operator
+            RequestResult<Integer> returnIfTrue = new RequestResult<Integer>(true, count, "Team info found.");
+            RequestResult<Integer> requestIfFalse = new RequestResult<Integer>(false, 0, "Unknown error... plz fixme");
+
+            return (count != null) ? returnIfTrue : requestIfFalse;
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -491,7 +469,7 @@ public class UserController
         }
     }
 
-    public static Boolean joinTeam(int userDni, int teamId)
+    public static RequestResult<Boolean> joinTeam(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -503,16 +481,17 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(TeamController.teamExist(teamId)))
+            if(!(TeamController.teamExist(teamId).getResult()))
             {
                 throw new TeamNotFoundException();
             }
             
             //Verificar que el usuario no este en mas de >= 3 grupos
-            if(UserController.countTeam(userDni) >= 3)
+            if(UserController.countTeam(userDni).getResult() >= 3)
             {
                 throw new UserAlreadyInTeamsException();
             }
+
             session.beginTransaction();
 
             TeamLog registro = new TeamLog();
@@ -524,13 +503,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return true;
+            return new RequestResult<Boolean>(true, null, "The user has joined to the team successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -540,7 +519,7 @@ public class UserController
         }
     }
 
-    public static Boolean leaveTeam(int userDni, int teamId)
+    public static RequestResult<Boolean> leaveTeam(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -552,19 +531,19 @@ public class UserController
         try
         {
             //Verificar que el usuario este en al menos un grupo
-            if(UserController.countTeam(userDni) <= 0)
+            if(UserController.countTeam(userDni).getResult() <= 0)
             {
                 throw new UserNotInAnyTeamException();
             }
 
             //Verificar que el grupo exista
-            if(!(TeamController.teamExist(teamId)))
+            if(!(TeamController.teamExist(teamId).getResult()))
             {
                 throw new TeamNotFoundException();
             }
 
             //Obtener ID del registro
-            Integer registroId = UserController.getLogId(userDni, teamId);
+            Integer registroId = UserController.getLogId(userDni, teamId).getResult();
 
             //Verificar que el registroId no sea null (No existe el registro)
             if (registroId == null)
@@ -574,18 +553,18 @@ public class UserController
 
             session.beginTransaction();
 
-            TeamLog registro = TeamLogController.getLog(registroId);
+            TeamLog registro = TeamLogController.getLog(registroId).getResult();
             session.remove(registro);
 
             session.getTransaction().commit();
 
-            return true;
+            return new RequestResult<Boolean>(true, null, "The user has leave from the team successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -595,7 +574,7 @@ public class UserController
         }
     }
 
-    public static Integer getLogId(int userDni, int teamId)
+    public static RequestResult<Integer> getLogId(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -607,13 +586,13 @@ public class UserController
         try
         {
             //Verificar que el grupo exista
-            if(!(TeamController.teamExist(teamId)))
+            if(!(TeamController.teamExist(teamId).getResult()))
             {
                 throw new TeamNotFoundException();
             }
 
             //Verificar que el usuario exista
-            if(!(UserController.userExist(userDni)))
+            if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
             }
@@ -631,13 +610,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return id;
+            return new RequestResult<Integer>(true, id, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -660,7 +639,7 @@ public class UserController
         try
         {
             //Verify that user exist!
-            if(!(UserController.userExist(userDni)))
+            if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
             }
@@ -672,7 +651,7 @@ public class UserController
 
             List<Integer> result = query.getResultList();
 
-            return new RequestResult<>(true, result, "There's team list.");
+            return new RequestResult<>(true, result, "Log found.");
             
         }
         

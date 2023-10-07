@@ -24,7 +24,7 @@ public class TeamLogController
         try
         {
             //Verificar que exista el usuario
-            if(!(UserController.userExist(userDni)))
+            if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
             }

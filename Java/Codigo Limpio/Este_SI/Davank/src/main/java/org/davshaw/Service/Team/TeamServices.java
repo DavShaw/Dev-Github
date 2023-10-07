@@ -13,7 +13,7 @@ public class TeamServices
         try
         {
             //Verify user exist
-            if(!(UserController.userExist(userDni)))
+            if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
             }
