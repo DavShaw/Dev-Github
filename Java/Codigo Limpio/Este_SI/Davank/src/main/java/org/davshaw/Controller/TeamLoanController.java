@@ -2,6 +2,7 @@ package org.davshaw.Controller;
 
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
+import org.davshaw.External.RequestResult;
 import org.davshaw.Model.derivatedentities.TeamLoan;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,7 +11,7 @@ import org.hibernate.query.Query;
 
 public class TeamLoanController
 {
-    public static Boolean loan(int logId, double balance)
+    public static RequestResult<Boolean> loan(int logId, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -28,7 +29,7 @@ public class TeamLoanController
             }
 
             //Verificar que la cantidad a prestar < depositos históricos
-            if(TeamDepositController.totalDeposit(logId) < balance)
+            if(TeamDepositController.totalDeposit(logId).getResult() < balance)
             {
                 throw new InsufficientBalanceException();
             }
@@ -59,13 +60,13 @@ public class TeamLoanController
 
             session.getTransaction().commit();
                 
-                return true;
+            return new RequestResult<Boolean>(true, null, "The loan has been done successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -75,7 +76,7 @@ public class TeamLoanController
         }
     }
 
-    public static Boolean loanExist(int id)
+    public static RequestResult<Boolean> loanExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -94,13 +95,21 @@ public class TeamLoanController
 
             int count =  ((Number) query.uniqueResult()).intValue();
 
-            return count > 0;
+            if (count > 0)
+            {
+                return new RequestResult<Boolean>(true, true, "Loan found.");
+            }
+
+            else
+            {
+                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+            }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -110,7 +119,7 @@ public class TeamLoanController
         }
     }
 
-    public static TeamLoan getLoan(int id)
+    public static RequestResult<TeamLoan> getLoan(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -122,28 +131,24 @@ public class TeamLoanController
         try
         {
             //Verificar que exista el prestamo
-            if(!(TeamLoanController.loanExist(id)))
+            if(!(TeamLoanController.loanExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
-            //Sino se lanzó la exception, existe el prestamo
-            else
-            {
-                session.beginTransaction();
+            session.beginTransaction();
 
-                TeamLoan prestamo = session.get(TeamLoan.class, id);
+            TeamLoan prestamo = session.get(TeamLoan.class, id);
 
-                session.getTransaction().commit();;
+            session.getTransaction().commit();;
 
-                return prestamo;
-            }
+            return new RequestResult<TeamLoan>(true, prestamo, "Loan found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<TeamLoan>(false, null, e.getMessage());
         }
 
         finally
@@ -153,7 +158,7 @@ public class TeamLoanController
         }
     }
 
-    public static Boolean deleteLoan(int id)
+    public static RequestResult<Boolean> deleteLoan(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -165,23 +170,23 @@ public class TeamLoanController
         try
         {
             //Verificar que exista
-            if(!(TeamLoanController.loanExist(id)))
+            if(!(TeamLoanController.loanExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
             session.beginTransaction();
-            TeamLoan prestamo = TeamLoanController.getLoan(id);
+            TeamLoan prestamo = TeamLoanController.getLoan(id).getResult();
             session.remove(prestamo);
             session.getTransaction().commit();
 
-            return true;
+            return new RequestResult<Boolean>(true, null, "The loan has been deleted successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
