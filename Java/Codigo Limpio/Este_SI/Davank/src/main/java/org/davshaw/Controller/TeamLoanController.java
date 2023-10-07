@@ -23,7 +23,7 @@ public class TeamLoanController
         try
         {
             //verificar que exista el registro
-            if(!(TeamLogController.logExist(logId)))
+            if(!(TeamLogController.logExist(logId).getResult()))
             {
                 throw new RecordNotFoundException();
             }
@@ -35,7 +35,7 @@ public class TeamLoanController
             }
 
             //Verificar que el grupo tenga la cantidad necesaria
-            if(TeamLogController.getLog(logId).getTeam().getBalance() < balance)
+            if(TeamLogController.getLog(logId).getResult().getTeam().getBalance() < balance)
             {
                 throw new InsufficientBalanceException();
             }
@@ -50,11 +50,11 @@ public class TeamLoanController
             session.persist(prestamo);
 
             //Retirar saldo del equipo
-            int teamId = TeamLogController.getLog(logId).getTeamId();
+            int teamId = TeamLogController.getLog(logId).getResult().getTeamId();
             TeamController.withdrawBalance(teamId, balance);
 
             //Añadir saldo a la cuenta
-            int ownerDni = TeamLogController.getLog(logId).getUserDni();
+            int ownerDni = TeamLogController.getLog(logId).getResult().getUserDni();
             AccountController.addBalance(ownerDni, balance);
             
 

@@ -3,6 +3,7 @@ package org.davshaw.Controller;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
 import org.davshaw.Exception.UserNotFoundException;
+import org.davshaw.External.RequestResult;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +12,7 @@ import org.hibernate.query.Query;
 
 public class TeamLogController
 {
-    public static String createLog(int userDni, int teamId, Boolean nativeFlag)
+    public static RequestResult<Boolean> createLog(int userDni, int teamId, Boolean nativeFlag)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -28,32 +29,29 @@ public class TeamLogController
                 throw new UserNotFoundException();
             }
             //Verificar que exista el grupo
-            if (!(TeamController.teamExist(teamId)))
+            if (!(TeamController.teamExist(teamId).getResult()))
             {
                 throw new TeamNotFoundException();
             }
-            //Sino se lanzaron esas exceptions, entonces tenemos todo lo necesario
-            else
-            {
-                session.beginTransaction();
 
-                TeamLog registro = new TeamLog();
-                //Establecer datos con setters (Reemplazando el constructor)
-                registro.setUserDni(userDni);
-                registro.setTeamId(teamId);
-                registro.setNativeFlag(nativeFlag);
+            session.beginTransaction();
 
-                session.persist(registro);
-                session.getTransaction().commit();
+            TeamLog registro = new TeamLog();
+            //Establecer datos con setters (Reemplazando el constructor)
+            registro.setUserDni(userDni);
+            registro.setTeamId(teamId);
+            registro.setNativeFlag(nativeFlag);
 
-                return "Registro de grupo creado con éxito";
-            }
+            session.persist(registro);
+            session.getTransaction().commit();
+
+            return new RequestResult<Boolean>(true, null, "The log has been created successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al hacer el registro de grupo";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -63,7 +61,7 @@ public class TeamLogController
         }
     }
 
-    public static boolean logExist(int id)
+    public static RequestResult<Boolean> logExist(int id)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -80,18 +78,25 @@ public class TeamLogController
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
 
-    
             // Obtener el resultado de la consulta (cantidad de usuarios con el DNI dado)
             int count = ((Number) query.uniqueResult()).intValue();
     
             // Si count es mayor que 0, significa que existe un usuario con ese DNI
-            return count > 0;
+            if (count > 0)
+            {
+                return new RequestResult<Boolean>(true, true, "Log found.");
+            }
+
+            else
+            {
+                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+            }
         }
         
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, false, e.getMessage());
         }
         
         finally
@@ -101,7 +106,7 @@ public class TeamLogController
         }
     }
 
-    public static TeamLog getLog(int id)
+    public static RequestResult<TeamLog> getLog(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -112,19 +117,25 @@ public class TeamLogController
 
         try
         {
+            //Checking if log exists
+            if(!(TeamLogController.logExist(id).getResult()))
+            {
+                throw new RecordNotFoundException();
+            }
+
             session.beginTransaction();
 
             TeamLog registro = session.get(TeamLog.class, id);
 
             session.getTransaction().commit();
 
-            return registro;
+            return new RequestResult<TeamLog>(true, registro, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<TeamLog>(false, null, e.getMessage());
         }
 
         finally
@@ -134,7 +145,7 @@ public class TeamLogController
         }
     }
 
-    public static Integer getOwnerDni(int id)
+    public static RequestResult<Integer> getOwnerDni(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -146,21 +157,23 @@ public class TeamLogController
         try
         {
             //Verificar que exista el registro
-            if(!(TeamLogController.logExist(id)))
+            if(!(TeamLogController.logExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
             //Obtener objeto
-            TeamLog registro = TeamLogController.getLog(id);
+            TeamLog registro = TeamLogController.getLog(id).getResult();
 
-            return registro.getUserDni();
+            Integer userDni = registro.getUserDni();
+
+            return new RequestResult<Integer>(true, userDni, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -170,7 +183,7 @@ public class TeamLogController
         }
     }
 
-    public static Integer getteamId(int id)
+    public static RequestResult<Integer> getteamId(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -182,57 +195,23 @@ public class TeamLogController
         try
         {
             //Verificar que exista el registro
-            if(!(TeamLogController.logExist(id)))
+            if(!(TeamLogController.logExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
             //Obtener objeto
-            TeamLog registro = TeamLogController.getLog(id);
+            TeamLog registro = TeamLogController.getLog(id).getResult();
 
-            return registro.getTeamId();
+            Integer teamId =registro.getTeamId();
+
+            return new RequestResult<Integer>(true, teamId, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    }
-
-    public static Boolean getNativeFlag(int id)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TeamLog.class)
-        .buildSessionFactory();
-
-        Session session = sessionFactory.openSession();
-
-        try
-        {
-            //Verificar que exista el registro
-            if(!(TeamLogController.logExist(id)))
-            {
-                throw new RecordNotFoundException();
-            }
-
-            //Obtener objeto
-            TeamLog registro = TeamLogController.getLog(id);
-
-            return registro.isNativeFlag();
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return false;
+            return new RequestResult<Integer>(false, null, e.getMessage());
         }
 
         finally

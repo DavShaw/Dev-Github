@@ -25,15 +25,15 @@ public class TeamDepositController
         try
         {
             //Verificar que el registro exista
-            if(TeamLogController.logExist(logId))
+            if(TeamLogController.logExist(logId).getResult())
             {
                 throw new RecordNotFoundException();
             }
 
             //! (La validación depende de la pasada)
             //Verificar que la cuenta tenga el dinero para depositar
-            int grupoId = TeamLogController.getteamId(logId);
-            int titularDni = TeamLogController.getOwnerDni(logId);
+            int grupoId = TeamLogController.getteamId(logId).getResult();
+            int titularDni = TeamLogController.getOwnerDni(logId).getResult();
 
             if(AccountController.hasEnough(titularDni, balance).getResult())
             {
@@ -201,7 +201,7 @@ public class TeamDepositController
         try
         {
             //Verificar que el registro exista
-            if(!(TeamLogController.logExist(logId)))
+            if(!(TeamLogController.logExist(logId).getResult()))
             {
                 throw new RecordNotFoundException();
             }
