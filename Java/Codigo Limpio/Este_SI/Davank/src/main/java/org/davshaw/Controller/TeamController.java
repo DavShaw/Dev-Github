@@ -1,7 +1,9 @@
 package org.davshaw.Controller;
 
 import org.davshaw.Exception.NegativeAmountException;
+import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
+import org.davshaw.External.RequestResult;
 import org.davshaw.Model.pureentities.Team;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +13,7 @@ import org.hibernate.query.Query;
 
 public class TeamController
 {
-    public static String createTeam(String name)
+    public static RequestResult<Boolean> createTeam(String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -31,13 +33,14 @@ public class TeamController
             session.persist(grupo);
 
             session.getTransaction().commit();
-            return "Grupo creado con éxito.";
+            
+            return new RequestResult<Boolean>(true, null, "Team has been created successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Error al crear el grupo.";
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -47,7 +50,7 @@ public class TeamController
         }
     }
 
-    public static Boolean teamExist(int id)
+    public static RequestResult<Boolean> teamExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -63,13 +66,21 @@ public class TeamController
             query.setParameter("id", id);
             int count = ((Number) query.uniqueResult()).intValue();
 
-            return count > 0;
+            if (count > 0)
+            {
+                return new RequestResult<Boolean>(true, true, "Team found.");
+            }
+
+            else
+            {
+                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+            }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return false;
+            return new RequestResult<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -79,7 +90,7 @@ public class TeamController
         }
     }
 
-    public static Team getTeam(int id)
+    public static RequestResult<Team> getTeam(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -90,7 +101,7 @@ public class TeamController
 
         try
         {
-            if(TeamController.teamExist(id))
+            if(TeamController.teamExist(id).getResult())
             {
                 session.beginTransaction();
 
@@ -98,7 +109,7 @@ public class TeamController
 
                 session.getTransaction().commit();
 
-                return grupo;
+                return new RequestResult<Team>(true, grupo, "Team found.");
             }
             
             else
@@ -110,7 +121,7 @@ public class TeamController
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Team>(false, null, e.getMessage());
         }
 
         finally
@@ -120,7 +131,7 @@ public class TeamController
         }
     }
 
-    public static Double getBalance(int id)
+    public static RequestResult<Double> getBalance(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -131,7 +142,7 @@ public class TeamController
 
         try
         {
-            if(TeamController.teamExist(id))
+            if(TeamController.teamExist(id).getResult())
             {
                 session.beginTransaction();
 
@@ -139,7 +150,7 @@ public class TeamController
 
                 session.getTransaction().commit();
 
-                return grupo.getBalance();
+                return new RequestResult<Double>(true, grupo.getBalance(), "Team found.");
             }
             
             else
@@ -151,7 +162,7 @@ public class TeamController
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Double>(false, null, e.getMessage());
         }
 
         finally
@@ -161,7 +172,7 @@ public class TeamController
         }
     }
 
-    public static String addBalance(int id, double balance)
+    public static RequestResult<Boolean> addBalance(int id, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -177,11 +188,11 @@ public class TeamController
                 throw new NegativeAmountException();
             }
 
-            if(TeamController.teamExist(id))
+            if(TeamController.teamExist(id).getResult())
             {
                 session.beginTransaction();
 
-                Team grupo = TeamController.getTeam(id);
+                Team grupo = TeamController.getTeam(id).getResult();
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getBalance() + balance;
@@ -191,7 +202,7 @@ public class TeamController
 
                 session.getTransaction().commit();
 
-                return "Se ha agregado saldo al grupo.";
+                return new RequestResult<Boolean>(true, null, "Team found.");
 
             }
             
@@ -204,7 +215,7 @@ public class TeamController
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -214,7 +225,7 @@ public class TeamController
         }
     }
 
-    public static String withdrawBalance(int id, double balance)
+    public static RequestResult<Boolean> withdrawBalance(int id, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -230,11 +241,11 @@ public class TeamController
                 throw new NegativeAmountException();
             }
 
-            if(TeamController.teamExist(id))
+            if(TeamController.teamExist(id).getResult())
             {
                 session.beginTransaction();
 
-                Team grupo = TeamController.getTeam(id);
+                Team grupo = TeamController.getTeam(id).getResult();
 
                 //Editar saldo
                 double nuevoSaldo = grupo.getBalance() - balance;
@@ -244,7 +255,7 @@ public class TeamController
 
                 session.getTransaction().commit();
 
-                return "Se ha retirado saldo al grupo.";
+                return new RequestResult<Boolean>(true, null, "Team found.");
 
             }
             
@@ -257,7 +268,8 @@ public class TeamController
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Boolean>(false, null, e.getMessage());
+
         }
 
         finally
