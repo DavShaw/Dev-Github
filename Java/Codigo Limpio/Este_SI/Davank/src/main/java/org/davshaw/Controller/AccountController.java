@@ -180,7 +180,7 @@ public class AccountController
         catch (Exception e)
         {
             e.printStackTrace();
-            return null;
+            return new RequestResult<Account>(false, null, "Account not found.");
         }
 
         finally
