@@ -10,7 +10,8 @@ import org.davshaw.Exception.DuplicateUserDNIException;
 import org.davshaw.Exception.InvalidLoginException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
-import org.davshaw.Exception.UserAlreadyInTeamsException;
+import org.davshaw.Exception.UserAlreadyOnTeamsLimitException;
+import org.davshaw.Exception.UserAlreadyOnTeamException;
 import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.Exception.UserNotInAnyTeamException;
 import org.davshaw.External.RequestResult;
@@ -124,7 +125,7 @@ public class UserController
     
     }
 
-    public RequestResult<Boolean> deleteUser(int userDni)
+    public static RequestResult<Boolean> deleteUser(int userDni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -391,8 +392,9 @@ public class UserController
             //Checking if pass is correct
 
             String currentPassword = UserController.getUser(userDni).getResult().getPassword();
+            System.out.println("Current password -> " + currentPassword);
 
-            if(currentPassword != password)
+            if(!(currentPassword.equals(password)))
             {
                 throw new InvalidLoginException();
             }
@@ -489,7 +491,13 @@ public class UserController
             //Verificar que el usuario no este en mas de >= 3 grupos
             if(UserController.countTeam(userDni).getResult() >= 3)
             {
-                throw new UserAlreadyInTeamsException();
+                throw new UserAlreadyOnTeamsLimitException();
+            }
+
+            //Verificar que el usuario no este en ese grupo
+            if(TeamLogController.userOnTeam(userDni, teamId).getResult())
+            {
+                throw new UserAlreadyOnTeamException();
             }
 
             session.beginTransaction();
@@ -553,8 +561,7 @@ public class UserController
 
             session.beginTransaction();
 
-            TeamLog registro = TeamLogController.getLog(registroId).getResult();
-            session.remove(registro);
+            TeamLogController.deleteLog(registroId);
 
             session.getTransaction().commit();
 
@@ -599,7 +606,7 @@ public class UserController
 
             session.beginTransaction();
 
-            String sql = "SELECT id FROM TeamLog WHERE teamId = :teamId AND userDni = :userDni AND nativeFlag = :nativeFlag";
+            String sql = "SELECT id FROM TeamLog WHERE teamId = :teamId AND userDni = :userDni AND nativeFlag = :nativeFlag LIMIT 1";
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
             query.setParameter("userDni", userDni);
             query.setParameter("teamId", teamId);
@@ -650,6 +657,11 @@ public class UserController
             query.setParameter("userDni", userDni);
 
             List<Integer> result = query.getResultList();
+
+            if(result.isEmpty())
+            {
+                throw new UserNotInAnyTeamException();
+            }
 
             return new RequestResult<>(true, result, "Log found.");
             

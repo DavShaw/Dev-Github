@@ -70,11 +70,8 @@ public class TeamController
             {
                 return new RequestResult<Boolean>(true, true, "Team found.");
             }
-
-            else
-            {
-                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
-            }
+            
+            return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
         }
 
         catch (Exception e)

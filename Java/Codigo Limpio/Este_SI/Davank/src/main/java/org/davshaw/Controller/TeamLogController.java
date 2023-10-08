@@ -220,4 +220,99 @@ public class TeamLogController
             sessionFactory.close();
         }
     }
+
+    public static RequestResult<Boolean> deleteLog(int id)
+    {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(TeamLog.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+            //Verificar que exista el registro
+            if(!(TeamLogController.logExist(id).getResult()))
+            {
+                throw new RecordNotFoundException();
+            }
+
+            session.beginTransaction();
+
+            //Obtener objeto
+            TeamLog registro = TeamLogController.getLog(id).getResult();
+
+            session.remove(registro);
+
+            session.getTransaction().commit();
+            
+            return new RequestResult<Boolean>(true, null, "The log has been deleted successfully.");
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new RequestResult<Boolean>(false, null, e.getMessage());
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
+    public static RequestResult<Boolean> userOnTeam(int userDni, int teamId)
+    {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(TeamLog.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+            //checking user exits 
+            if(!(UserController.userExist(userDni).getResult()))
+            {
+                throw new UserNotFoundException();
+            }
+
+            //Checking team exists
+            if(!(TeamController.teamExist(teamId).getResult()))
+            {
+                throw new TeamNotFoundException();
+            }
+
+            session.beginTransaction();
+
+            String sql = "SELECT count(*) FROM TeamLog WHERE userDni = :userDni AND teamId = :teamId";
+            Query<Long> query = session.createNativeQuery(sql, Long.class);
+            query.setParameter("userDni", userDni);
+            query.setParameter("teamId", teamId);
+
+            Integer count = Integer.valueOf(query.uniqueResult().toString());
+
+            if(count > 0)
+            {
+                return new RequestResult<Boolean>(true, true, "User found.");
+            }
+
+            return new RequestResult<Boolean>(true, false, "User not found.");
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new RequestResult<Boolean>(false, false, e.getMessage());
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
 }
