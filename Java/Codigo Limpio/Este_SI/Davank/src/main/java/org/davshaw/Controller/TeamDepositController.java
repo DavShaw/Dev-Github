@@ -24,36 +24,36 @@ public class TeamDepositController
 
         try
         {
-            //Verificar que el registro exista
+            //Checking log exists
             if(!(TeamLogController.logExist(logId).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
-            //! (La validación depende de la pasada)
-            //Verificar que la cuenta tenga el dinero para depositar
-            int grupoId = TeamLogController.getteamId(logId).getResult();
-            int titularDni = TeamLogController.getOwnerDni(logId).getResult();
+            //! (This checking depends on previous checking)
+            //Checking account has enough balance
+            int teamId = TeamLogController.getTeamId(logId).getResult();
+            int userDni = TeamLogController.getOwnerDni(logId).getResult();
 
-            if(!(AccountController.hasEnough(titularDni, balance).getResult()))
+            if(!(AccountController.hasEnough(userDni, balance).getResult()))
             {
                 throw new InsufficientBalanceException();
             }
             
             session.beginTransaction();
                 
-            //Retirar cantidad de la cuenta
-            AccountController.withdrawBalance(titularDni, balance);
-            //Agregar cantidad al grupo
-            TeamController.addBalance(grupoId, balance);
+            //Withdraw balance from account
+            AccountController.withdrawBalance(userDni, balance);
+            //Deposit balance to team
+            TeamController.addBalance(teamId, balance);
 
-            //Crear el registro
-            TeamDeposit deposito = new TeamDeposit();
-            deposito.setDateTime(new Date());
-            deposito.setBalance(balance);
-            deposito.setLogId(logId);
+            //Registering deposit
+            TeamDeposit deposit = new TeamDeposit();
+            deposit.setDateTime(new Date());
+            deposit.setBalance(balance);
+            deposit.setLogId(logId);
 
-            session.persist(deposito);
+            session.persist(deposit);
 
             session.getTransaction().commit();
 
@@ -124,17 +124,17 @@ public class TeamDepositController
 
         try
         {
-            //Verificar si existe el registro del deposito
+            //Checking if deposit exists
             if(!(TeamDepositController.depositExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
             session.beginTransaction();
 
-            TeamDeposit deposito = session.get(TeamDeposit.class, id);
+            TeamDeposit deposit = session.get(TeamDeposit.class, id);
             session.getTransaction().commit();
 
-            return new RequestResult<TeamDeposit>(true, deposito, "Deposit found.");
+            return new RequestResult<TeamDeposit>(true, deposit, "Deposit found.");
         }
 
         catch (Exception e)
@@ -162,15 +162,15 @@ public class TeamDepositController
         try
         {
 
-            //Verificar que exista el deposito
+            //Checking deposit exists
             if(!(TeamDepositController.depositExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
             session.beginTransaction();
-            TeamDeposit deposito = TeamDepositController.getDeposit(id).getResult();
-            session.remove(deposito);
+            TeamDeposit deposit = TeamDepositController.getDeposit(id).getResult();
+            session.remove(deposit);
             session.getTransaction().commit();
 
             return new RequestResult<Boolean>(true, null, "The deposit has been deleted successfully.");
@@ -200,23 +200,26 @@ public class TeamDepositController
 
         try
         {
-            //Verificar que el registro exista
+            //Checking deposit exists
             if(!(TeamLogController.logExist(logId).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
-            //Obtener ID de registro de depositos que cumplan con el logId
+            //Obtaining the primary key of rows in the TeamLog table that meet the condition.
             String sql = "SELECT SUM(balance) FROM TeamDeposit WHERE logId = :logId";
             Query<Double> query = session.createNativeQuery(sql, Double.class);
             query.setParameter("logId", logId);
 
             Double total = query.uniqueResult();
             
-            //Return condition ? valueIfTrue : valueIfFalse -> Conditional operator
-            RequestResult<Double> returnIfTrue = new RequestResult<Double>(true, total, "Deposit found.");
-            RequestResult<Double> returnIfFalse = new RequestResult<Double>(false, 0.0, "Unknown error... Plz fixme");
-            return (total != null) ? returnIfTrue : returnIfFalse;
+            if(total != null)
+            {
+
+                return new RequestResult<Double>(true, total, "Deposit found.");
+            }
+
+            return new RequestResult<Double>(false, 0.0, new RecordNotFoundException().getMessage());
         }
 
         catch (Exception e)

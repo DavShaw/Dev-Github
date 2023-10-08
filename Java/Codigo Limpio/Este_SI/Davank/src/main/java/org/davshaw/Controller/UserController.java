@@ -37,24 +37,24 @@ public class UserController
 
         try
         {
-            //Verificar que no exista otro usuario con el mismo dni
+            //Checking there's not another user with the same DNI.
             if(UserController.userExist(dni).getResult())
             {
                 throw new DuplicateUserDNIException();
             }
 
-            User usuario = new User();
+            User user = new User();
 
-            usuario.setDni(dni);
-            usuario.setFirstName(firstName);
-            usuario.setMiddleName(middleName);
-            usuario.setFirstLastName(firstLastName);
-            usuario.setMiddleLastName(middleLastName);
-            usuario.setPassword(password);
+            user.setDni(dni);
+            user.setFirstName(firstName);
+            user.setMiddleName(middleName);
+            user.setFirstLastName(firstLastName);
+            user.setMiddleLastName(middleLastName);
+            user.setPassword(password);
 
             session.beginTransaction();
             
-            session.persist(usuario);
+            session.persist(user);
             
             session.getTransaction().commit();
             
@@ -96,19 +96,13 @@ public class UserController
             query.setParameter("dni", dni);
 
     
-            // Obtener el resultado de la consulta (cantidad de usuarios con el dni dado)
             int count = ((Number) query.uniqueResult()).intValue();
     
-            // Si count es mayor que 0, significa que existe un usuario con ese userdni
             if (count > 0)
             {
                 return new RequestResult<Boolean>(true, true, "User found.");
             }
-
-            else
-            {
-                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
-            }
+            return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
         }
         
         catch (Exception e)
@@ -142,10 +136,10 @@ public class UserController
                 throw new UserNotFoundException();   
             }
 
-            User usuario = session.get(User.class, userDni);
+            User user = session.get(User.class, userDni);
 
             session.beginTransaction();
-            session.remove(usuario);
+            session.remove(user);
             session.getTransaction().commit();
             sessionFactory.close();            
 
@@ -183,11 +177,11 @@ public class UserController
             }
             session.beginTransaction();
 
-            User usuario = session.get(User.class, userDni);
+            User user = session.get(User.class, userDni);
 
             session.getTransaction().commit();
 
-            return new RequestResult<User>(true, usuario, "User found.");
+            return new RequestResult<User>(true, user, "User found.");
         }
 
         catch (Exception e)
@@ -214,7 +208,7 @@ public class UserController
 
         try
         {
-            //Verificar que exista
+            //Checking user exists
             if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
@@ -222,10 +216,10 @@ public class UserController
 
             session.beginTransaction();
 
-            User usuario = session.get(User.class, userDni);
+            User user = session.get(User.class, userDni);
 
-            usuario.setFirstName(name);
-            session.merge(usuario);
+            user.setFirstName(name);
+            session.merge(user);
 
             session.getTransaction().commit();
             return new RequestResult<Boolean>(true, null, "User found.");
@@ -256,7 +250,7 @@ public class UserController
 
         try
         {
-            //Verificar que exista
+            //Checking user exists
             if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();   
@@ -264,10 +258,10 @@ public class UserController
             
             session.beginTransaction();
 
-            User usuario = session.get(User.class, userDni);
+            User user = session.get(User.class, userDni);
 
-            usuario.setMiddleName(name);
-            session.merge(usuario);
+            user.setMiddleName(name);
+            session.merge(user);
 
             session.getTransaction().commit();
 
@@ -298,7 +292,7 @@ public class UserController
 
         try
         {
-            //Verificar que exista
+            //Checking user exists
             if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();   
@@ -306,10 +300,10 @@ public class UserController
             
             session.beginTransaction();
 
-            User usuario = session.get(User.class, userDni);
+            User user = session.get(User.class, userDni);
 
-            usuario.setFirstLastName(lastName);
-            session.merge(usuario);
+            user.setFirstLastName(lastName);
+            session.merge(user);
 
             session.getTransaction().commit();
 
@@ -340,7 +334,7 @@ public class UserController
 
         try
         {
-            //Verificar que exista
+            //Checking user exists
             if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();   
@@ -348,10 +342,10 @@ public class UserController
             
             session.beginTransaction();
 
-            User usuario = session.get(User.class, userDni);
+            User user = session.get(User.class, userDni);
 
-            usuario.setMiddleLastName(lastName);
-            session.merge(usuario);
+            user.setMiddleLastName(lastName);
+            session.merge(user);
 
             session.getTransaction().commit();
 
@@ -434,7 +428,7 @@ public class UserController
 
         try
         {
-            //Verificar que el usuario exista
+            //Checking user exists
             if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();
@@ -451,11 +445,11 @@ public class UserController
 
             Integer count = Integer.valueOf(query.uniqueResult().toString());
 
-            //Return condition ? valueIfTrue : valueIfFalse -> Conditional operator
-            RequestResult<Integer> returnIfTrue = new RequestResult<Integer>(true, count, "Team info found.");
-            RequestResult<Integer> requestIfFalse = new RequestResult<Integer>(false, 0, "Unknown error... plz fixme");
-
-            return (count != null) ? returnIfTrue : requestIfFalse;
+            if(count != null)
+            {
+                return new RequestResult<Integer>(true, count, "Team info found.");
+            }
+            return new RequestResult<Integer>(false, 0, new RecordNotFoundException().getMessage());
         }
 
         catch (Exception e)
@@ -482,19 +476,19 @@ public class UserController
 
         try
         {
-            //Verificar que el grupo exista
+            //Checking team exists
             if(!(TeamController.teamExist(teamId).getResult()))
             {
                 throw new TeamNotFoundException();
             }
             
-            //Verificar que el usuario no este en mas de >= 3 grupos
+            //Checking user aren't on the limit team
             if(UserController.countTeam(userDni).getResult() >= 3)
             {
                 throw new UserAlreadyOnTeamsLimitException();
             }
 
-            //Verificar que el usuario no este en ese grupo
+            //Checking user aren't on the team
             if(TeamLogController.userOnTeam(userDni, teamId).getResult())
             {
                 throw new UserAlreadyOnTeamException();
@@ -502,12 +496,12 @@ public class UserController
 
             session.beginTransaction();
 
-            TeamLog registro = new TeamLog();
-            registro.setTeamId(teamId);
-            registro.setNativeFlag(true);
-            registro.setUserDni(userDni);
+            TeamLog log = new TeamLog();
+            log.setTeamId(teamId);
+            log.setNativeFlag(true);
+            log.setUserDni(userDni);
 
-            session.persist(registro);
+            session.persist(log);
 
             session.getTransaction().commit();
 
@@ -538,30 +532,30 @@ public class UserController
 
         try
         {
-            //Verificar que el usuario este en al menos un grupo
+            //Checking user are on at less on one team
             if(UserController.countTeam(userDni).getResult() <= 0)
             {
                 throw new UserNotInAnyTeamException();
             }
 
-            //Verificar que el grupo exista
+            //Checking team exists
             if(!(TeamController.teamExist(teamId).getResult()))
             {
                 throw new TeamNotFoundException();
             }
 
-            //Obtener ID del registro
-            Integer registroId = UserController.getLogId(userDni, teamId).getResult();
+            //Getting log id that meet the condition (userDni and teamId are the same)
+            Integer logId = UserController.getLogId(userDni, teamId).getResult();
 
-            //Verificar que el registroId no sea null (No existe el registro)
-            if (registroId == null)
+            //Checking logId isn't null
+            if (logId == null)
             {
                 throw new RecordNotFoundException();
             }
 
             session.beginTransaction();
 
-            TeamLogController.deleteLog(registroId);
+            TeamLogController.deleteLog(logId);
 
             session.getTransaction().commit();
 
@@ -592,13 +586,13 @@ public class UserController
 
         try
         {
-            //Verificar que el grupo exista
+            //Checking team exists
             if(!(TeamController.teamExist(teamId).getResult()))
             {
                 throw new TeamNotFoundException();
             }
 
-            //Verificar que el usuario exista
+            //Checking user exists
             if(!(UserController.userExist(userDni).getResult()))
             {
                 throw new UserNotFoundException();

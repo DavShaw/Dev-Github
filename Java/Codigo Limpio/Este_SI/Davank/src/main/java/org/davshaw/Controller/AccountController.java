@@ -29,13 +29,13 @@ public class AccountController
             //Checking account exist
             if(!AccountController.accountExist(ownerDni).getResult())
             {
-                Account cuenta = new Account();
+                Account account = new Account();
 
                 //Setting data
-                cuenta.setOwnerDni(ownerDni);
+                account.setOwnerDni(ownerDni);
 
                 session.beginTransaction();
-                session.persist(cuenta);
+                session.persist(account);
                 session.getTransaction().commit();
                 
                 return new RequestResult<Boolean>(true, null, "Account created successfully.");
@@ -172,11 +172,11 @@ public class AccountController
             session.beginTransaction();
 
             Integer primarykey = AccountController.getAccountNumber(ownerDni).getResult();
-            Account cuenta = session.get(Account.class, primarykey);
+            Account account = session.get(Account.class, primarykey);
 
             session.getTransaction().commit();
                 
-            return new RequestResult<Account>(true, cuenta, "Account found.");
+            return new RequestResult<Account>(true, account, "Account found.");
         }
 
         catch (IllegalArgumentException e)
@@ -210,7 +210,7 @@ public class AccountController
 
         try
         {
-            //Checking corrent balance input
+            //Checking correct balance input
             if (balance < 0)
             {
                 throw new NegativeAmountException();
@@ -288,13 +288,13 @@ public class AccountController
             session.beginTransaction();
     
             Integer primarykey = AccountController.getAccountNumber(ownerDni).getResult();
-            Account cuenta = session.get(Account.class, primarykey);
+            Account account = session.get(Account.class, primarykey);
     
-            //Obtener saldo actual
-            double nuevoSaldo = cuenta.getBalance() - balance;
-            cuenta.setBalance(nuevoSaldo);
+            //Getting current balance
+            double newBalance = account.getBalance() - balance;
+            account.setBalance(newBalance);
     
-            session.merge(cuenta);
+            session.merge(account);
     
             session.getTransaction().commit();
     
@@ -337,9 +337,9 @@ public class AccountController
                 throw new AccountOwnerNotFoundException();
             }
 
-            Account cuenta = AccountController.getAccount(ownerDni).getResult();
+            Account account = AccountController.getAccount(ownerDni).getResult();
 
-            return new RequestResult<Double>(true, cuenta.getBalance(), "Balance got successfully.");
+            return new RequestResult<Double>(true, account.getBalance(), "Balance got successfully.");
         }
 
         catch (IllegalArgumentException e)
@@ -380,8 +380,8 @@ public class AccountController
 
             session.beginTransaction();
 
-            Account cuenta = AccountController.getAccount(ownerDni).getResult();
-            session.remove(cuenta);
+            Account account = AccountController.getAccount(ownerDni).getResult();
+            session.remove(account);
 
             session.getTransaction().commit();
 

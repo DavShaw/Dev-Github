@@ -32,6 +32,7 @@ public class AccountWithdrawal
     @Column(name = "id")
     private Integer id;
 
+    //? Foreign key to Account
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "accountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account account;

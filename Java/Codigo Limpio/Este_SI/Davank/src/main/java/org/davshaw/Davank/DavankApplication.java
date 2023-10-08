@@ -15,8 +15,7 @@ public class DavankApplication
 	public static void main(String[] args)
 	{
 		SpringApplication.run(DavankApplication.class, args);
-		System.out.println(Color.color("RED","El servidor local del proyecto Spring Boot está encendido. Todo lo que veas depués de este mensaje son los request"));
-
+		System.out.println(Color.color("RED","Spring Boot local project server is running from now on. All requests should appear under this message"));
 
 
 		RequestResult<Boolean> result = TeamLoanController.deleteLoan(2);
@@ -25,7 +24,5 @@ public class DavankApplication
 		System.out.println("Executed successfully -> " + result.getOkay().toString());
 		System.out.println("Result type -> " + result.getResult());
 		System.out.println("Message -> " + result.getMessage());
-
-
 	}
 }

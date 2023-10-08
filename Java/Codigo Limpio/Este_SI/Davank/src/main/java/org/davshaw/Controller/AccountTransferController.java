@@ -26,43 +26,43 @@ public class AccountTransferController
 
         try
         {
-            //Verificar si la cuenta origen existe
+            //Checking account exists (Origin)
             if(!(AccountController.accountExist(originOwnerDni).getResult()))
             {
                 throw new AccountNotFoundException();
             }
 
-            //Verificar si cuenta destino existe
+            //Checking account exists (Destination)
             if(!(AccountController.accountExist(destinationOwnerDni).getResult()))
             {
                 throw new AccountNotFoundException();
             }
 
-            //Verificar si la cuenta de origen tiene el saldo suficiente para realizar la transferencia
-            if (AccountController.getBalance(originOwnerDni).getResult() < balance)
+            //Checking account has enough balance to make transfer
+            if (!(AccountController.hasEnough(originOwnerDni, balance).getResult()))
             {
                 throw new InsufficientBalanceException();
             }
 
             session.beginTransaction();
 
-            //Retirar dinero de la cuenta de origen
+            //Withdraw balance from origin account
             AccountController.withdrawBalance(originOwnerDni, balance);
-            //Agregar dinero a la cuenta de destino
+            //Deposit balance to destination account
             AccountController.addBalance(destinationOwnerDni, balance);
 
-            //Iniciar creación del registro de la transferencia
-            AccountTransfer transferencia = new AccountTransfer();
-            transferencia.setDateTime(new Date());
-            transferencia.setBalance(balance);
+            //Registering transfer
+            AccountTransfer transfer = new AccountTransfer();
+            transfer.setDateTime(new Date());
+            transfer.setBalance(balance);
 
             Integer originAccount = AccountController.getAccountNumber(originOwnerDni).getResult();
             Integer destinationAccount = AccountController.getAccountNumber(destinationOwnerDni).getResult();
 
-            transferencia.setOriginAccountNumber(originAccount);
-            transferencia.setDestinationAccountNumber(destinationAccount);
+            transfer.setOriginAccountNumber(originAccount);
+            transfer.setDestinationAccountNumber(destinationAccount);
 
-            session.persist(transferencia);
+            session.persist(transfer);
 
             session.getTransaction().commit();
             
@@ -140,10 +140,10 @@ public class AccountTransferController
             }
 
             session.beginTransaction();
-            AccountTransfer transferencia = session.get(AccountTransfer.class, id);
+            AccountTransfer transfer = session.get(AccountTransfer.class, id);
             session.getTransaction().commit();
 
-            return new RequestResult<AccountTransfer>(true, transferencia, "Transfer found.");
+            return new RequestResult<AccountTransfer>(true, transfer, "Transfer found.");
 
         }
 
@@ -171,7 +171,7 @@ public class AccountTransferController
 
         try
         {
-            //Verificar si existe
+            //Checking if transfer exists
             if(!(AccountTransferController.transferExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
@@ -179,9 +179,9 @@ public class AccountTransferController
 
             session.beginTransaction();
 
-            AccountTransfer transferencia = AccountTransferController.getTransfer(id).getResult();
+            AccountTransfer transfer = AccountTransferController.getTransfer(id).getResult();
 
-            session.remove(transferencia);
+            session.remove(transfer);
             session.getTransaction().commit();
 
             return new RequestResult<Boolean>(true, null, "The transfer has been deleted successfully.");

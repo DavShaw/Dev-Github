@@ -1,7 +1,7 @@
 package org.davshaw.Exception;
 
-public class HaventDepositEnoughException extends RuntimeException {
-    public HaventDepositEnoughException() {
+public class HaveNotDepositEnoughException extends RuntimeException {
+    public HaveNotDepositEnoughException() {
         super("The user hasn't deposited enough money for the requested loan.");
     }
 }

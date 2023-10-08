@@ -28,12 +28,12 @@ public class AccountWithdrawController
 
         try
         {
-            //Verificar si existe una cuenta asociada a este dni
+            //Checking account exists
             if(!(AccountController.accountExist(ownerDni).getResult()))
             {
                 throw new AccountNotFoundException();
             }
-            //Verificar que el balance de la cuenta sea mayor o igual al balance a retirar
+            //Checking account has enough balance
             if(!(AccountController.hasEnough(ownerDni, balance).getResult()))
             {
                 throw new InsufficientBalanceException();
@@ -47,13 +47,13 @@ public class AccountWithdrawController
             session.beginTransaction();
 
             AccountController.withdrawBalance(ownerDni, balance);
-            //Crear registro del retiro
-            AccountWithdrawal retiro = new AccountWithdrawal();
-            retiro.setDateTime(new Date());
-            retiro.setBalance(balance);
-            retiro.setAccountNumber(AccountController.getAccountNumber(ownerDni).getResult());
+            //Registering withdraw
+            AccountWithdrawal withdraw = new AccountWithdrawal();
+            withdraw.setDateTime(new Date());
+            withdraw.setBalance(balance);
+            withdraw.setAccountNumber(AccountController.getAccountNumber(ownerDni).getResult());
 
-            session.persist(retiro);
+            session.persist(withdraw);
             session.getTransaction().commit();
             return new RequestResult<Boolean>(true, null, "The withdraw has been done successfully.");
         }
@@ -122,7 +122,7 @@ public class AccountWithdrawController
 
         try
         {
-            //Verificar que exista el registro del deposito
+            //Checking withdraw exists
             if(!(AccountWithdrawController.withdrawExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
@@ -130,11 +130,11 @@ public class AccountWithdrawController
 
             session.beginTransaction();
 
-            AccountWithdrawal retiro = session.get(AccountWithdrawal.class, id);
+            AccountWithdrawal withdraw = session.get(AccountWithdrawal.class, id);
 
             session.getTransaction().commit();
 
-            return new RequestResult<AccountWithdrawal>(true, retiro, "Withdraw found.");
+            return new RequestResult<AccountWithdrawal>(true, withdraw, "Withdraw found.");
         }
 
         catch (Exception e)
@@ -161,20 +161,20 @@ public class AccountWithdrawController
 
         try
         {
-            //Verificar que exista el registro del deposito
+            //Checking withdraw exists
             if(!(AccountWithdrawController.withdrawExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
             session.beginTransaction();
 
-            AccountWithdrawal retiro = AccountWithdrawController.getWithdrawal(id).getResult();
+            AccountWithdrawal withdraw = AccountWithdrawController.getWithdrawal(id).getResult();
 
-            session.remove(retiro);
+            session.remove(withdraw);
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "Witdraw found.");
+            return new RequestResult<Boolean>(true, null, "withdraw found.");
         }
 
         catch (Exception e)

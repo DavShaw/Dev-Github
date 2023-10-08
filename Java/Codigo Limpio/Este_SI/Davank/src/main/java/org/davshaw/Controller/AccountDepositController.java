@@ -27,7 +27,7 @@ public class AccountDepositController
 
         try
         {
-            //Verificar que la cuenta exista
+            //Checking account exits
             if(!(AccountController.accountExist(ownerDni).getResult()))
             {
                 throw new AccountNotFoundException();
@@ -38,20 +38,19 @@ public class AccountDepositController
                 throw new NegativeAmountException();
             }
             
-            //Sino se lanzan las exceptions, entonces se procede
             session.beginTransaction();
 
-            //Haciendo el deposito
+            //Making deposit
             AccountController.addBalance(ownerDni, balance);
 
-            //Haciendo el registro del deposito
-            AccountDeposit depositoCuenta = new AccountDeposit();
-            depositoCuenta.setAccountId(AccountController.getAccountNumber(ownerDni).getResult());
-            depositoCuenta.setDateTime(new Date());
-            depositoCuenta.setBalance(balance);
+            //Registering deposit
+            AccountDeposit accountDeposit = new AccountDeposit();
+            accountDeposit.setAccountId(AccountController.getAccountNumber(ownerDni).getResult());
+            accountDeposit.setDateTime(new Date());
+            accountDeposit.setBalance(balance);
 
-            //Guardando el registro del deposito
-            session.persist(depositoCuenta);
+            //Saving registered deposit
+            session.persist(accountDeposit);
 
             session.getTransaction().commit();
 
@@ -122,7 +121,7 @@ public class AccountDepositController
 
         try
         {
-            //Verificar que exista el registro del deposito
+            //Checking deposit exists
             if(!(AccountDepositController.depositExist(id)).getResult())
             {
                 throw new RecordNotFoundException();
@@ -130,11 +129,11 @@ public class AccountDepositController
 
             session.beginTransaction();
 
-            AccountDeposit deposito = session.get(AccountDeposit.class, id);
+            AccountDeposit deposit = session.get(AccountDeposit.class, id);
 
             session.getTransaction().commit();
 
-            return new RequestResult<AccountDeposit>(true, deposito, "Deposit found.");
+            return new RequestResult<AccountDeposit>(true, deposit, "Deposit found.");
         }
 
         catch (Exception e)
@@ -161,7 +160,7 @@ public class AccountDepositController
 
         try
         {
-            //Verificar que exista el registro del deposito
+            //Checking deposit exists
             if(!(AccountDepositController.depositExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
@@ -169,8 +168,8 @@ public class AccountDepositController
 
             session.beginTransaction();
 
-            AccountDeposit deposito = AccountDepositController.getDeposit(id).getResult();
-            session.remove(deposito);
+            AccountDeposit deposit = AccountDepositController.getDeposit(id).getResult();
+            session.remove(deposit);
 
             session.getTransaction().commit();
 

@@ -31,6 +31,7 @@ public class TeamDeposit
     @Column(name = "id")
     private Integer id;
 
+    //? Foreign key to Team
     @ManyToOne(targetEntity = TeamLog.class)
     @JoinColumn(name = "logId", referencedColumnName = "id", insertable = false, updatable = false)
     private TeamLog log;

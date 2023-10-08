@@ -32,6 +32,7 @@ public class AccountTransfer
     @Column(name = "id")
     private Integer id;
 
+    //? Foreign key to Account
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "originAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account originAccount;
@@ -39,6 +40,7 @@ public class AccountTransfer
     @Column(name = "originAccountNumber")
     private Integer originAccountNumber;
 
+    //? Foreign key to Account
     @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "destinationAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account destinationAccount;

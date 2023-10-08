@@ -30,6 +30,7 @@ public class TeamLog
     @Column(name = "id")
     private Integer id;
 
+    //? Foreign key to Team
     @ManyToOne(targetEntity = Team.class)
     @JoinColumn(name = "teamId", referencedColumnName = "id", insertable = false, updatable = false)
     private Team team;
@@ -37,7 +38,7 @@ public class TeamLog
     @Column(name = "teamId")
     private Integer teamId;
 
-    //?Clave foranea (Con usuario)
+    //? Foreign key to User
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "userDni", referencedColumnName = "dni", insertable = false, updatable = false)
     private User user;

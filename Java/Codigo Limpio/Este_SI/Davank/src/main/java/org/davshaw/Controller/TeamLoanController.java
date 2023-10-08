@@ -1,6 +1,6 @@
 package org.davshaw.Controller;
 
-import org.davshaw.Exception.HaventDepositEnoughException;
+import org.davshaw.Exception.HaveNotDepositEnoughException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.External.RequestResult;
@@ -23,42 +23,40 @@ public class TeamLoanController
 
         try
         {
-            //verificar que exista el registro
+            //Checking log exists
             if(!(TeamLogController.logExist(logId).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
-            //Verificar que la cantidad a prestar < depositos históricos
+            //Checking balance to loan is less than historical deposit amount
             if(TeamDepositController.totalDeposit(logId).getResult() < balance)
             {
-                throw new HaventDepositEnoughException();
+                throw new HaveNotDepositEnoughException();
             }
 
-            //Verificar que el grupo tenga la cantidad necesaria
+            //Checking team has enough balance
             if(TeamLogController.getLog(logId).getResult().getTeam().getBalance() < balance)
             {
                 throw new InsufficientBalanceException();
             }
 
-            //Sino se lanzo alguna exceptión, todo está bien
             session.beginTransaction();
 
-            TeamLoan prestamo = new TeamLoan();
-            //Establecer datos con setters (Reemplazando el constructor)
-            prestamo.setLogId(logId);
-            prestamo.setBalance(balance);
-            session.persist(prestamo);
+            TeamLoan loan = new TeamLoan();
+            loan.setLogId(logId);
+            loan.setBalance(balance);
 
-            //Retirar saldo del equipo
+            session.persist(loan);
+
+            //Withdraw balance from team
             int teamId = TeamLogController.getLog(logId).getResult().getTeamId();
             TeamController.withdrawBalance(teamId, balance);
 
-            //Añadir saldo a la cuenta
+            //Deposit balance to account
             int ownerDni = TeamLogController.getLog(logId).getResult().getUserDni();
-            AccountController.addBalance(ownerDni, balance);
-            
 
+            AccountController.addBalance(ownerDni, balance);
             session.getTransaction().commit();
                 
             return new RequestResult<Boolean>(true, null, "The loan has been done successfully.");
@@ -131,7 +129,7 @@ public class TeamLoanController
 
         try
         {
-            //Verificar que exista el prestamo
+            //Checking loan exists
             if(!(TeamLoanController.loanExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
@@ -139,11 +137,11 @@ public class TeamLoanController
 
             session.beginTransaction();
 
-            TeamLoan prestamo = session.get(TeamLoan.class, id);
+            TeamLoan loan = session.get(TeamLoan.class, id);
 
             session.getTransaction().commit();;
 
-            return new RequestResult<TeamLoan>(true, prestamo, "Loan found.");
+            return new RequestResult<TeamLoan>(true, loan, "Loan found.");
         }
 
         catch (Exception e)
@@ -170,15 +168,15 @@ public class TeamLoanController
 
         try
         {
-            //Verificar que exista
+            //Checking loan exists
             if(!(TeamLoanController.loanExist(id).getResult()))
             {
                 throw new RecordNotFoundException();
             }
 
             session.beginTransaction();
-            TeamLoan prestamo = TeamLoanController.getLoan(id).getResult();
-            session.remove(prestamo);
+            TeamLoan loan = TeamLoanController.getLoan(id).getResult();
+            session.remove(loan);
             session.getTransaction().commit();
 
             return new RequestResult<Boolean>(true, null, "The loan has been deleted successfully.");

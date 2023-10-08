@@ -183,7 +183,7 @@ public class TeamLogController
         }
     }
 
-    public static RequestResult<Integer> getteamId(int id)
+    public static RequestResult<Integer> getTeamId(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")

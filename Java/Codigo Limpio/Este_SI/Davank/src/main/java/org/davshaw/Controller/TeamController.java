@@ -26,12 +26,10 @@ public class TeamController
         {
             session.beginTransaction();
             
-            Team grupo = new Team();
-            //Establecer datos con setters (Reemplazando el constructor)
-            grupo.setName(name);
-
-            session.persist(grupo);
-
+            Team team = new Team();
+            team.setName(name);
+            
+            session.persist(team);
             session.getTransaction().commit();
             
             return new RequestResult<Boolean>(true, null, "Team has been created successfully.");
@@ -102,11 +100,11 @@ public class TeamController
             {
                 session.beginTransaction();
 
-                Team grupo = session.get(Team.class, id);
+                Team team = session.get(Team.class, id);
 
                 session.getTransaction().commit();
 
-                return new RequestResult<Team>(true, grupo, "Team found.");
+                return new RequestResult<Team>(true, team, "Team found.");
             }
             
             else
@@ -146,11 +144,11 @@ public class TeamController
 
             session.beginTransaction();
 
-            Team grupo = TeamController.getTeam(id).getResult();
+            Team team = TeamController.getTeam(id).getResult();
 
             session.getTransaction().commit();
 
-            return new RequestResult<Double>(true, grupo.getBalance(), "Team found.");
+            return new RequestResult<Double>(true, team.getBalance(), "Team found.");
 
         }
 
@@ -190,13 +188,13 @@ public class TeamController
 
             session.beginTransaction();
 
-            Team grupo = TeamController.getTeam(id).getResult();
+            Team team = TeamController.getTeam(id).getResult();
 
-            //Editar saldo
-            double nuevoSaldo = grupo.getBalance() + balance;
-            grupo.setBalance(nuevoSaldo);
+            //Editing balance
+            double newBalance = team.getBalance() + balance;
+            team.setBalance(newBalance);
 
-            session.merge(grupo);
+            session.merge(team);
 
             session.getTransaction().commit();
 
@@ -236,13 +234,13 @@ public class TeamController
             {
                 session.beginTransaction();
 
-                Team grupo = TeamController.getTeam(id).getResult();
+                Team team = TeamController.getTeam(id).getResult();
 
-                //Editar saldo
-                double nuevoSaldo = grupo.getBalance() - balance;
-                grupo.setBalance(nuevoSaldo);
+                //Editing balance
+                double newBalance = team.getBalance() - balance;
+                team.setBalance(newBalance);
 
-                session.merge(grupo);
+                session.merge(team);
 
                 session.getTransaction().commit();
 
