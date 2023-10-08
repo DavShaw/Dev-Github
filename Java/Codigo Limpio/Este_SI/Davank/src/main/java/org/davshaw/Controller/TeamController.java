@@ -139,21 +139,19 @@ public class TeamController
 
         try
         {
-            if(TeamController.teamExist(id).getResult())
-            {
-                session.beginTransaction();
-
-                Team grupo = session.get(Team.class, id);
-
-                session.getTransaction().commit();
-
-                return new RequestResult<Double>(true, grupo.getBalance(), "Team found.");
-            }
-            
-            else
+            if(!(TeamController.teamExist(id).getResult()))
             {
                 throw new TeamNotFoundException();
             }
+
+            session.beginTransaction();
+
+            Team grupo = TeamController.getTeam(id).getResult();
+
+            session.getTransaction().commit();
+
+            return new RequestResult<Double>(true, grupo.getBalance(), "Team found.");
+
         }
 
         catch (Exception e)
@@ -185,28 +183,24 @@ public class TeamController
                 throw new NegativeAmountException();
             }
 
-            if(TeamController.teamExist(id).getResult())
-            {
-                session.beginTransaction();
-
-                Team grupo = TeamController.getTeam(id).getResult();
-
-                //Editar saldo
-                double nuevoSaldo = grupo.getBalance() + balance;
-                grupo.setBalance(nuevoSaldo);
-
-                session.merge(grupo);
-
-                session.getTransaction().commit();
-
-                return new RequestResult<Boolean>(true, null, "Team found.");
-
-            }
-            
-            else
+            if(!(TeamController.teamExist(id).getResult()))
             {
                 throw new TeamNotFoundException();
             }
+
+            session.beginTransaction();
+
+            Team grupo = TeamController.getTeam(id).getResult();
+
+            //Editar saldo
+            double nuevoSaldo = grupo.getBalance() + balance;
+            grupo.setBalance(nuevoSaldo);
+
+            session.merge(grupo);
+
+            session.getTransaction().commit();
+
+            return new RequestResult<Boolean>(true, null, "Team found.");
         }
 
         catch (Exception e)
@@ -275,4 +269,44 @@ public class TeamController
             sessionFactory.close();
         }
     }
+
+    public static RequestResult<Boolean> deleteTeam(int id)
+    {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(Team.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+            //Checking if team exists
+            if(!(TeamController.teamExist(id).getResult()))
+            {
+                throw new TeamNotFoundException();
+            }
+
+            session.beginTransaction();
+            Team team = TeamController.getTeam(id).getResult();
+
+            session.remove(team);
+            session.getTransaction().commit();
+            
+            return new RequestResult<Boolean>(true, null, "Team has been deleted successfully.");
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new RequestResult<Boolean>(false, null, e.getMessage());
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
 }

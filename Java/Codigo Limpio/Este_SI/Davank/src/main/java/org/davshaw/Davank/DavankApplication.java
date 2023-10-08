@@ -1,8 +1,9 @@
 package org.davshaw.Davank;
 
-import org.davshaw.Controller.AccountWithdrawController;
+import org.davshaw.Controller.TeamController;
 import org.davshaw.External.Color;
 import org.davshaw.External.RequestResult;
+import org.davshaw.Model.pureentities.Team;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -19,7 +20,7 @@ public class DavankApplication
 
 
 
-		RequestResult<Boolean> result = AccountWithdrawController.deleteWithdrawal(2);	
+		RequestResult<Boolean> result = TeamController.withdrawBalance(52,1);
 
 		System.out.println("--------------------------------");
 		System.out.println("Executed successfully -> " + result.getOkay().toString());
