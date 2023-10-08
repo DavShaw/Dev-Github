@@ -1,5 +1,6 @@
 package org.davshaw.Controller;
 
+import org.davshaw.Exception.HaventDepositEnoughException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.External.RequestResult;
@@ -31,7 +32,7 @@ public class TeamLoanController
             //Verificar que la cantidad a prestar < depositos históricos
             if(TeamDepositController.totalDeposit(logId).getResult() < balance)
             {
-                throw new InsufficientBalanceException();
+                throw new HaventDepositEnoughException();
             }
 
             //Verificar que el grupo tenga la cantidad necesaria

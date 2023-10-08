@@ -3,9 +3,9 @@ package org.davshaw.Davank;
 import org.davshaw.Controller.AccountController;
 import org.davshaw.Controller.TeamController;
 import org.davshaw.Controller.TeamDepositController;
+import org.davshaw.Controller.TeamLoanController;
 import org.davshaw.External.Color;
 import org.davshaw.External.RequestResult;
-import org.davshaw.Model.pureentities.Team;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -22,7 +22,7 @@ public class DavankApplication
 
 
 
-		RequestResult<Boolean> result = TeamDepositController.deleteDeposit(152);
+		RequestResult<Boolean> result = TeamLoanController.deleteLoan(2);
 
 		System.out.println("--------------------------------");
 		System.out.println("Executed successfully -> " + result.getOkay().toString());
