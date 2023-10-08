@@ -11,7 +11,6 @@ import org.davshaw.Model.pureentities.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import java.util.List;
 
 @SpringBootApplication
 @EnableJpaRepositories
@@ -25,12 +24,12 @@ public class DavankApplication
 
 
 
-		RequestResult<List<Integer>> result = UserController.getTeamList(998822);
+		RequestResult<Boolean> result = AccountController.createAccount(998822);
 
 		System.out.println("--------------------------------");
-		System.out.println("Executed successfully -> "+ result.getOkay().toString());
-		System.out.println("Result type -> "+ result.getResult());
-		System.out.println("Message -> "+ result.getMessage());
+		System.out.println("Executed successfully -> " + result.getOkay().toString());
+		System.out.println("Result type -> " + result.getResult());
+		System.out.println("Message -> " + result.getMessage());
 
 
 	}

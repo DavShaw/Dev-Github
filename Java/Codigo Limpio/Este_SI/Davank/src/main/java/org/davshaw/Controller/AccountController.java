@@ -5,6 +5,7 @@ import org.hibernate.query.Query;
 import org.davshaw.Exception.AccountNotFoundException;
 import org.davshaw.Exception.AccountOwnerNotFoundException;
 import org.davshaw.Exception.DuplicateAccountOwnerException;
+import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.External.Color;
 import org.davshaw.External.RequestResult;
@@ -120,19 +121,29 @@ public class AccountController
 
         try
         {
-            String sql = "SELECT accountNumber FROM Account WHERE ownerDni = :ownerDni";
-            Query<Long> query = session.createNativeQuery(sql, Long.class);
-            query.setParameter("ownerDni", ownerDni);
-            Integer numeroCuenta = ((Number) query.uniqueResult()).intValue();
+            //Checking account exists
+            if(!(AccountController.accountExist(ownerDni).getResult()))
+            {
+                throw new AccountNotFoundException();
+            }
 
-            return new RequestResult<Integer>(true, numeroCuenta, "Account number found.");
-            
+            String sql = "SELECT accountNumber FROM Account WHERE ownerDni = :ownerDni LIMIT 1";
+            Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+            query.setParameter("ownerDni", ownerDni);
+
+            Integer accountNumber = query.uniqueResult();
+
+            if(accountNumber != null)
+            {
+                return new RequestResult<Integer>(true, accountNumber, "Account found.");
+            }
+            return new RequestResult<Integer>(true, null, new AccountNotFoundException().getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Integer>(false, null, "Account number not found.");
+            return new RequestResult<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -153,21 +164,19 @@ public class AccountController
 
         try
         {
-            //Verificar si existe cuenta con titularDni
-            if(AccountController.accountExist(ownerDni).getResult())
-            {
-                session.beginTransaction();
-
-                Account cuenta = session.get(Account.class, AccountController.getAccountNumber(ownerDni));
-
-                session.getTransaction().commit();
-                
-                return new RequestResult<Account>(true, cuenta, "Account found.");
-            }
-            else
+            //Checking account exists
+            if(!(AccountController.accountExist(ownerDni).getResult()))
             {
                 throw new AccountOwnerNotFoundException();
             }
+            session.beginTransaction();
+
+            Integer primarykey = AccountController.getAccountNumber(ownerDni).getResult();
+            Account cuenta = session.get(Account.class, primarykey);
+
+            session.getTransaction().commit();
+                
+            return new RequestResult<Account>(true, cuenta, "Account found.");
         }
 
         catch (IllegalArgumentException e)
@@ -201,11 +210,13 @@ public class AccountController
 
         try
         {
+            //Checking corrent balance input
             if (balance < 0)
             {
                 throw new NegativeAmountException();
             }
 
+            //Checking account exists
             if(!(AccountController.accountExist(ownerDni).getResult()))
             {
                 throw new AccountOwnerNotFoundException();
@@ -213,13 +224,12 @@ public class AccountController
 
             session.beginTransaction();
 
-            Account cuenta = session.get(Account.class, AccountController.getAccountNumber(ownerDni));
+            Integer primarykey = AccountController.getAccountNumber(ownerDni).getResult();
+            Account account = session.get(Account.class, primarykey);
+            double newBalance = account.getBalance() + balance;
 
-            //Obtener saldo actual
-            double nuevoSaldo = cuenta.getBalance() + balance;
-            cuenta.setBalance(nuevoSaldo);
-
-            session.merge(cuenta);
+            account.setBalance(newBalance);
+            session.merge(account);
 
             session.getTransaction().commit();
 
@@ -268,9 +278,17 @@ public class AccountController
                 throw new AccountOwnerNotFoundException();
             }
 
+            if(!(AccountController.hasEnough(ownerDni, balance).getResult()))
+            {
+                throw new InsufficientBalanceException();
+            }
+
+            System.out.println("hasEnough result: " + AccountController.hasEnough(ownerDni, balance).getResult());
+
             session.beginTransaction();
     
-            Account cuenta = session.get(Account.class, AccountController.getAccountNumber(ownerDni));
+            Integer primarykey = AccountController.getAccountNumber(ownerDni).getResult();
+            Account cuenta = session.get(Account.class, primarykey);
     
             //Obtener saldo actual
             double nuevoSaldo = cuenta.getBalance() - balance;
@@ -393,7 +411,7 @@ public class AccountController
 
     public static RequestResult<Boolean> hasEnough(int ownerDni, double balance)
     {
-        Boolean theResult = AccountController.getBalance(ownerDni).getResult() >= balance;
+        Boolean theResult = (AccountController.getBalance(ownerDni).getResult() >= balance);
         return new RequestResult<Boolean>(true, theResult, "Account has enough balance.");
     }
 }

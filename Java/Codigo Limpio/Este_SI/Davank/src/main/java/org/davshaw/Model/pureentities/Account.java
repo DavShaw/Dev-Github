@@ -35,5 +35,5 @@ public class Account
     private Integer ownerDni;
 
     @Column(name = "balance")
-    private Double balance;
+    private Double balance = 0.0;
 }
