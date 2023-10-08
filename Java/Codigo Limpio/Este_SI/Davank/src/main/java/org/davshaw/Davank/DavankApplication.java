@@ -1,14 +1,8 @@
 package org.davshaw.Davank;
 
-import org.davshaw.Controller.AccountController;
-import org.davshaw.Controller.AccountDepositController;
-import org.davshaw.Controller.TeamController;
-import org.davshaw.Controller.TeamLogController;
-import org.davshaw.Controller.UserController;
+import org.davshaw.Controller.AccountTransferController;
 import org.davshaw.External.Color;
 import org.davshaw.External.RequestResult;
-import org.davshaw.Model.pureentities.Account;
-import org.davshaw.Model.pureentities.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -25,7 +19,7 @@ public class DavankApplication
 
 
 
-		RequestResult<Boolean> result = AccountDepositController.deleteDeposit(102);
+		RequestResult<Boolean> result = AccountTransferController.deleteTransfer(52);
 
 		System.out.println("--------------------------------");
 		System.out.println("Executed successfully -> " + result.getOkay().toString());
