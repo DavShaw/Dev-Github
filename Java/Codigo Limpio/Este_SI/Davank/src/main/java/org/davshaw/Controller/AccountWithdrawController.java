@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.davshaw.Exception.AccountNotFoundException;
 import org.davshaw.Exception.InsufficientBalanceException;
+import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.External.RequestResult;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
@@ -33,10 +34,16 @@ public class AccountWithdrawController
                 throw new AccountNotFoundException();
             }
             //Verificar que el balance de la cuenta sea mayor o igual al balance a retirar
-            if(!(AccountController.getBalance(ownerDni).getResult() >= balance))
+            if(!(AccountController.hasEnough(ownerDni, balance).getResult()))
             {
                 throw new InsufficientBalanceException();
             }
+
+            if(balance < 0)
+            {
+                throw new NegativeAmountException();
+            }
+            
             session.beginTransaction();
 
             AccountController.withdrawBalance(ownerDni, balance);

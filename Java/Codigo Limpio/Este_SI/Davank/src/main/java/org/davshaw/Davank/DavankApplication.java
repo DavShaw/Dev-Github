@@ -1,6 +1,6 @@
 package org.davshaw.Davank;
 
-import org.davshaw.Controller.AccountTransferController;
+import org.davshaw.Controller.AccountWithdrawController;
 import org.davshaw.External.Color;
 import org.davshaw.External.RequestResult;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +19,7 @@ public class DavankApplication
 
 
 
-		RequestResult<Boolean> result = AccountTransferController.deleteTransfer(52);
+		RequestResult<Boolean> result = AccountWithdrawController.deleteWithdrawal(2);	
 
 		System.out.println("--------------------------------");
 		System.out.println("Executed successfully -> " + result.getOkay().toString());
