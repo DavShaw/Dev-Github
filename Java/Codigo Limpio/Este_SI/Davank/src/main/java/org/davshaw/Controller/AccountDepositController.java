@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.security.auth.login.AccountNotFoundException;
 
+import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.External.RequestResult;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
@@ -31,6 +32,12 @@ public class AccountDepositController
             {
                 throw new AccountNotFoundException();
             }
+
+            if(balance < 0 )
+            {
+                throw new NegativeAmountException();
+            }
+            
             //Sino se lanzan las exceptions, entonces se procede
             session.beginTransaction();
 

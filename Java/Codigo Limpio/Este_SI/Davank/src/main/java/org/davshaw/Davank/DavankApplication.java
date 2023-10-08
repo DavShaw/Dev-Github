@@ -1,6 +1,7 @@
 package org.davshaw.Davank;
 
 import org.davshaw.Controller.AccountController;
+import org.davshaw.Controller.AccountDepositController;
 import org.davshaw.Controller.TeamController;
 import org.davshaw.Controller.TeamLogController;
 import org.davshaw.Controller.UserController;
@@ -24,7 +25,7 @@ public class DavankApplication
 
 
 
-		RequestResult<Boolean> result = AccountController.createAccount(998822);
+		RequestResult<Boolean> result = AccountDepositController.deleteDeposit(102);
 
 		System.out.println("--------------------------------");
 		System.out.println("Executed successfully -> " + result.getOkay().toString());
