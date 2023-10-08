@@ -1,6 +1,8 @@
 package org.davshaw.Davank;
 
+import org.davshaw.Controller.AccountController;
 import org.davshaw.Controller.TeamController;
+import org.davshaw.Controller.TeamDepositController;
 import org.davshaw.External.Color;
 import org.davshaw.External.RequestResult;
 import org.davshaw.Model.pureentities.Team;
@@ -20,7 +22,7 @@ public class DavankApplication
 
 
 
-		RequestResult<Boolean> result = TeamController.withdrawBalance(52,1);
+		RequestResult<Boolean> result = TeamDepositController.deleteDeposit(152);
 
 		System.out.println("--------------------------------");
 		System.out.println("Executed successfully -> " + result.getOkay().toString());

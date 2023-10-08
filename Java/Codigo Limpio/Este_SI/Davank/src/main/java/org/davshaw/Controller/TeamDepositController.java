@@ -25,7 +25,7 @@ public class TeamDepositController
         try
         {
             //Verificar que el registro exista
-            if(TeamLogController.logExist(logId).getResult())
+            if(!(TeamLogController.logExist(logId).getResult()))
             {
                 throw new RecordNotFoundException();
             }
@@ -35,7 +35,7 @@ public class TeamDepositController
             int grupoId = TeamLogController.getteamId(logId).getResult();
             int titularDni = TeamLogController.getOwnerDni(logId).getResult();
 
-            if(AccountController.hasEnough(titularDni, balance).getResult())
+            if(!(AccountController.hasEnough(titularDni, balance).getResult()))
             {
                 throw new InsufficientBalanceException();
             }
