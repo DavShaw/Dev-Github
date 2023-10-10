@@ -1,0 +1,44 @@
+package org.davshaw.Model.derivatedentities;
+
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "DebLog")
+public class TeamDebLog
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    //? Foreign key to TeamLog
+    @OneToOne(targetEntity = TeamLog.class)
+    @JoinColumn(name = "logId", referencedColumnName = "id", insertable = false, updatable = false)
+    private TeamLog log;
+
+    @Column(name = "logId")
+    private int logId;
+
+    @Column(name = "amount")
+    private Double amount = 0.0;
+
+    @Column(name = "lastPayment")
+    private Date lastPayment;
+}
