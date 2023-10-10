@@ -3,7 +3,7 @@ package org.davshaw.Controller;
 import java.util.Date;
 
 import org.davshaw.Exception.RecordNotFoundException;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamDebLog;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.hibernate.Session;
@@ -12,7 +12,7 @@ import org.hibernate.cfg.Configuration;
 
 public class TeamDebLogController
 {
-    public RequestResult<Boolean> createLog(int logId, double amount)
+    public ResultPack<Boolean> createLog(int logId, double amount)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -41,13 +41,13 @@ public class TeamDebLogController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(false, null, "Log found.");
+            return new ResultPack<Boolean>(false, null, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally

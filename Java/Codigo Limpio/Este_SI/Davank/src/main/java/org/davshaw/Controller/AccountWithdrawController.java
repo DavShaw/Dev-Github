@@ -9,7 +9,7 @@ import org.davshaw.Exception.AccountNotFoundException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.RecordNotFoundException;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
 import org.davshaw.Model.derivatedentities.AccountWithdrawal;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import org.hibernate.SessionFactory;
 
 public class AccountWithdrawController
 {
-    public static RequestResult<Boolean> withdraw(int ownerDni, double balance)
+    public static ResultPack<Boolean> withdraw(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -55,13 +55,13 @@ public class AccountWithdrawController
 
             session.persist(withdraw);
             session.getTransaction().commit();
-            return new RequestResult<Boolean>(true, null, "The withdraw has been done successfully.");
+            return new ResultPack<Boolean>(true, null, "The withdraw has been done successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -71,7 +71,7 @@ public class AccountWithdrawController
         }
     }
 
-    public static RequestResult<Boolean> withdrawExist(int id)
+    public static ResultPack<Boolean> withdrawExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -89,19 +89,19 @@ public class AccountWithdrawController
 
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "Withdraw found.");
+                return new ResultPack<Boolean>(true, true, "Withdraw found.");
             }
 
             else
             {
-                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+                return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
             }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -111,7 +111,7 @@ public class AccountWithdrawController
         }
     }
 
-    public static RequestResult<AccountWithdrawal> getWithdrawal(int id)
+    public static ResultPack<AccountWithdrawal> getWithdrawal(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -134,13 +134,13 @@ public class AccountWithdrawController
 
             session.getTransaction().commit();
 
-            return new RequestResult<AccountWithdrawal>(true, withdraw, "Withdraw found.");
+            return new ResultPack<AccountWithdrawal>(true, withdraw, "Withdraw found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<AccountWithdrawal>(false, null, e.getMessage());
+            return new ResultPack<AccountWithdrawal>(false, null, e.getMessage());
         }
 
         finally
@@ -150,7 +150,7 @@ public class AccountWithdrawController
         }
     } 
 
-    public static RequestResult<Boolean> deleteWithdrawal(int id)
+    public static ResultPack<Boolean> deleteWithdrawal(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -174,13 +174,13 @@ public class AccountWithdrawController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "withdraw found.");
+            return new ResultPack<Boolean>(true, null, "withdraw found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally

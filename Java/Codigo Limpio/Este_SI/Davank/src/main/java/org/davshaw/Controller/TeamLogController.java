@@ -3,7 +3,7 @@ package org.davshaw.Controller;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
 import org.davshaw.Exception.UserNotFoundException;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +12,7 @@ import org.hibernate.query.Query;
 
 public class TeamLogController
 {
-    public static RequestResult<Boolean> createLog(int userDni, int teamId, Boolean nativeFlag)
+    public static ResultPack<Boolean> createLog(int userDni, int teamId, Boolean nativeFlag)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -45,13 +45,13 @@ public class TeamLogController
             session.persist(registro);
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "The log has been created successfully.");
+            return new ResultPack<Boolean>(true, null, "The log has been created successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -61,7 +61,7 @@ public class TeamLogController
         }
     }
 
-    public static RequestResult<Boolean> logExist(int id)
+    public static ResultPack<Boolean> logExist(int id)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -84,19 +84,19 @@ public class TeamLogController
             // Si count es mayor que 0, significa que existe un usuario con ese DNI
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "Log found.");
+                return new ResultPack<Boolean>(true, true, "Log found.");
             }
 
             else
             {
-                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+                return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
             }
         }
         
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
         
         finally
@@ -106,7 +106,7 @@ public class TeamLogController
         }
     }
 
-    public static RequestResult<TeamLog> getLog(int id)
+    public static ResultPack<TeamLog> getLog(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -129,13 +129,13 @@ public class TeamLogController
 
             session.getTransaction().commit();
 
-            return new RequestResult<TeamLog>(true, registro, "Log found.");
+            return new ResultPack<TeamLog>(true, registro, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<TeamLog>(false, null, e.getMessage());
+            return new ResultPack<TeamLog>(false, null, e.getMessage());
         }
 
         finally
@@ -145,7 +145,7 @@ public class TeamLogController
         }
     }
 
-    public static RequestResult<Integer> getOwnerDni(int id)
+    public static ResultPack<Integer> getOwnerDni(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -167,13 +167,13 @@ public class TeamLogController
 
             Integer userDni = registro.getUserDni();
 
-            return new RequestResult<Integer>(true, userDni, "Log found.");
+            return new ResultPack<Integer>(true, userDni, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Integer>(false, null, e.getMessage());
+            return new ResultPack<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -183,7 +183,7 @@ public class TeamLogController
         }
     }
 
-    public static RequestResult<Integer> getTeamId(int id)
+    public static ResultPack<Integer> getTeamId(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -205,13 +205,13 @@ public class TeamLogController
 
             Integer teamId =registro.getTeamId();
 
-            return new RequestResult<Integer>(true, teamId, "Log found.");
+            return new ResultPack<Integer>(true, teamId, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Integer>(false, null, e.getMessage());
+            return new ResultPack<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -221,7 +221,7 @@ public class TeamLogController
         }
     }
 
-    public static RequestResult<Boolean> deleteLog(int id)
+    public static ResultPack<Boolean> deleteLog(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -247,13 +247,13 @@ public class TeamLogController
 
             session.getTransaction().commit();
             
-            return new RequestResult<Boolean>(true, null, "The log has been deleted successfully.");
+            return new ResultPack<Boolean>(true, null, "The log has been deleted successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -263,7 +263,7 @@ public class TeamLogController
         }
     }
 
-    public static RequestResult<Boolean> userOnTeam(int userDni, int teamId)
+    public static ResultPack<Boolean> userOnTeam(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -297,16 +297,16 @@ public class TeamLogController
 
             if(count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "User found.");
+                return new ResultPack<Boolean>(true, true, "User found.");
             }
 
-            return new RequestResult<Boolean>(true, false, "User not found.");
+            return new ResultPack<Boolean>(true, false, "User not found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
 
         finally

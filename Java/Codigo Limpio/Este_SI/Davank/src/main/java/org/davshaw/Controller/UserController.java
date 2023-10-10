@@ -19,7 +19,7 @@ import org.davshaw.Exception.UserAlreadyOnTeamsLimitException;
 import org.davshaw.Exception.UserAlreadyOnTeamException;
 import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.Exception.UserNotInAnyTeamException;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.davshaw.Model.pureentities.User;
 
@@ -36,7 +36,7 @@ public class UserController
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    public static RequestResult<Boolean> createUser(
+    public static ResultPack<Boolean> createUser(
     int dni,
     String firstName,
     String middleName,
@@ -77,13 +77,13 @@ public class UserController
             AccountController.createAccount(dni);
             
 
-            return new RequestResult<Boolean>(true, null, "The user has been created successfully.");
+            return new ResultPack<Boolean>(true, null, "The user has been created successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -94,7 +94,7 @@ public class UserController
 
     }
 
-    public static RequestResult<Boolean> userExist(int dni)
+    public static ResultPack<Boolean> userExist(int dni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -116,15 +116,15 @@ public class UserController
     
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "User found.");
+                return new ResultPack<Boolean>(true, true, "User found.");
             }
-            return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+            return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
         }
         
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
         
         finally
@@ -135,7 +135,7 @@ public class UserController
     
     }
 
-    public static RequestResult<Boolean> deleteUser(int userDni)
+    public static ResultPack<Boolean> deleteUser(int userDni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -159,14 +159,14 @@ public class UserController
             session.getTransaction().commit();
             sessionFactory.close();            
 
-            return new RequestResult<Boolean>(true, null, "The user has been deleted successfully");
+            return new ResultPack<Boolean>(true, null, "The user has been deleted successfully");
 
         }
         
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
         
         finally
@@ -176,7 +176,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<User> getUser(int userDni)
+    public static ResultPack<User> getUser(int userDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -197,13 +197,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return new RequestResult<User>(true, user, "User found.");
+            return new ResultPack<User>(true, user, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<User>(false, null, e.getMessage());
+            return new ResultPack<User>(false, null, e.getMessage());
         }
 
         finally
@@ -213,7 +213,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Boolean> changeFirstName(int userDni, String name)
+    public static ResultPack<Boolean> changeFirstName(int userDni, String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -238,14 +238,14 @@ public class UserController
             session.merge(user);
 
             session.getTransaction().commit();
-            return new RequestResult<Boolean>(true, null, "User found.");
+            return new ResultPack<Boolean>(true, null, "User found.");
 
         }
             
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -255,7 +255,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Boolean> changeMiddleName(int userDni, String name)
+    public static ResultPack<Boolean> changeMiddleName(int userDni, String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -281,13 +281,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "User found.");
+            return new ResultPack<Boolean>(true, null, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -297,7 +297,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Boolean> changeFirstLastName(int userDni, String lastName)
+    public static ResultPack<Boolean> changeFirstLastName(int userDni, String lastName)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -323,13 +323,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "User found.");
+            return new ResultPack<Boolean>(true, null, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -339,7 +339,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Boolean> changeMiddleLastName(int userDni, String lastName)
+    public static ResultPack<Boolean> changeMiddleLastName(int userDni, String lastName)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -365,13 +365,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "User found.");
+            return new ResultPack<Boolean>(true, null, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -381,7 +381,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Boolean> changePassword(int userDni, String password, String newPassword)
+    public static ResultPack<Boolean> changePassword(int userDni, String password, String newPassword)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -417,13 +417,13 @@ public class UserController
             session.merge(user);
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "User found.");
+            return new ResultPack<Boolean>(true, null, "User found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -433,7 +433,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Integer> countTeam(int userDni)
+    public static ResultPack<Integer> countTeam(int userDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -463,15 +463,15 @@ public class UserController
 
             if(count != null)
             {
-                return new RequestResult<Integer>(true, count, "Team info found.");
+                return new ResultPack<Integer>(true, count, "Team info found.");
             }
-            return new RequestResult<Integer>(false, 0, new RecordNotFoundException().getMessage());
+            return new ResultPack<Integer>(false, 0, new RecordNotFoundException().getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Integer>(false, null, e.getMessage());
+            return new ResultPack<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -481,7 +481,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Boolean> joinTeam(int userDni, int teamId)
+    public static ResultPack<Boolean> joinTeam(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -521,13 +521,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "The user has joined to the team successfully.");
+            return new ResultPack<Boolean>(true, null, "The user has joined to the team successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -537,7 +537,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Boolean> leaveTeam(int userDni, int teamId)
+    public static ResultPack<Boolean> leaveTeam(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -575,13 +575,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "The user has leave from the team successfully.");
+            return new ResultPack<Boolean>(true, null, "The user has leave from the team successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -591,7 +591,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<Integer> getLogId(int userDni, int teamId)
+    public static ResultPack<Integer> getLogId(int userDni, int teamId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -627,13 +627,13 @@ public class UserController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Integer>(true, id, "Log found.");
+            return new ResultPack<Integer>(true, id, "Log found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Integer>(false, null, e.getMessage());
+            return new ResultPack<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -643,7 +643,7 @@ public class UserController
         }
     }
 
-    public static RequestResult<List<Integer>> getTeamList(int userDni)
+    public static ResultPack<List<Integer>> getTeamList(int userDni)
     {
         SessionFactory sessionFactory = new
         Configuration()
@@ -673,14 +673,14 @@ public class UserController
                 throw new UserNotInAnyTeamException();
             }
 
-            return new RequestResult<>(true, result, "Log found.");
+            return new ResultPack<>(true, result, "Log found.");
             
         }
         
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<>(false, null, e.getMessage());
+            return new ResultPack<>(false, null, e.getMessage());
         }
         
         finally

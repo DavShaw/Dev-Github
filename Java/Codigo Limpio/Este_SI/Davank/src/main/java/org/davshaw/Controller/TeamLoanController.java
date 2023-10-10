@@ -3,7 +3,7 @@ package org.davshaw.Controller;
 import org.davshaw.Exception.HaveNotDepositEnoughException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamLoan;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +12,7 @@ import org.hibernate.query.Query;
 
 public class TeamLoanController
 {
-    public static RequestResult<Boolean> loan(int logId, double balance)
+    public static ResultPack<Boolean> loan(int logId, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -59,13 +59,13 @@ public class TeamLoanController
             AccountController.addBalance(ownerDni, balance);
             session.getTransaction().commit();
                 
-            return new RequestResult<Boolean>(true, null, "The loan has been done successfully.");
+            return new ResultPack<Boolean>(true, null, "The loan has been done successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -75,7 +75,7 @@ public class TeamLoanController
         }
     }
 
-    public static RequestResult<Boolean> loanExist(int id)
+    public static ResultPack<Boolean> loanExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -96,19 +96,19 @@ public class TeamLoanController
 
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "Loan found.");
+                return new ResultPack<Boolean>(true, true, "Loan found.");
             }
 
             else
             {
-                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+                return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
             }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -118,7 +118,7 @@ public class TeamLoanController
         }
     }
 
-    public static RequestResult<TeamLoan> getLoan(int id)
+    public static ResultPack<TeamLoan> getLoan(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -141,13 +141,13 @@ public class TeamLoanController
 
             session.getTransaction().commit();;
 
-            return new RequestResult<TeamLoan>(true, loan, "Loan found.");
+            return new ResultPack<TeamLoan>(true, loan, "Loan found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<TeamLoan>(false, null, e.getMessage());
+            return new ResultPack<TeamLoan>(false, null, e.getMessage());
         }
 
         finally
@@ -157,7 +157,7 @@ public class TeamLoanController
         }
     }
 
-    public static RequestResult<Boolean> deleteLoan(int id)
+    public static ResultPack<Boolean> deleteLoan(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -179,13 +179,13 @@ public class TeamLoanController
             session.remove(loan);
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "The loan has been deleted successfully.");
+            return new ResultPack<Boolean>(true, null, "The loan has been deleted successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally

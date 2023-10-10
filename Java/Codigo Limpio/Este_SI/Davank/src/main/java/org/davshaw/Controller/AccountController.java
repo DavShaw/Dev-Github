@@ -8,14 +8,14 @@ import org.davshaw.Exception.DuplicateAccountOwnerException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.External.Color;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.pureentities.Account;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public class AccountController
 {
-    public static RequestResult<Boolean> createAccount(int ownerDni)
+    public static ResultPack<Boolean> createAccount(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -38,7 +38,7 @@ public class AccountController
                 session.persist(account);
                 session.getTransaction().commit();
                 
-                return new RequestResult<Boolean>(true, null, "Account created successfully.");
+                return new ResultPack<Boolean>(true, null, "Account created successfully.");
             }
 
             else
@@ -53,13 +53,13 @@ public class AccountController
         {
             System.err.println(Color.color("RED", e.getMessage()));
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -69,7 +69,7 @@ public class AccountController
         }
     }
     
-    public static RequestResult<Boolean> accountExist(int ownerDni)
+    public static ResultPack<Boolean> accountExist(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -87,12 +87,12 @@ public class AccountController
             
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "Account found.");
+                return new ResultPack<Boolean>(true, true, "Account found.");
             }
 
             else
             {
-                return new RequestResult<Boolean>(true, false, new AccountNotFoundException().getMessage());
+                return new ResultPack<Boolean>(true, false, new AccountNotFoundException().getMessage());
             }
 
         }
@@ -100,7 +100,7 @@ public class AccountController
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -110,7 +110,7 @@ public class AccountController
         }
     }
 
-    public static RequestResult<Integer> getAccountNumber(int ownerDni)
+    public static ResultPack<Integer> getAccountNumber(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -135,15 +135,15 @@ public class AccountController
 
             if(accountNumber != null)
             {
-                return new RequestResult<Integer>(true, accountNumber, "Account found.");
+                return new ResultPack<Integer>(true, accountNumber, "Account found.");
             }
-            return new RequestResult<Integer>(true, null, new AccountNotFoundException().getMessage());
+            return new ResultPack<Integer>(true, null, new AccountNotFoundException().getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Integer>(false, null, e.getMessage());
+            return new ResultPack<Integer>(false, null, e.getMessage());
         }
 
         finally
@@ -153,7 +153,7 @@ public class AccountController
         }
     }
 
-    public static RequestResult<Account> getAccount(int ownerDni)
+    public static ResultPack<Account> getAccount(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -176,20 +176,20 @@ public class AccountController
 
             session.getTransaction().commit();
                 
-            return new RequestResult<Account>(true, account, "Account found.");
+            return new ResultPack<Account>(true, account, "Account found.");
         }
 
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
             e.printStackTrace();
-            return new RequestResult<Account>(false, null, "Account not found.");
+            return new ResultPack<Account>(false, null, "Account not found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Account>(false, null, "Account not found.");
+            return new ResultPack<Account>(false, null, "Account not found.");
         }
 
         finally
@@ -199,7 +199,7 @@ public class AccountController
         }
     }
 
-    public static RequestResult<Boolean> addBalance(int ownerDni, double balance)
+    public static ResultPack<Boolean> addBalance(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -233,7 +233,7 @@ public class AccountController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "Balance added successfully");
+            return new ResultPack<Boolean>(true, null, "Balance added successfully");
             
         }
 
@@ -241,13 +241,13 @@ public class AccountController
         {
             System.err.println(Color.color("RED", e.getMessage()));
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -257,7 +257,7 @@ public class AccountController
         }
     }
 
-    public static RequestResult<Boolean> withdrawBalance(int ownerDni, double balance)
+    public static ResultPack<Boolean> withdrawBalance(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -298,20 +298,20 @@ public class AccountController
     
             session.getTransaction().commit();
     
-            return new RequestResult<Boolean>(true, null, "Balance withdrawn successfully");
+            return new ResultPack<Boolean>(true, null, "Balance withdrawn successfully");
         }
 
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -321,7 +321,7 @@ public class AccountController
         }
     }
 
-    public static RequestResult<Double> getBalance(int ownerDni)
+    public static ResultPack<Double> getBalance(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -339,20 +339,20 @@ public class AccountController
 
             Account account = AccountController.getAccount(ownerDni).getResult();
 
-            return new RequestResult<Double>(true, account.getBalance(), "Balance got successfully.");
+            return new ResultPack<Double>(true, account.getBalance(), "Balance got successfully.");
         }
 
         catch (IllegalArgumentException e)
         {
             System.err.println(Color.color("RED", e.getMessage()));
             e.printStackTrace();
-            return new RequestResult<Double>(false, null, e.getMessage());
+            return new ResultPack<Double>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Double>(false, null, e.getMessage());
+            return new ResultPack<Double>(false, null, e.getMessage());
         }
 
         finally
@@ -362,7 +362,7 @@ public class AccountController
         }
     }
 
-    public static RequestResult<Boolean> deleteAccount(int ownerDni)
+    public static ResultPack<Boolean> deleteAccount(int ownerDni)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -385,7 +385,7 @@ public class AccountController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "Account deleted successfully.");
+            return new ResultPack<Boolean>(true, null, "Account deleted successfully.");
 
         }
 
@@ -393,13 +393,13 @@ public class AccountController
         {
             System.err.println(Color.color("RED", e.getMessage()));
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -409,9 +409,9 @@ public class AccountController
         }
     }
 
-    public static RequestResult<Boolean> hasEnough(int ownerDni, double balance)
+    public static ResultPack<Boolean> hasEnough(int ownerDni, double balance)
     {
         Boolean theResult = (AccountController.getBalance(ownerDni).getResult() >= balance);
-        return new RequestResult<Boolean>(true, theResult, "Account has enough balance.");
+        return new ResultPack<Boolean>(true, theResult, "Account has enough balance.");
     }
 }

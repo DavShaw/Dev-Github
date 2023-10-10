@@ -9,13 +9,13 @@ import org.davshaw.Exception.AccountNotFoundException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Model.derivatedentities.AccountTransfer;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public class AccountTransferController
 {
-    public static RequestResult<Boolean> transfer(int originOwnerDni, int destinationOwnerDni, double balance)
+    public static ResultPack<Boolean> transfer(int originOwnerDni, int destinationOwnerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -67,13 +67,13 @@ public class AccountTransferController
             session.getTransaction().commit();
             
 
-            return new RequestResult<Boolean>(true, null, "The transfer has been done.");
+            return new ResultPack<Boolean>(true, null, "The transfer has been done.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -83,7 +83,7 @@ public class AccountTransferController
         }
     }
 
-    public static RequestResult<Boolean> transferExist(int id)
+    public static ResultPack<Boolean> transferExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -101,19 +101,19 @@ public class AccountTransferController
 
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "Transfer found.");
+                return new ResultPack<Boolean>(true, true, "Transfer found.");
             }
 
             else
             {
-                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+                return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
             }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -123,7 +123,7 @@ public class AccountTransferController
         }
     }
 
-    public static RequestResult<AccountTransfer> getTransfer(int id)
+    public static ResultPack<AccountTransfer> getTransfer(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -143,14 +143,14 @@ public class AccountTransferController
             AccountTransfer transfer = session.get(AccountTransfer.class, id);
             session.getTransaction().commit();
 
-            return new RequestResult<AccountTransfer>(true, transfer, "Transfer found.");
+            return new ResultPack<AccountTransfer>(true, transfer, "Transfer found.");
 
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<AccountTransfer>(false, null, e.getMessage());
+            return new ResultPack<AccountTransfer>(false, null, e.getMessage());
         }
 
         finally
@@ -160,7 +160,7 @@ public class AccountTransferController
         }
     }
 
-    public static RequestResult<Boolean> deleteTransfer(int id)
+    public static ResultPack<Boolean> deleteTransfer(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -184,13 +184,13 @@ public class AccountTransferController
             session.remove(transfer);
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "The transfer has been deleted successfully.");
+            return new ResultPack<Boolean>(true, null, "The transfer has been deleted successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamDeposit;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +13,7 @@ import org.hibernate.query.Query;
 
 public class TeamDepositController
 {
-    public static RequestResult<Boolean> deposit(int logId, double balance)
+    public static ResultPack<Boolean> deposit(int logId, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -57,13 +57,13 @@ public class TeamDepositController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "The deposit has been done successfully.");
+            return new ResultPack<Boolean>(true, null, "The deposit has been done successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -73,7 +73,7 @@ public class TeamDepositController
         }
     }
 
-    public static RequestResult<Boolean> depositExist(int id)
+    public static ResultPack<Boolean> depositExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -91,19 +91,19 @@ public class TeamDepositController
 
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "Deposit found.");
+                return new ResultPack<Boolean>(true, true, "Deposit found.");
             }
 
             else
             {
-                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+                return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
             }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -113,7 +113,7 @@ public class TeamDepositController
         }
     }
 
-    public static RequestResult<TeamDeposit> getDeposit(int id)
+    public static ResultPack<TeamDeposit> getDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -134,13 +134,13 @@ public class TeamDepositController
             TeamDeposit deposit = session.get(TeamDeposit.class, id);
             session.getTransaction().commit();
 
-            return new RequestResult<TeamDeposit>(true, deposit, "Deposit found.");
+            return new ResultPack<TeamDeposit>(true, deposit, "Deposit found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<TeamDeposit>(false, null, e.getMessage());
+            return new ResultPack<TeamDeposit>(false, null, e.getMessage());
         }
 
         finally
@@ -150,7 +150,7 @@ public class TeamDepositController
         }
     } 
 
-    public static RequestResult<Boolean> deleteDeposit(int id)
+    public static ResultPack<Boolean> deleteDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -173,13 +173,13 @@ public class TeamDepositController
             session.remove(deposit);
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "The deposit has been deleted successfully.");
+            return new ResultPack<Boolean>(true, null, "The deposit has been deleted successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -189,7 +189,7 @@ public class TeamDepositController
         }
     }
 
-    public static RequestResult<Double> totalDeposit(int logId)
+    public static ResultPack<Double> totalDeposit(int logId)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -216,16 +216,16 @@ public class TeamDepositController
             if(total != null)
             {
 
-                return new RequestResult<Double>(true, total, "Deposit found.");
+                return new ResultPack<Double>(true, total, "Deposit found.");
             }
 
-            return new RequestResult<Double>(false, 0.0, new RecordNotFoundException().getMessage());
+            return new ResultPack<Double>(false, 0.0, new RecordNotFoundException().getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Double>(false, null, e.getMessage());
+            return new ResultPack<Double>(false, null, e.getMessage());
         }
 
         finally

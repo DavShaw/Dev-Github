@@ -3,7 +3,7 @@ package org.davshaw.Controller;
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.pureentities.Team;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +13,7 @@ import org.hibernate.query.Query;
 
 public class TeamController
 {
-    public static RequestResult<Boolean> createTeam(String name)
+    public static ResultPack<Boolean> createTeam(String name)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -32,13 +32,13 @@ public class TeamController
             session.persist(team);
             session.getTransaction().commit();
             
-            return new RequestResult<Boolean>(true, null, "Team has been created successfully.");
+            return new ResultPack<Boolean>(true, null, "Team has been created successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -48,7 +48,7 @@ public class TeamController
         }
     }
 
-    public static RequestResult<Boolean> teamExist(int id)
+    public static ResultPack<Boolean> teamExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -66,16 +66,16 @@ public class TeamController
 
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "Team found.");
+                return new ResultPack<Boolean>(true, true, "Team found.");
             }
             
-            return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+            return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -85,7 +85,7 @@ public class TeamController
         }
     }
 
-    public static RequestResult<Team> getTeam(int id)
+    public static ResultPack<Team> getTeam(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -104,7 +104,7 @@ public class TeamController
 
                 session.getTransaction().commit();
 
-                return new RequestResult<Team>(true, team, "Team found.");
+                return new ResultPack<Team>(true, team, "Team found.");
             }
             
             else
@@ -116,7 +116,7 @@ public class TeamController
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Team>(false, null, e.getMessage());
+            return new ResultPack<Team>(false, null, e.getMessage());
         }
 
         finally
@@ -126,7 +126,7 @@ public class TeamController
         }
     }
 
-    public static RequestResult<Double> getBalance(int id)
+    public static ResultPack<Double> getBalance(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -148,14 +148,14 @@ public class TeamController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Double>(true, team.getBalance(), "Team found.");
+            return new ResultPack<Double>(true, team.getBalance(), "Team found.");
 
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Double>(false, null, e.getMessage());
+            return new ResultPack<Double>(false, null, e.getMessage());
         }
 
         finally
@@ -165,7 +165,7 @@ public class TeamController
         }
     }
 
-    public static RequestResult<Boolean> addBalance(int id, double balance)
+    public static ResultPack<Boolean> addBalance(int id, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -198,13 +198,13 @@ public class TeamController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "Team found.");
+            return new ResultPack<Boolean>(true, null, "Team found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
@@ -214,7 +214,7 @@ public class TeamController
         }
     }
 
-    public static RequestResult<Boolean> withdrawBalance(int id, double balance)
+    public static ResultPack<Boolean> withdrawBalance(int id, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -244,7 +244,7 @@ public class TeamController
 
                 session.getTransaction().commit();
 
-                return new RequestResult<Boolean>(true, null, "Team found.");
+                return new ResultPack<Boolean>(true, null, "Team found.");
 
             }
             
@@ -257,7 +257,7 @@ public class TeamController
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
 
         }
 
@@ -268,7 +268,7 @@ public class TeamController
         }
     }
 
-    public static RequestResult<Boolean> deleteTeam(int id)
+    public static ResultPack<Boolean> deleteTeam(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -291,13 +291,13 @@ public class TeamController
             session.remove(team);
             session.getTransaction().commit();
             
-            return new RequestResult<Boolean>(true, null, "Team has been deleted successfully.");
+            return new ResultPack<Boolean>(true, null, "Team has been deleted successfully.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally

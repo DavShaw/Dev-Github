@@ -9,14 +9,14 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.RecordNotFoundException;
-import org.davshaw.External.RequestResult;
+import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public class AccountDepositController
 {
-    public static RequestResult<Boolean> deposit(int ownerDni, double balance)
+    public static ResultPack<Boolean> deposit(int ownerDni, double balance)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -54,13 +54,13 @@ public class AccountDepositController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, true, "The deposit has been done.");
+            return new ResultPack<Boolean>(true, true, "The deposit has been done.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(true, true, e.getMessage());
+            return new ResultPack<Boolean>(true, true, e.getMessage());
         }
 
         finally
@@ -70,7 +70,7 @@ public class AccountDepositController
         }
     }
     
-    public static RequestResult<Boolean> depositExist(int id)
+    public static ResultPack<Boolean> depositExist(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -88,19 +88,19 @@ public class AccountDepositController
 
             if (count > 0)
             {
-                return new RequestResult<Boolean>(true, true, "Deposit found.");
+                return new ResultPack<Boolean>(true, true, "Deposit found.");
             }
 
             else
             {
-                return new RequestResult<Boolean>(true, false, new RecordNotFoundException().getMessage());
+                return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
             }
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, false, e.getMessage());
+            return new ResultPack<Boolean>(false, false, e.getMessage());
         }
 
         finally
@@ -110,7 +110,7 @@ public class AccountDepositController
         }
     }
 
-    public static RequestResult<AccountDeposit> getDeposit(int id)
+    public static ResultPack<AccountDeposit> getDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -133,13 +133,13 @@ public class AccountDepositController
 
             session.getTransaction().commit();
 
-            return new RequestResult<AccountDeposit>(true, deposit, "Deposit found.");
+            return new ResultPack<AccountDeposit>(true, deposit, "Deposit found.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<AccountDeposit>(false, null, e.getMessage());
+            return new ResultPack<AccountDeposit>(false, null, e.getMessage());
         }
 
         finally
@@ -149,7 +149,7 @@ public class AccountDepositController
         }
     }
 
-    public static RequestResult<Boolean> deleteDeposit(int id)
+    public static ResultPack<Boolean> deleteDeposit(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -173,13 +173,13 @@ public class AccountDepositController
 
             session.getTransaction().commit();
 
-            return new RequestResult<Boolean>(true, null, "The deposit has been deleted.");
+            return new ResultPack<Boolean>(true, null, "The deposit has been deleted.");
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
-            return new RequestResult<Boolean>(false, null, e.getMessage());
+            return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
         finally
