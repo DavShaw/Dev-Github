@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "DebLog")
-public class TeamDebLog
+public class TeamDebtLog
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
