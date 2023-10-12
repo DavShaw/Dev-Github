@@ -59,7 +59,7 @@ public class LinkedList
     
         System.out.println(nodes);
     }
-    
+
     public Node getHead()
     {
         return this.head;

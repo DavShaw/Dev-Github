@@ -1,8 +1,13 @@
 package org.davshaw.Controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.davshaw.Exception.HaveNotDepositEnoughException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
+import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamLoan;
 import org.hibernate.Session;
@@ -46,6 +51,7 @@ public class TeamLoanController
             TeamLoan loan = new TeamLoan();
             loan.setLogId(logId);
             loan.setBalance(balance);
+            loan.setDateTime(new Date());
 
             session.persist(loan);
 
@@ -186,6 +192,53 @@ public class TeamLoanController
         {
             e.printStackTrace();
             return new ResultPack<Boolean>(false, null, e.getMessage());
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
+    public static ResultPack<List<Integer>> getLoanReport(int userDni)
+    {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(TeamLoan.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+            //Checking user exists
+            if(!(UserController.userExist(userDni).getResult()))
+            {
+                throw new UserNotFoundException();
+            }
+
+            List<Integer> teamLogIdReport = UserController.getLogIdReport(userDni).getResult();
+            List<Integer> teamLoanIdReport = new ArrayList<Integer>();
+
+            session.beginTransaction();
+
+            for (Integer logId : teamLogIdReport) {
+                String sql = "SELECT id FROM TeamLoan WHERE logId = :logId LIMIT 1";
+                Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+                query.setParameter("logId", logId);
+                teamLoanIdReport.add(query.uniqueResult());
+            }
+
+            session.getTransaction().commit();
+
+            return new ResultPack<List<Integer>>(true, teamLoanIdReport, "The team loan report has been given.");
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new ResultPack<List<Integer>>(false, null, e.getMessage());
         }
 
         finally

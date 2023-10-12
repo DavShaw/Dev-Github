@@ -222,4 +222,21 @@ public class DoubleLinkedList
         print(this.getHead());
     }
 
+    public DoubleLinkedList test1(DoubleLinkedList l) {
+        for (int i = 0; i < l.size(); i++) {
+            if(l.getNodeAt(i).getValue().equalsIgnoreCase("*")) {
+                l.deleteAt(i);
+            }
+        }
+        return l;
+    }
+
+    public static void main(String[] args) {
+        DoubleLinkedList examen = new DoubleLinkedList();
+        examen.addNodeAtTailAsList("1|3|*|2|*|5|0|*|5|*|2|*|852|0|*");
+        examen.print();
+        examen.test1(examen);
+        System.out.println("Editada");
+        examen.print();
+    }
 }

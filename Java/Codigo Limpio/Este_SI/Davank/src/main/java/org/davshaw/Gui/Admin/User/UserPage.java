@@ -4,13 +4,17 @@
  */
 package org.davshaw.Gui.Admin.User;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import org.davshaw.Controller.AccountController;
+import org.davshaw.Controller.TeamLoanController;
 import org.davshaw.Controller.UserController;
 import org.davshaw.External.Checker;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.pureentities.User;
+import org.davshaw.Service.Loan.getLoanReportAsText;
 
 /**
  *
@@ -234,6 +238,24 @@ public class UserPage extends javax.swing.JFrame {
 
     private void viewLoansButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLoansButtonActionPerformed
         // TODO add your handling code here:
+        String userDniString = JOptionPane.showInputDialog(this, "Enter user DNI: ", "View Loan", JOptionPane.INFORMATION_MESSAGE);
+        if(Checker.isDigit(userDniString)) {
+            ResultPack<Boolean> result = UserController.userExist(Integer.valueOf(userDniString));
+            if(result.getResult()) {
+                viewLoansPage frame = new viewLoansPage();
+
+                ResultPack<List<Integer>> r2 = TeamLoanController.getLoanReport(Integer.valueOf(userDniString));
+                String message = getLoanReportAsText.getText(r2.getResult());
+                frame.setMsg(message);
+                frame.setUserDni(Integer.valueOf(userDniString));
+                frame.setVisible(true);
+                dispose();
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Invalid dni.", "View Loans.", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
     }//GEN-LAST:event_viewLoansButtonActionPerformed
 
     private void viewTeamsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTeamsButtonActionPerformed

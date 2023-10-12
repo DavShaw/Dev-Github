@@ -627,6 +627,49 @@ public class UserController
         }
     }
 
+    public static ResultPack<List<Integer>> getLogIdReport(int userDni)
+    {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(User.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+            //Checking user exists
+            if(!(UserController.userExist(userDni).getResult()))
+            {
+                throw new UserNotFoundException();
+            }
+
+            session.beginTransaction();
+
+            String sql = "SELECT id FROM TeamLog WHERE userDni = :userDni";
+            Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+            query.setParameter("userDni", userDni);
+
+            // Commit the transaction before obtaining the results
+            session.getTransaction().commit();
+
+            return new ResultPack<List<Integer>>(true, query.list(), "Team log report has been given");
+
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new ResultPack<List<Integer>>(false, null, e.getMessage());
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
     public static ResultPack<List<Integer>> getTeamList(int userDni)
     {
         SessionFactory sessionFactory = new
