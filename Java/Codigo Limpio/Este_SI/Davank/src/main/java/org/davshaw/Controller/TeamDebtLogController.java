@@ -1,6 +1,7 @@
 package org.davshaw.Controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.NoDebtException;
@@ -16,7 +17,7 @@ import org.hibernate.query.Query;
 
 public class TeamDebtLogController
 {
-    public ResultPack<Boolean> createLog(int logId, double amount)
+    public static ResultPack<Boolean> createLog(int logId, double amount)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
@@ -72,7 +73,7 @@ public class TeamDebtLogController
 
         try
         {
-            String sql = "SELECT count(*) FROM TeamDebLog WHERE id = :id";
+            String sql = "SELECT count(*) FROM TeamDebtLog WHERE id = :id";
             Query<Long> query = session.createNativeQuery(sql, Long.class);
             query.setParameter("id", id);
             int count = ((Number) query.uniqueResult()).intValue();
@@ -326,4 +327,43 @@ public class TeamDebtLogController
             sessionFactory.close();
         }
     }
+
+    public static ResultPack<Boolean> deleteLogsIfDebtIsZero()
+    {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(TeamDebtLog.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+            String sql = "SELECT id FROM TeamDebtLog WHERE amount = :amount";
+            Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+            query.setParameter("amount", 0.0);
+
+            List<Integer> result = query.list();
+
+            for (Integer logId : result)
+            {
+                TeamDebtLogController.deleteLog(logId);
+            }
+
+            return new ResultPack<Boolean>(true, false, "Logs has been deleted successfully.");
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new ResultPack<Boolean>(false, false, e.getMessage());
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
 }

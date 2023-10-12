@@ -22,9 +22,9 @@ public class MegaLinkedList extends DoubleLinkedList
             Node node2 = this.getNodeAt(index2);
 
             //Obtener el value del nodo 1 y nodo 2
-            String node1Value = node1.Value();
+            String node1Value = node1.getValue();
 
-            String node2Value = node2.Value();
+            String node2Value = node2.getValue();
 
             //Cambiar sus datos
             // ! Cambiando datos del nodo 1
@@ -96,16 +96,16 @@ public class MegaLinkedList extends DoubleLinkedList
             //Nodo en posicion i
             Node currentNode = this.getNodeAt(i);
             //Verificar que sea vocal
-            if(vowels.contains(currentNode.Value()))
+            if(vowels.contains(currentNode.getValue()))
             {
                 //Verificar que este en el diccionario, sino, se añade
-                if(vowelsCounter.containsKey(currentNode.Value()))
+                if(vowelsCounter.containsKey(currentNode.getValue()))
                 {
-                    vowelsCounter.put(currentNode.Value(), vowelsCounter.get(currentNode.Value()) +1);
+                    vowelsCounter.put(currentNode.getValue(), vowelsCounter.get(currentNode.getValue()) +1);
                 }
                 else
                 {
-                    vowelsCounter.put(currentNode.Value(), 1);
+                    vowelsCounter.put(currentNode.getValue(), 1);
                 }
             }
 
@@ -121,7 +121,7 @@ public class MegaLinkedList extends DoubleLinkedList
             //Obtener nodo actual
             Node current = this.getNodeAt(j);
             //Valor del nodo
-            String value = current.Value();
+            String value = current.getValue();
 
             //Verificar si esta en el diccionario, se añade n veces, sino, solo se añade
             if(vowelsCounter.containsKey(value) && !usedVowels.contains(value))
@@ -157,22 +157,22 @@ public class MegaLinkedList extends DoubleLinkedList
             //h a o l o a h
             Node current = this.getNodeAt(i);
             //Si el valor del nodo actual es una vocal y no ha sido analizada antes, hagamoslo uwu
-            if (vowels.contains(current.Value()) && !foundedVowels.contains(current.Value()))
+            if (vowels.contains(current.getValue()) && !foundedVowels.contains(current.getValue()))
             {
                 for (int j = i+1; j < this.size(); j++)
                 {
                     Node current2 = this.getNodeAt(j);
                     //Obtener el siguiente nodo el cual su valor sea igual al valor de current
-                    if(current2.Value() == current.Value())
+                    if(current2.getValue() == current.getValue())
                     {
                         //Insertar este nodo en la posición de current + 1 y posteriormente borrarlo
-                        this.addNodeAt(i+1, current2.Value());
+                        this.addNodeAt(i+1, current2.getValue());
 
                         this.deleteAt(j);
                          //h o N l o a h
                     }  
                 }
-                foundedVowels.add(current.Value());
+                foundedVowels.add(current.getValue());
             }
         }
     }

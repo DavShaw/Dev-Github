@@ -22,6 +22,7 @@
     <mapping class="org.davshaw.Model.derivatedentities.TeamDeposit"/>
     <mapping class="org.davshaw.Model.derivatedentities.TeamLoan"/>
     <mapping class="org.davshaw.Model.derivatedentities.TeamLog"/>
+    <mapping class="org.davshaw.Model.derivatedentities.TeamDebtLog"/>
 
 
    </session-factory>

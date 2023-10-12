@@ -1,76 +1,26 @@
 package org.davshaw.classes.doublelinkedlist;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import org.davshaw.classes.megalinkedlist.MegaLinkedList;
-
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class DoubleLinkedList
 {
     protected Node head;
     protected Node tail;
-
-    public DoubleLinkedList()
-    {
-        this.head = null;
-        this.tail = null;
-    }
-
-    public Node getHead()
-    {
-        return this.head;
-    }
-
-    public Node getTail()
-    {
-        return this.tail;
-    }
 
     public void addNodeAtTail(int value)
     {
         String valString = String.valueOf(value);
         this.addNodeAtTail(valString);
     }
-
-    public void addNodeDown(int level, String value)
-    {
-        //Buscar la lista en el nivel X
-        MegaLinkedList lista = this.getListByLevel(level);
-        lista.addNodeAtTail(value);
-    }
-
-    public void addNodeDown(int level, int value)
-    {
-        //Buscar la lista en el nivel X
-        MegaLinkedList lista = this.getListByLevel(level);
-        lista.addNodeAtTail(value);
-    }
-
-    private MegaLinkedList getListByLevel(int level)
-    {
-        Node current = this.getHead();
-
-        // Itera hasta el nivel especificado
-        for (int i = 0; i < level; i++)
-        {
-            if (current.Down() != null)
-            {
-                current = current.Down();  // Sigue el enlace "down"
-            }
-
-            else
-            {
-                throw new IllegalArgumentException("El número de niveles supera el nivel mas bajo de la lista.");
-            }
-        }
-
-        MegaLinkedList list = new MegaLinkedList();
-        list.setHead(current);
-
-        return list;
-    }
-
 
     public void addNodeAtTail(String value)
     {
@@ -127,48 +77,19 @@ public class DoubleLinkedList
             System.out.println("Ocurrió un error xd (ID: 2)");
         }
     }
-    
 
-    public void traverse()
-    {
-        if(this.head == null)
-        {
-            System.out.println("Linkedlist is empty... Dude, there's nothing to traverse.");
-        }
-
-        else
-        {
-            Node currentNode = this.head;
-            
-            while (currentNode != null)
-            {
-                System.out.print(currentNode);
-                currentNode = currentNode.Next();
-            }
-            System.out.println("");
+    public void addNodeAtTailAsList(String values) {
+        String[] value = values.split("\\|");
+        for (String str : value) {
+            this.addNodeAtTail(str);
         }
     }
-
-    @Override
-    public String toString()
-    {
-        String toReturn = "";
-        if(this.head == null)
-        {
-            System.out.println("Linkedlist is empty... Dude, there's nothing to traverse.");
+    
+    public void addNodeAtIndexAsList(int index, String values) {
+        String[] value = values.split("\\|");
+        for (String str : value) {
+            this.addNodeAt(index, str);
         }
-
-        else
-        {
-            Node currentNode = this.head;
-            
-            while (currentNode != null)
-            {
-                toReturn += currentNode;
-                currentNode = currentNode.Next();
-            }
-        }  
-        return toReturn;
     }
 
     public int size()
@@ -178,7 +99,7 @@ public class DoubleLinkedList
         while (currentNode != null)
         {
             counter++;
-            currentNode = currentNode.Next();
+            currentNode = currentNode.getNext();
         }
         return counter;
     }
@@ -192,11 +113,10 @@ public class DoubleLinkedList
             {
                 return currentNode;
             }
-            currentNode = currentNode.Next();
+            currentNode = currentNode.getNext();
         }
         return currentNode;
     }
-
 
     public void deleteAt(int index)
     {
@@ -217,12 +137,11 @@ public class DoubleLinkedList
             Node B = this.getNodeAt(index);
             //[A, B, C]
             //Haremos que el next de A sea el next de B
-            this.getNodeAt(index-1).setNext(B.Next());
+            this.getNodeAt(index-1).setNext(B.getNext());
             //Haremos que el prev de C sea el prev de B
-            this.getNodeAt(index+1).setPrev(B.Prev());
+            this.getNodeAt(index+1).setPrev(B.getPrev());
         }
     }
-
 
     public void deleteTail() throws NullPointerException
     {
@@ -242,7 +161,7 @@ public class DoubleLinkedList
                 }
 
                 //Si el tail tiene un prev nodo, guardaremos este para cambiar su "next"
-                Node prevNode = this.tail.Prev();
+                Node prevNode = this.tail.getPrev();
                 if (prevNode != null)
                 {
                     prevNode.setNext(null);
@@ -257,7 +176,6 @@ public class DoubleLinkedList
         }
     }
 
-
     public void deleteHead() throws NullPointerException
     {
 
@@ -271,7 +189,7 @@ public class DoubleLinkedList
             else
             {
                 //Si el head tiene un siguiente nodo, guardaremos este para cambiar su "prev"
-                Node nextNode = this.head.Next();
+                Node nextNode = this.head.getNext();
                 if (nextNode != null)
                 {
                     nextNode.setPrev(null);
@@ -286,15 +204,22 @@ public class DoubleLinkedList
         }
 
     }
-    
-    public Node Head()
-    {
-        return this.head;
+
+    private void print(Node head) {
+        Node current = head;
+        
+        if (current == null) {
+        }
+        
+        else {
+            System.out.print("->" + current.getValue().toString());
+            current = current.getNext();
+            print(current);
+        }
     }
 
-    public Node Tail()
-    {
-        return this.tail;
+    public void print() {
+        print(this.getHead());
     }
 
 }

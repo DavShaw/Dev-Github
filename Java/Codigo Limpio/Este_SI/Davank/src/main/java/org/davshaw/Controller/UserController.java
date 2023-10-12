@@ -2,11 +2,6 @@ package org.davshaw.Controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import java.util.List;
@@ -23,19 +18,8 @@ import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.davshaw.Model.pureentities.User;
 
-@RequestMapping("/davshaw/users")
-@RestController
 public class UserController
 {
-
-    @GetMapping
-    public ResponseEntity<User> getGame()
-    {
-        //Getting user
-        User user = UserController.getUser(106).getResult();
-        return new ResponseEntity<User>(user, HttpStatus.OK);
-    }
-
     public static ResultPack<Boolean> createUser(
     int dni,
     String firstName,
@@ -80,9 +64,9 @@ public class UserController
             return new ResultPack<Boolean>(true, null, "The user has been created successfully.");
         }
 
-        catch (Exception e)
+        catch (DuplicateUserDNIException e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             return new ResultPack<Boolean>(false, null, e.getMessage());
         }
 
