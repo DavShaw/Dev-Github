@@ -1,722 +1,608 @@
 package org.davshaw.Controller;
 
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import java.util.List;
-
 import org.davshaw.Exception.DuplicateUserDNIException;
 import org.davshaw.Exception.InvalidLoginException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
-import org.davshaw.Exception.UserAlreadyOnTeamsLimitException;
 import org.davshaw.Exception.UserAlreadyOnTeamException;
+import org.davshaw.Exception.UserAlreadyOnTeamsLimitException;
 import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.Exception.UserNotInAnyTeamException;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamLog;
 import org.davshaw.Model.pureentities.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
-public class UserController
-{
-    public static ResultPack<Boolean> createUser(
+public class UserController {
+
+  public static ResultPack<Boolean> createUser(
     int dni,
     String firstName,
     String middleName,
     String firstLastName,
     String middleLastName,
-    String password)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+    String password
+  ) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking there's not another user with the same DNI.
-            if(UserController.userExist(dni).getResult())
-            {
-                throw new DuplicateUserDNIException();
-            }
+    try {
+      //Checking there's not another user with the same DNI.
+      if (UserController.userExist(dni).getResult()) {
+        throw new DuplicateUserDNIException();
+      }
 
-            User user = new User();
+      User user = new User();
 
-            user.setDni(dni);
-            user.setFirstName(firstName);
-            user.setMiddleName(middleName);
-            user.setFirstLastName(firstLastName);
-            user.setMiddleLastName(middleLastName);
-            user.setPassword(password);
+      user.setDni(dni);
+      user.setFirstName(firstName);
+      user.setMiddleName(middleName);
+      user.setFirstLastName(firstLastName);
+      user.setMiddleLastName(middleLastName);
+      user.setPassword(password);
 
-            session.beginTransaction();
-            
-            session.persist(user);
-            
-            session.getTransaction().commit();
-            
-            AccountController.createAccount(dni);
-            
+      session.beginTransaction();
 
-            return new ResultPack<Boolean>(true, null, "The user has been created successfully.");
-        }
+      session.persist(user);
 
-        catch (DuplicateUserDNIException e)
-        {
-            //e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
+      session.getTransaction().commit();
 
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      AccountController.createAccount(dni);
 
+      return new ResultPack<Boolean>(
+        true,
+        null,
+        "The user has been created successfully."
+      );
+    } catch (DuplicateUserDNIException e) {
+      //e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> userExist(int dni)
-    {
-        SessionFactory sessionFactory = new
-        Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Boolean> userExist(int dni) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
-    
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            String sql = "SELECT COUNT(*) FROM User WHERE dni = :dni";
-            Query<Long> query = session.createNativeQuery(sql, Long.class);
-            query.setParameter("dni", dni);
+    try {
+      String sql = "SELECT COUNT(*) FROM User WHERE dni = :dni";
+      Query<Long> query = session.createNativeQuery(sql, Long.class);
+      query.setParameter("dni", dni);
 
-    
-            int count = ((Number) query.uniqueResult()).intValue();
-    
-            if (count > 0)
-            {
-                return new ResultPack<Boolean>(true, true, "User found.");
-            }
-            return new ResultPack<Boolean>(true, false, new RecordNotFoundException().getMessage());
-        }
-        
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, false, e.getMessage());
-        }
-        
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
-    
+      int count = ((Number) query.uniqueResult()).intValue();
+
+      if (count > 0) {
+        return new ResultPack<Boolean>(true, true, "User found.");
+      }
+      return new ResultPack<Boolean>(
+        true,
+        false,
+        new RecordNotFoundException().getMessage()
+      );
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, false, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> deleteUser(int userDni)
-    {
-        SessionFactory sessionFactory = new
-        Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
-    
-        Session session = sessionFactory.openSession();
-    
-        try
-        {
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();   
-            }
+  public static ResultPack<Boolean> deleteUser(int userDni) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-            User user = session.get(User.class, userDni);
+    Session session = sessionFactory.openSession();
 
-            session.beginTransaction();
-            session.remove(user);
-            session.getTransaction().commit();
-            sessionFactory.close();            
+    try {
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            return new ResultPack<Boolean>(true, null, "The user has been deleted successfully");
+      User user = session.get(User.class, userDni);
 
-        }
-        
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
-        
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      session.beginTransaction();
+      session.remove(user);
+      session.getTransaction().commit();
+      sessionFactory.close();
+
+      return new ResultPack<Boolean>(
+        true,
+        null,
+        "The user has been deleted successfully"
+      );
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<User> getUser(int userDni)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<User> getUser(int userDni) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();
-            }
-            session.beginTransaction();
+    try {
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
+      session.beginTransaction();
 
-            User user = session.get(User.class, userDni);
+      User user = session.get(User.class, userDni);
 
-            session.getTransaction().commit();
+      session.getTransaction().commit();
 
-            return new ResultPack<User>(true, user, "User found.");
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<User>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<User>(true, user, "User found.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<User>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> changeFirstName(int userDni, String name)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Boolean> changeFirstName(int userDni, String name) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking user exists
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();
-            }
+    try {
+      //Checking user exists
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            session.beginTransaction();
+      session.beginTransaction();
 
-            User user = session.get(User.class, userDni);
+      User user = session.get(User.class, userDni);
 
-            user.setFirstName(name);
-            session.merge(user);
+      user.setFirstName(name);
+      session.merge(user);
 
-            session.getTransaction().commit();
-            return new ResultPack<Boolean>(true, null, "User found.");
-
-        }
-            
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      session.getTransaction().commit();
+      return new ResultPack<Boolean>(true, null, "User found.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> changeMiddleName(int userDni, String name)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Boolean> changeMiddleName(int userDni, String name) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking user exists
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();   
-            }
-            
-            session.beginTransaction();
+    try {
+      //Checking user exists
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            User user = session.get(User.class, userDni);
+      session.beginTransaction();
 
-            user.setMiddleName(name);
-            session.merge(user);
+      User user = session.get(User.class, userDni);
 
-            session.getTransaction().commit();
+      user.setMiddleName(name);
+      session.merge(user);
 
-            return new ResultPack<Boolean>(true, null, "User found.");
-        }
+      session.getTransaction().commit();
 
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<Boolean>(true, null, "User found.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> changeFirstLastName(int userDni, String lastName)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Boolean> changeFirstLastName(
+    int userDni,
+    String lastName
+  ) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking user exists
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();   
-            }
-            
-            session.beginTransaction();
+    try {
+      //Checking user exists
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            User user = session.get(User.class, userDni);
+      session.beginTransaction();
 
-            user.setFirstLastName(lastName);
-            session.merge(user);
+      User user = session.get(User.class, userDni);
 
-            session.getTransaction().commit();
+      user.setFirstLastName(lastName);
+      session.merge(user);
 
-            return new ResultPack<Boolean>(true, null, "User found.");
-        }
+      session.getTransaction().commit();
 
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<Boolean>(true, null, "User found.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> changeMiddleLastName(int userDni, String lastName)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Boolean> changeMiddleLastName(
+    int userDni,
+    String lastName
+  ) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking user exists
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();   
-            }
-            
-            session.beginTransaction();
+    try {
+      //Checking user exists
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            User user = session.get(User.class, userDni);
+      session.beginTransaction();
 
-            user.setMiddleLastName(lastName);
-            session.merge(user);
+      User user = session.get(User.class, userDni);
 
-            session.getTransaction().commit();
+      user.setMiddleLastName(lastName);
+      session.merge(user);
 
-            return new ResultPack<Boolean>(true, null, "User found.");
-        }
+      session.getTransaction().commit();
 
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<Boolean>(true, null, "User found.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> changePassword(int userDni, String password, String newPassword)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Boolean> changePassword(
+    int userDni,
+    String password,
+    String newPassword
+  ) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking if user exists
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();
-            }
+    try {
+      //Checking if user exists
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            //!(This check depends on the previous)
-            //Checking if pass is correct
+      //!(This check depends on the previous)
+      //Checking if pass is correct
 
-            String currentPassword = UserController.getUser(userDni).getResult().getPassword();
-            System.out.println("Current password -> " + currentPassword);
+      String currentPassword = UserController
+        .getUser(userDni)
+        .getResult()
+        .getPassword();
+      System.out.println("Current password -> " + currentPassword);
 
-            if(!(currentPassword.equals(password)))
-            {
-                throw new InvalidLoginException();
-            }
+      if (!(currentPassword.equals(password))) {
+        throw new InvalidLoginException();
+      }
 
-            session.beginTransaction();
+      session.beginTransaction();
 
-            User user = UserController.getUser(userDni).getResult();
+      User user = UserController.getUser(userDni).getResult();
 
-            user.setPassword(newPassword);
-            session.merge(user);
-            session.getTransaction().commit();
+      user.setPassword(newPassword);
+      session.merge(user);
+      session.getTransaction().commit();
 
-            return new ResultPack<Boolean>(true, null, "User found.");
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<Boolean>(true, null, "User found.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Integer> countTeam(int userDni)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Integer> countTeam(int userDni) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking user exists
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();
-            }
+    try {
+      //Checking user exists
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            session.beginTransaction();
+      session.beginTransaction();
 
-            String sql = "SELECT Count(*) FROM TeamLog WHERE userDni = :userDni AND nativeFlag = :nativeFlag";
+      String sql =
+        "SELECT Count(*) FROM TeamLog WHERE userDni = :userDni AND nativeFlag = :nativeFlag";
 
-            Query<Long> query = session.createNativeQuery(sql, Long.class);
-            query.setParameter("userDni", userDni);
-            query.setParameter("nativeFlag", true);
-            session.getTransaction().commit();
+      Query<Long> query = session.createNativeQuery(sql, Long.class);
+      query.setParameter("userDni", userDni);
+      query.setParameter("nativeFlag", true);
+      session.getTransaction().commit();
 
-            Integer count = Integer.valueOf(query.uniqueResult().toString());
+      Integer count = Integer.valueOf(query.uniqueResult().toString());
 
-            if(count != null)
-            {
-                return new ResultPack<Integer>(true, count, "Team info found.");
-            }
-            return new ResultPack<Integer>(false, 0, new RecordNotFoundException().getMessage());
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Integer>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      if (count != null) {
+        return new ResultPack<Integer>(true, count, "Team info found.");
+      }
+      return new ResultPack<Integer>(
+        false,
+        0,
+        new RecordNotFoundException().getMessage()
+      );
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Integer>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> joinTeam(int userDni, int teamId)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Boolean> joinTeam(int userDni, int teamId) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking team exists
-            if(!(TeamController.teamExist(teamId).getResult()))
-            {
-                throw new TeamNotFoundException();
-            }
-            
-            //Checking user aren't on the limit team
-            if(UserController.countTeam(userDni).getResult() >= 3)
-            {
-                throw new UserAlreadyOnTeamsLimitException();
-            }
+    try {
+      //Checking team exists
+      if (!(TeamController.teamExist(teamId).getResult())) {
+        throw new TeamNotFoundException();
+      }
 
-            //Checking user aren't on the team
-            if(TeamLogController.userOnTeam(userDni, teamId).getResult())
-            {
-                throw new UserAlreadyOnTeamException();
-            }
+      //Checking user aren't on the limit team
+      if (UserController.countTeam(userDni).getResult() >= 3) {
+        throw new UserAlreadyOnTeamsLimitException();
+      }
 
-            session.beginTransaction();
+      //Checking user aren't on the team
+      if (TeamLogController.userOnTeam(userDni, teamId).getResult()) {
+        throw new UserAlreadyOnTeamException();
+      }
 
-            TeamLog log = new TeamLog();
-            log.setTeamId(teamId);
-            log.setNativeFlag(true);
-            log.setUserDni(userDni);
+      session.beginTransaction();
 
-            session.persist(log);
+      TeamLog log = new TeamLog();
+      log.setTeamId(teamId);
+      log.setNativeFlag(true);
+      log.setUserDni(userDni);
 
-            session.getTransaction().commit();
+      session.persist(log);
 
-            return new ResultPack<Boolean>(true, null, "The user has joined to the team successfully.");
-        }
+      session.getTransaction().commit();
 
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<Boolean>(
+        true,
+        null,
+        "The user has joined to the team successfully."
+      );
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Boolean> leaveTeam(int userDni, int teamId)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Boolean> leaveTeam(int userDni, int teamId) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking user are on at less on one team
-            if(UserController.countTeam(userDni).getResult() <= 0)
-            {
-                throw new UserNotInAnyTeamException();
-            }
+    try {
+      //Checking user are on at less on one team
+      if (UserController.countTeam(userDni).getResult() <= 0) {
+        throw new UserNotInAnyTeamException();
+      }
 
-            //Checking team exists
-            if(!(TeamController.teamExist(teamId).getResult()))
-            {
-                throw new TeamNotFoundException();
-            }
+      //Checking team exists
+      if (!(TeamController.teamExist(teamId).getResult())) {
+        throw new TeamNotFoundException();
+      }
 
-            //Getting log id that meet the condition (userDni and teamId are the same)
-            Integer logId = UserController.getLogId(userDni, teamId).getResult();
+      //Getting log id that meet the condition (userDni and teamId are the same)
+      Integer logId = UserController.getLogId(userDni, teamId).getResult();
 
-            //Checking logId isn't null
-            if (logId == null)
-            {
-                throw new RecordNotFoundException();
-            }
+      //Checking logId isn't null
+      if (logId == null) {
+        throw new RecordNotFoundException();
+      }
 
-            session.beginTransaction();
+      session.beginTransaction();
 
-            TeamLogController.deleteLog(logId);
+      TeamLogController.deleteLog(logId);
 
-            session.getTransaction().commit();
+      session.getTransaction().commit();
 
-            return new ResultPack<Boolean>(true, null, "The user has leave from the team successfully.");
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Boolean>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<Boolean>(
+        true,
+        null,
+        "The user has leave from the team successfully."
+      );
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<Integer> getLogId(int userDni, int teamId)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<Integer> getLogId(int userDni, int teamId) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking team exists
-            if(!(TeamController.teamExist(teamId).getResult()))
-            {
-                throw new TeamNotFoundException();
-            }
+    try {
+      //Checking team exists
+      if (!(TeamController.teamExist(teamId).getResult())) {
+        throw new TeamNotFoundException();
+      }
 
-            //Checking user exists
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();
-            }
+      //Checking user exists
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            session.beginTransaction();
+      session.beginTransaction();
 
-            String sql = "SELECT id FROM TeamLog WHERE teamId = :teamId AND userDni = :userDni AND nativeFlag = :nativeFlag LIMIT 1";
-            Query<Integer> query = session.createNativeQuery(sql, Integer.class);
-            query.setParameter("userDni", userDni);
-            query.setParameter("teamId", teamId);
-            query.setParameter("nativeFlag", true);
+      String sql =
+        "SELECT id FROM TeamLog WHERE teamId = :teamId AND userDni = :userDni AND nativeFlag = :nativeFlag LIMIT 1";
+      Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+      query.setParameter("userDni", userDni);
+      query.setParameter("teamId", teamId);
+      query.setParameter("nativeFlag", true);
 
+      Integer id = (Integer) query.uniqueResult();
 
-            Integer id = (Integer) query.uniqueResult();
+      session.getTransaction().commit();
 
-            session.getTransaction().commit();
-
-            return new ResultPack<Integer>(true, id, "Log found.");
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<Integer>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<Integer>(true, id, "Log found.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Integer>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<List<Integer>> getLogIdReport(int userDni)
-    {
-        SessionFactory sessionFactory = new Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<List<Integer>> getLogIdReport(int userDni) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
+    Session session = sessionFactory.openSession();
 
-        try
-        {
-            //Checking user exists
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();
-            }
+    try {
+      //Checking user exists
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            session.beginTransaction();
+      session.beginTransaction();
 
-            String sql = "SELECT id FROM TeamLog WHERE userDni = :userDni";
-            Query<Integer> query = session.createNativeQuery(sql, Integer.class);
-            query.setParameter("userDni", userDni);
+      String sql = "SELECT id FROM TeamLog WHERE userDni = :userDni";
+      Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+      query.setParameter("userDni", userDni);
 
-            List<Integer> result = query.list();
+      List<Integer> result = query.list();
 
-            session.getTransaction().commit();
+      session.getTransaction().commit();
 
-            return new ResultPack<List<Integer>>(true, result, "Team log report has been given");
-
-        }
-
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<List<Integer>>(false, null, e.getMessage());
-        }
-
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      return new ResultPack<List<Integer>>(
+        true,
+        result,
+        "Team log report has been given"
+      );
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<List<Integer>>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 
-    public static ResultPack<List<Integer>> getTeamList(int userDni)
-    {
-        SessionFactory sessionFactory = new
-        Configuration()
-        .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(User.class)
-        .buildSessionFactory();
+  public static ResultPack<List<Integer>> getTeamList(int userDni) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
 
-        Session session = sessionFactory.openSession();
-    
-        try
-        {
-            //Verify that user exist!
-            if(!(UserController.userExist(userDni).getResult()))
-            {
-                throw new UserNotFoundException();
-            }
+    Session session = sessionFactory.openSession();
 
-            String sql = "SELECT teamId FROM TeamLog WHERE(userDni = :userDni and nativeFlag = :nativeFlag)";
-            Query<Integer> query = session.createNativeQuery(sql, Integer.class);
-            query.setParameter("nativeFlag", true);
-            query.setParameter("userDni", userDni);
+    try {
+      //Verify that user exist!
+      if (!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
 
-            List<Integer> result = query.getResultList();
+      String sql =
+        "SELECT teamId FROM TeamLog WHERE(userDni = :userDni and nativeFlag = :nativeFlag)";
+      Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+      query.setParameter("nativeFlag", true);
+      query.setParameter("userDni", userDni);
 
-            if(result.isEmpty())
-            {
-                throw new UserNotInAnyTeamException();
-            }
+      List<Integer> result = query.getResultList();
 
-            return new ResultPack<>(true, result, "Log found.");
-            
-        }
-        
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return new ResultPack<>(false, null, e.getMessage());
-        }
-        
-        finally
-        {
-            session.close();
-            sessionFactory.close();
-        }
+      if (result.isEmpty()) {
+        throw new UserNotInAnyTeamException();
+      }
+
+      return new ResultPack<>(true, result, "Log found.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
     }
+  }
 }
-
-

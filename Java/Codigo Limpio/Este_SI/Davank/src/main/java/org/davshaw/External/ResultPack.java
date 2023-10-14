@@ -7,9 +7,9 @@ import lombok.ToString;
 @ToString
 @Getter
 @AllArgsConstructor
-public class ResultPack<Generic>
-{
-    private Boolean okay;
-    private Generic result = null;
-    private String message = "";
+public class ResultPack<Generic> {
+
+  private Boolean okay;
+  private Generic result = null;
+  private String message = "";
 }
