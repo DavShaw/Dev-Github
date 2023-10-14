@@ -1,41 +1,39 @@
+package org.davshaw.Gui.Admin.User;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package org.davshaw.Gui.Admin.User;
 
 import java.util.List;
 
-import org.davshaw.Controller.TeamLoanController;
-import org.davshaw.External.ResultPack;
-import org.davshaw.Service.Loan.getLoanReportAsText;
+import org.davshaw.Controller.UserController;
+import org.davshaw.Service.Debt.GetDebtReportAsText;
 
 /**
  *
  * @author Asus
  */
-public class viewLoansPage extends javax.swing.JFrame {
+public class ViewDebtsPage extends javax.swing.JFrame {
 
     /**
-     * Creates new form viewLoansPage
+     * Creates new form ViewDebtsPage
      */
-    public viewLoansPage() {
+    public ViewDebtsPage() {
         initComponents();
-        this.executePostInit();
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-        jTextArea1.setText(msg);
-        jTextArea1.setEditable(false);
-    }
-
-    private void executePostInit() {
-
+        this.executePostStart();
     }
 
     public void setUserDni(int userDni) {
         this.userDni = userDni;
+    }
+
+    public void executePostStart() {
+        
+        List<Integer> logIdList = UserController.getLogIdReport(this.userDni).getResult();
+        String m = GetDebtReportAsText.getText(logIdList);
+        debtsTextArea.setText(m);
+        debtsTextArea.setEditable(false);
+
     }
 
     /**
@@ -48,22 +46,16 @@ public class viewLoansPage extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        textArea = new javax.swing.JTextArea();
+        debtsTextArea = new javax.swing.JTextArea();
         backButton = new javax.swing.JButton();
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        textArea.setColumns(20);
-        textArea.setRows(5);
-        jScrollPane2.setViewportView(textArea);
+        debtsTextArea.setColumns(20);
+        debtsTextArea.setRows(5);
+        jScrollPane1.setViewportView(debtsTextArea);
 
-        backButton.setText("back");
+        backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
@@ -77,31 +69,30 @@ public class viewLoansPage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(100, 100, 100)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(357, 357, 357)
+                        .addGap(283, 283, 283)
                         .addComponent(backButton)))
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addGap(50, 50, 50)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 448, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addComponent(backButton)
-                .addGap(68, 68, 68))
+                .addGap(55, 55, 55))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
         UserPage frame = new UserPage();
         frame.setVisible(true);
-        dispose();
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
@@ -121,31 +112,28 @@ public class viewLoansPage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(viewLoansPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewDebtsPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(viewLoansPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewDebtsPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(viewLoansPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewDebtsPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(viewLoansPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ViewDebtsPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new viewLoansPage().setVisible(true);
+                new ViewDebtsPage().setVisible(true);
             }
         });
     }
 
-    private String msg;
     private int userDni;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
+    private javax.swing.JTextArea debtsTextArea;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }

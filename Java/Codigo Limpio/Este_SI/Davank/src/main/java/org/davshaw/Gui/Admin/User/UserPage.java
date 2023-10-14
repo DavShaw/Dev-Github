@@ -4,17 +4,12 @@
  */
 package org.davshaw.Gui.Admin.User;
 
-import java.util.List;
-
 import javax.swing.JOptionPane;
 
-import org.davshaw.Controller.AccountController;
-import org.davshaw.Controller.TeamLoanController;
 import org.davshaw.Controller.UserController;
 import org.davshaw.External.Checker;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.pureentities.User;
-import org.davshaw.Service.Loan.getLoanReportAsText;
 
 /**
  *
@@ -47,7 +42,6 @@ public class UserPage extends javax.swing.JFrame {
         editUserButton = new javax.swing.JButton();
         viewLoansButton = new javax.swing.JButton();
         viewTeamsButton = new javax.swing.JButton();
-        viewHistoryButton = new javax.swing.JButton();
         viewDebtsButton = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
@@ -102,14 +96,6 @@ public class UserPage extends javax.swing.JFrame {
             }
         });
 
-        viewHistoryButton.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 20)); // NOI18N
-        viewHistoryButton.setText("View History");
-        viewHistoryButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewHistoryButtonActionPerformed(evt);
-            }
-        });
-
         viewDebtsButton.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 20)); // NOI18N
         viewDebtsButton.setText("View Debts");
         viewDebtsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -127,15 +113,17 @@ public class UserPage extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(deleteUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(createUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 220, Short.MAX_VALUE)
+                    .addComponent(editUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(viewLoansButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(viewTeamsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(viewHistoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(viewDebtsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(100, 100, 100))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(285, 285, 285)
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(285, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,12 +139,10 @@ public class UserPage extends javax.swing.JFrame {
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(editUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(viewHistoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(viewDebtsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62))
         );
 
         pack();
@@ -165,7 +151,7 @@ public class UserPage extends javax.swing.JFrame {
     private void createUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createUserButtonActionPerformed
         // TODO add your handling code here:
         // Create instance of another frame
-        CreateUser newFrame = new CreateUser();
+        CreateUserPage newFrame = new CreateUserPage();
         newFrame.setVisible(true);
         // Clouse this frame
         dispose();
@@ -187,9 +173,16 @@ public class UserPage extends javax.swing.JFrame {
             if(Checker.isDigit(dniString))
             {
                 int dni = Integer.parseInt(dniString);
-                ResultPack<Boolean> result = UserController.deleteUser(dni);
-                String message = String.format("User deleted successfully: %s\nServer return: %s\nMessage: %s", result.getOkay(), result.getResult(), result.getMessage());
-                JOptionPane.showMessageDialog(this, message, "Delete User", JOptionPane.INFORMATION_MESSAGE);
+                ResultPack<Boolean> result2 = UserController.userExist(dni);
+                if(result2.getResult())
+                {
+                    ResultPack<Boolean> result = UserController.deleteUser(dni);
+                    String message = String.format("User deleted successfully: %s\nServer return: %s\nMessage: %s", result.getOkay(), result.getResult(), result.getMessage());
+                    JOptionPane.showMessageDialog(this, message, "Delete User", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, result2.getMessage(), "Delete User", JOptionPane.ERROR_MESSAGE);
+                }
             }
     
             else
@@ -215,7 +208,7 @@ public class UserPage extends javax.swing.JFrame {
                     ResultPack<User> getUserResult = UserController.getUser(dni);
 
                     //Instanciar la nueva ventana
-                    EditUser frame = new EditUser();
+                    EditUserPage frame = new EditUserPage();
                     frame.setUserDni(dni);
                     frame.setUser(getUserResult.getResult());
                     frame.setVisible(true);
@@ -237,37 +230,96 @@ public class UserPage extends javax.swing.JFrame {
     }//GEN-LAST:event_editUserButtonActionPerformed
 
     private void viewLoansButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLoansButtonActionPerformed
-        // TODO add your handling code here:
-        String userDniString = JOptionPane.showInputDialog(this, "Enter user DNI: ", "View Loan", JOptionPane.INFORMATION_MESSAGE);
-        if(Checker.isDigit(userDniString)) {
-            ResultPack<Boolean> result = UserController.userExist(Integer.valueOf(userDniString));
-            if(result.getResult()) {
-                viewLoansPage frame = new viewLoansPage();
+        
+        String dniStr = JOptionPane.showInputDialog(this, "Enter user Dni: ", "View Loans", JOptionPane.PLAIN_MESSAGE);
+        if(dniStr != null) {
 
-                ResultPack<List<Integer>> r2 = TeamLoanController.getLoanReport(Integer.valueOf(userDniString));
-                String message = getLoanReportAsText.getText(r2.getResult());
-                frame.setMsg(message);
-                frame.setUserDni(Integer.valueOf(userDniString));
-                frame.setVisible(true);
-                dispose();
+            if(Checker.isDigit(dniStr)) {
+                
+                int dni = Integer.parseInt(dniStr);
+                ResultPack<Boolean> r1 = UserController.userExist(dni);
+                if(r1.getResult()) {
+    
+                    //Sí y solo sí el usuario existe, abrimos la nueva ventana
+                    SeeLoansPage frame = new SeeLoansPage();
+                    
+                    frame.setUserDni(dni);
+                    frame.executePostStart();
+                    frame.setVisible(true);
+    
+                    this.dispose();
+    
+    
+                }
+                else {
+                JOptionPane.showMessageDialog(this, r1.getMessage(), "View Loans", JOptionPane.ERROR_MESSAGE);
+                }
             }
             else {
-                JOptionPane.showMessageDialog(this, "Invalid dni.", "View Loans.", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid Dni.", "View Loans", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
+
+
     }//GEN-LAST:event_viewLoansButtonActionPerformed
 
     private void viewTeamsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTeamsButtonActionPerformed
-        // TODO add your handling code here:
+        String dniStr = JOptionPane.showInputDialog(this, "Enter user Dni: ", "View Teams", JOptionPane.PLAIN_MESSAGE);
+        if(dniStr != null) {
+
+            if(Checker.isDigit(dniStr)) {
+                
+                int dni = Integer.parseInt(dniStr);
+                ResultPack<Boolean> r1 = UserController.userExist(dni);
+                if(r1.getResult()) {
+
+                    ViewTeamsPage frame = new ViewTeamsPage();
+                    frame.setUserDni(dni);
+                    frame.executePostStart();
+                    frame.setVisible(true);
+
+                    this.dispose();
+
+                }
+                else {
+                JOptionPane.showMessageDialog(this, r1.getMessage(), "View Teams", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Invalid Dni.", "View Teams", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else {
+        }
     }//GEN-LAST:event_viewTeamsButtonActionPerformed
 
-    private void viewHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewHistoryButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_viewHistoryButtonActionPerformed
-
     private void viewDebtsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDebtsButtonActionPerformed
-        // TODO add your handling code here:
+        String dniStr = JOptionPane.showInputDialog(this, "Enter user Dni: ", "View Debts", JOptionPane.PLAIN_MESSAGE);
+        if(dniStr != null) {
+
+            if(Checker.isDigit(dniStr)) {
+                
+                int dni = Integer.parseInt(dniStr);
+                ResultPack<Boolean> r1 = UserController.userExist(dni);
+                if(r1.getResult()) {
+
+                    ViewDebtsPage frame = new ViewDebtsPage();
+                    frame.setUserDni(dni);
+                    frame.executePostStart();
+                    frame.setVisible(true);
+
+                    this.dispose();
+                }
+                else {
+                JOptionPane.showMessageDialog(this, r1.getMessage(), "View Debts", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Invalid Dni.", "View Debts", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else {
+        }
     }//GEN-LAST:event_viewDebtsButtonActionPerformed
 
     /**
@@ -312,7 +364,6 @@ public class UserPage extends javax.swing.JFrame {
     private javax.swing.JButton exitButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton viewDebtsButton;
-    private javax.swing.JButton viewHistoryButton;
     private javax.swing.JButton viewLoansButton;
     private javax.swing.JButton viewTeamsButton;
     // End of variables declaration//GEN-END:variables

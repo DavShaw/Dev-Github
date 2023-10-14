@@ -650,10 +650,11 @@ public class UserController
             Query<Integer> query = session.createNativeQuery(sql, Integer.class);
             query.setParameter("userDni", userDni);
 
-            // Commit the transaction before obtaining the results
+            List<Integer> result = query.list();
+
             session.getTransaction().commit();
 
-            return new ResultPack<List<Integer>>(true, query.list(), "Team log report has been given");
+            return new ResultPack<List<Integer>>(true, result, "Team log report has been given");
 
         }
 

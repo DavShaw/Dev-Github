@@ -9,7 +9,6 @@ import org.davshaw.Exception.OverPaymentException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamDebtLog;
-import org.davshaw.Model.derivatedentities.TeamLog;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -21,7 +20,7 @@ public class TeamDebtLogController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TeamLog.class)
+        .addAnnotatedClass(TeamDebtLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -106,7 +105,7 @@ public class TeamDebtLogController
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TeamLog.class)
+        .addAnnotatedClass(TeamDebtLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();
@@ -141,11 +140,54 @@ public class TeamDebtLogController
         }  
     }
 
+    public static ResultPack<TeamDebtLog> getLogByLogId(int logId) {
+        SessionFactory sessionFactory = new Configuration()
+        .configure("hibernate.cfg.xml")
+        .addAnnotatedClass(TeamDebtLog.class)
+        .buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        try
+        {
+            //Checking logId exists
+            if(!(TeamLogController.logExist(logId).getResult()))
+            {
+                throw new RecordNotFoundException();
+            }
+
+            session.beginTransaction();
+
+            String sql = "SELECT id FROM TeamDebtLog WHERE logId = :logId LIMIT 1";
+            Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+            query.setParameter("logId", logId);
+            Integer id = query.uniqueResult();
+
+            TeamDebtLog log = TeamDebtLogController.getLog(id).getResult();
+
+            session.getTransaction().commit();
+
+            return new ResultPack<TeamDebtLog>(true, log, "Log found.");
+        }
+
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new ResultPack<TeamDebtLog>(false, null, e.getMessage());
+        }
+
+        finally
+        {
+            session.close();
+            sessionFactory.close();
+        }
+    }
+
     public static ResultPack<Double> getCurrentDebt(int id)
     {
         SessionFactory sessionFactory = new Configuration()
         .configure("hibernate.cfg.xml")
-        .addAnnotatedClass(TeamLog.class)
+        .addAnnotatedClass(TeamDebtLog.class)
         .buildSessionFactory();
 
         Session session = sessionFactory.openSession();

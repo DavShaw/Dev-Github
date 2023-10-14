@@ -219,6 +219,8 @@ public class TeamLoanController
             }
 
             List<Integer> teamLogIdReport = UserController.getLogIdReport(userDni).getResult();
+
+
             List<Integer> teamLoanIdReport = new ArrayList<Integer>();
 
             session.beginTransaction();

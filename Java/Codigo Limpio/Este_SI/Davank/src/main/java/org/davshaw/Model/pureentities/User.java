@@ -37,4 +37,11 @@ public class User
 
     @Column(name = "password")
     private String password;
+
+    public String getFullName() {
+        if (this.middleName != null || !this.firstName.equalsIgnoreCase("")) {
+            return String.format("%s %s %s %s", this.firstName, this.middleName, this.firstLastName, this.middleLastName);
+        }
+        return String.format("%s %s %s", this.firstName, this.firstLastName, this.middleLastName);
+    }
 }

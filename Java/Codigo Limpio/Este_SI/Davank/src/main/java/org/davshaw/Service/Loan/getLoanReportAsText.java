@@ -1,6 +1,5 @@
 package org.davshaw.Service.Loan;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.davshaw.Controller.TeamLoanController;
@@ -16,7 +15,7 @@ public class getLoanReportAsText {
                 TeamLoan loan = TeamLoanController.getLoan(loanId).getResult();
                 User user = loan.getLog().getUser();
                 Team team = loan.getLog().getTeam();
-                msg += "------------------------------";
+                msg += "=-=-=-=-=-=-=-=-=-=-=-=-=";
                 msg += "\n";
                 msg += "User information";
                 msg += "\n";
@@ -24,11 +23,15 @@ public class getLoanReportAsText {
                 msg += "\n";
                 msg += "User Dni: " + user.getDni();
                 msg += "\n";
+                msg += "._._._._._._._._._._._._._.";
+                msg += "\n";
                 msg += "Team information";
                 msg += "\n";
                 msg += "Team name: " + team.getName();
                 msg += "\n";
                 msg += "Team id: " + team.getId();
+                msg += "\n";
+                msg += "._._._._._._._._._._._._._.";
                 msg += "\n";
                 msg += "Loan information";
                 msg += "\n";
@@ -36,7 +39,7 @@ public class getLoanReportAsText {
                 msg += "\n";
                 msg += "Amount: " + loan.getBalance();
                 msg += "\n";
-                msg += "------------------------------";
+                msg += "=-=-=-=-=-=-=-=-=-=-=-=-=";
                 msg += "\n";
                 msg += "\n";
             }
