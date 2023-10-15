@@ -1,14 +1,15 @@
 package org.davshaw.Davank;
 
-import java.util.List;
-import org.davshaw.Controller.UserController;
-import org.davshaw.Service.Debt.GetDebtReportAsText;
+import org.davshaw.Controller.AccountController;
+import org.davshaw.External.ResultPack;
 
 public class App {
 
   public static void main(String code[]) {
-    List<Integer> listofLogs = UserController.getLogIdReport(106).getResult();
-    String r = GetDebtReportAsText.getText(listofLogs);
-    System.out.println(r);
+
+    ResultPack<Boolean> r1 = AccountController.createAccount(106);
+    System.out.println(r1.getOkay());
+    System.out.println(r1.getResult());
+    System.out.println(r1.getMessage());
   }
 }

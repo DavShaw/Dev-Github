@@ -3,10 +3,12 @@ package org.davshaw.Service.Team;
 import java.util.List;
 
 import org.davshaw.Controller.TeamController;
+import org.davshaw.Controller.UserController;
 import org.davshaw.Model.pureentities.Team;
 
 public class GetTeamReportAsText {
-    public static String getText(List<Integer> teamLogId) {
+    public static String getText(int userDni) {
+        List<Integer> teamLogId = UserController.getTeamList(userDni).getResult();
         if(!(teamLogId.isEmpty()) && teamLogId != null) {
             String msg = "";
             for (Integer id : teamLogId) {

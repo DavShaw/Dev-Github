@@ -19,7 +19,7 @@ public class getLoanReportAsText {
                 msg += "\n";
                 msg += "User information";
                 msg += "\n";
-                msg += "User full name: " + String.format("%s %s %s %s", user.getFirstName(), user.getMiddleName(), user.getFirstLastName(), user.getMiddleLastName());
+                msg += "User full name: " + user.getFullName();
                 msg += "\n";
                 msg += "User Dni: " + user.getDni();
                 msg += "\n";

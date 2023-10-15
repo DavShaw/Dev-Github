@@ -1,4 +1,3 @@
-import math
 # Definir diccionarios
 posiciones = {
     1: "Delantero",
@@ -14,8 +13,7 @@ continentes = {
     }
 # Definir mensaje
 
-
-def borrar_consola():
+def borrar_mensajes():
     for i in range(500):
         print("")
 
@@ -24,16 +22,16 @@ def esta_en_intervalo(inicio, fin, valor):
     return esta
 
 def pedir_edad_jugador():
-    borrar_consola()
+    borrar_mensajes()
     while True:
-        borrar_consola()
+        borrar_mensajes()
         edad = input("Ingresar edad del jugador: ")
         if (edad.isdigit()):
             edad_numero = int(edad)
             return edad_numero
 
 def pedir_posicion_jugador():
-    borrar_consola()
+    borrar_mensajes()
     
     menu = f"""
     1. {posiciones[1]}
@@ -43,7 +41,7 @@ def pedir_posicion_jugador():
     """
     posicion = ""
     while True:
-        borrar_consola()
+        borrar_mensajes()
         print(menu)
         posicion_str = input("Posicion del jugador: ")
 
@@ -53,9 +51,9 @@ def pedir_posicion_jugador():
                 return posicion
             
 def ha_representado_seleccion():
-    borrar_consola()
+    borrar_mensajes()
     while True:
-        borrar_consola()
+        borrar_mensajes()
         respuesta = input("¿Has representado a tu selección (S/N)?: ")
         respuesta = respuesta.lower()
 
@@ -72,7 +70,7 @@ def ha_jugado_exterior():
     """
     continente = ""
     while True:
-        borrar_consola()
+        borrar_mensajes()
         print(menu)
         continente_str = input("¿En que continentes has jugado?: ")
 
@@ -82,7 +80,7 @@ def ha_jugado_exterior():
                 return continente
             
 def pedir_goles():
-    borrar_consola()
+    borrar_mensajes()
     while True:
         goles = input("¿Cuántos goles ha marcado?: ")
         if(goles.isdigit()):
@@ -174,17 +172,6 @@ def calcular_puntos_goles(goles):
         puntos += 10
     return puntos
 
-def calcular_puntos_totales(edad, posicion, seleccion, exterior, goles):
-    puntos_totales = 0
-
-    puntos_totales = puntos_totales +  calcular_puntos_edad(edad)
-    puntos_totales = puntos_totales + calcular_puntos_posicion(posicion)
-    puntos_totales = puntos_totales + calcular_puntos_seleccion(seleccion)
-    puntos_totales = puntos_totales + calcular_puntos_exterior(exterior)
-    puntos_totales = puntos_totales + calcular_puntos_goles(goles)
-
-    return puntos_totales
-
 def calcular_salario(puntos):
     base = 10000
     adicionales = (2000*puntos)
@@ -246,7 +233,7 @@ Goles marcados: {jugador_goles} ({puntos_goles})
 
 Esto nos da un total de: ${salario} (USD) 
 """
-    borrar_consola()
+    borrar_mensajes()
     print(mensaje)
 
 ejecutar_programa()

@@ -1,5 +1,6 @@
 package org.davshaw.Model.pureentities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,14 +21,14 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "Account")
-public class Account
+public class Account 
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "accountNumber")
     private Integer accountNumber;
 
-    @OneToOne(targetEntity = User.class)
+    @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "ownerDni", referencedColumnName = "dni", insertable = false, updatable = false)
     private User owner;
 
