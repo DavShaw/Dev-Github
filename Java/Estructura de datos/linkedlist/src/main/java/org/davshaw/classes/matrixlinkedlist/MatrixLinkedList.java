@@ -1,5 +1,6 @@
 package org.davshaw.classes.matrixlinkedlist;
 
+import org.davshaw.classes.Position;
 import org.davshaw.classes.doublelinkedlist.DoubleLinkedList;
 import org.davshaw.classes.doublelinkedlist.Node;
 
@@ -114,6 +115,26 @@ public class MatrixLinkedList {
         this.getNodeAt(row, index).setValue(value);
     }
 
+    public Position getPlayerCoords(String playerValue) {
+
+        DoubleLinkedList current = this.getHead();
+        for (int i = 0; i < this.getSize(); i++) {
+
+            if(current != null) {
+                for(int j = 0; j < current.size(); j++) {
+                    if (current.getNodeAt(j).getValue().equals(playerValue)) {
+                        return new Position(i, j);
+                    }
+                }
+                current = current.getNext();
+            }
+        }
+        return null;
+    }
+
+    public boolean canWin(String playerValue) {
+        return false;
+    }
     
 
     public static void main(String[] args) {
