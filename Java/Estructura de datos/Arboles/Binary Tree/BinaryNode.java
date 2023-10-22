@@ -1,8 +1,10 @@
 public class BinaryNode
 {
     private String value;
+    private short balanceFactor;
     private BinaryNode rightChild;
     private BinaryNode leftChild;
+    
     public BinaryNode(String value)
     {
         this.value = value;

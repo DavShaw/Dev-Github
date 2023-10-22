@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class DoubleLinkedList
 {
     protected Node head;
     protected Node tail;
+    private DoubleLinkedList next;
+    private DoubleLinkedList prev;
 
     public void addNodeAtTail(int value)
     {
@@ -222,21 +222,16 @@ public class DoubleLinkedList
         print(this.getHead());
     }
 
-    public DoubleLinkedList test1(DoubleLinkedList l) {
-        for (int i = 0; i < l.size(); i++) {
-            if(l.getNodeAt(i).getValue().equalsIgnoreCase("*")) {
-                l.deleteAt(i);
-            }
-        }
-        return l;
-    }
+    @Override
+    public String toString() {
 
-    public static void main(String[] args) {
-        DoubleLinkedList examen = new DoubleLinkedList();
-        examen.addNodeAtTailAsList("1|3|*|2|*|5|0|*|5|*|2|*|852|0|*");
-        examen.print();
-        examen.test1(examen);
-        System.out.println("Editada");
-        examen.print();
+        String result = "";
+
+        for (int i = 0; i < this.size(); i++) {
+            result += "_";
+            result += this.getNodeAt(i) + " | ";
+        }
+
+        return result;
     }
 }

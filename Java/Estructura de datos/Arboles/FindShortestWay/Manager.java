@@ -181,8 +181,6 @@ public class Manager
 
     return allRoutes;
 }
-
-
     public static void main(String[] args)
     {
         //Let's try it

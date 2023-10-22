@@ -46,7 +46,6 @@ public class BinaryTree
         }
     }
 
-
     public void genereteTest()
     {
         this.root = new BinaryNode("A");
@@ -55,6 +54,57 @@ public class BinaryTree
         this.root.setLeftChild(new BinaryNode("C"));
     }
 
+    private short height(BinaryNode root, short total) {
+        if(root != null) {
+            if(root.getRightChild() == null && root.getLeftChild() == null) {
+                return (short) (total + 1);
+            }
+            short left_height = this.height(root.getLeftChild(), (short) (total + 1));
+            short right_height = this.height(root.getRightChild(), (short) (total + 1));
+            
+            if (left_height == right_height) {
+                return left_height;
+            }
+            else if (left_height > right_height) {
+                return left_height;
+            }
+            else {
+                return right_height;
+            }
+        }
+        return total;
+    }
+
+    public short nodeHeight(String nodeValue) {
+        BinaryNode node = this.getNode(nodeValue);
+        return height(node, (short) 0);
+    }
+
+    public short treeHeight() {
+        return height(this.getRoot(), (short) 0);
+    }
+
+    public short treeBalanceFactor() {
+        return balanceFactor(this.getRoot());
+    }
+
+    public short balanceFactor(String value) {
+        BinaryNode node = this.getNode(value);
+        return balanceFactor(node);
+    }
+
+    private short balanceFactor(BinaryNode node) {
+
+        if (node == null) {
+            return 0;
+        }
+
+        short heightLeft = height(node.getLeftChild(), (short) 0);
+        short heightRight = height(node.getRightChild(), (short) 0);
+    
+        return (short) (heightRight - heightLeft);
+    }
+    
     public BinaryNode getNode(String value)
     {
         if (this.root == null)
@@ -91,7 +141,6 @@ public class BinaryTree
         return this.root;
     }
     
-
     public void showNodes()
     {
         if (this.root != null)
@@ -136,11 +185,6 @@ public class BinaryTree
             System.out.println(indent + "|-- X");
         }
     }
-
-
-
-
-
 
     public void printTree() {
         if (this.root != null) {

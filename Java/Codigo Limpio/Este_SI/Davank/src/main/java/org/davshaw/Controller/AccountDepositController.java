@@ -1,11 +1,15 @@
 package org.davshaw.Controller;
 
 import java.util.Date;
+import java.util.List;
+
 import javax.security.auth.login.AccountNotFoundException;
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.RecordNotFoundException;
+import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
+import org.davshaw.Model.derivatedentities.AccountTransfer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -153,6 +157,47 @@ public class AccountDepositController {
       e.printStackTrace();
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
+      session.close();
+      sessionFactory.close();
+    }
+  }
+
+  public static ResultPack<List<Integer>> getDepositReport(int userDni) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(AccountTransfer.class)
+      .buildSessionFactory();
+
+    Session session = sessionFactory.openSession();
+
+    try {
+      
+      //Checking user exists
+      if(!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
+      
+      //Checking account exists
+      if(!(AccountController.accountExist(userDni).getResult())) {
+        throw new AccountNotFoundException();
+      }
+
+      session.beginTransaction();
+
+      //Get account number
+      int accountNumber = AccountController.getAccountNumber(userDni).getResult();
+      String sql = "SELECT id FROM AccountDeposit WHERE accountId = :accountId";
+      Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+      query.setParameter("accountId", accountNumber);
+
+      return new ResultPack<List<Integer>>(true, query.list(), "Deposit found.");
+    }
+    
+    catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<List<Integer>>(false, null, e.getMessage());
+    }
+    finally {
       session.close();
       sessionFactory.close();
     }

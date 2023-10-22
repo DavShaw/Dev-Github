@@ -1,9 +1,12 @@
 package org.davshaw.Controller;
 
 import java.util.Date;
+import java.util.List;
+
 import org.davshaw.Exception.AccountNotFoundException;
 import org.davshaw.Exception.InsufficientBalanceException;
 import org.davshaw.Exception.RecordNotFoundException;
+import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.AccountTransfer;
 import org.hibernate.Session;
@@ -172,4 +175,47 @@ public class AccountTransferController {
       sessionFactory.close();
     }
   }
+
+  public static ResultPack<List<Integer>> getTransferReport(int userDni) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(AccountTransfer.class)
+      .buildSessionFactory();
+
+    Session session = sessionFactory.openSession();
+
+    try {
+      
+      //Checking user exists
+      if(!(UserController.userExist(userDni).getResult())) {
+        throw new UserNotFoundException();
+      }
+      
+      //Checking account exists
+      if(!(AccountController.accountExist(userDni).getResult())) {
+        throw new AccountNotFoundException();
+      }
+
+      session.beginTransaction();
+
+      //Get account number
+      int accountNumber = AccountController.getAccountNumber(userDni).getResult();
+      String sql = "SELECT id FROM AccountTransfer WHERE (originAccountNumber = :accountNumber OR destinationAccountNumber = :accountNumber)";
+      Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+      query.setParameter("originAccountNumber", accountNumber);
+      query.setParameter("destinationAccountNumber", accountNumber);
+
+      return new ResultPack<List<Integer>>(true, query.list(), "Transfers found.");
+    }
+    
+    catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<List<Integer>>(false, null, e.getMessage());
+    }
+    finally {
+      session.close();
+      sessionFactory.close();
+    }
+  }
+
 }
