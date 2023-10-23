@@ -138,7 +138,9 @@ public class Manager
     int x = start.get(0);
     int y = start.get(1);
 
-    if (Manager.isBetweenLimits(matrix, x, y) && !Manager.hasBeenVisited(route, x, y) && !Manager.isBlocked(blockedPositions, x, y))
+    if (Manager.isBetweenLimits(matrix, x, y)
+        && !Manager.hasBeenVisited(route, x, y)
+        && !Manager.isBlocked(blockedPositions, x, y))
     {
         // Add the position to the route
         route.add(start);

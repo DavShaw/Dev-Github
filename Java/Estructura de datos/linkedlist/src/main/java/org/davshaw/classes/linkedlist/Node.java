@@ -1,4 +1,4 @@
-package org.davshaw.classes.linkedlist;
+package org.davshaw.classes.LinkedList;
 
 import java.text.MessageFormat;
 

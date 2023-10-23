@@ -1,9 +1,8 @@
 package org.davshaw.classes.matrixlinkedlist;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.davshaw.classes.AllRouteList;
 import org.davshaw.classes.Position;
+import org.davshaw.classes.SingleRouteList;
 import org.davshaw.classes.doublelinkedlist.DoubleLinkedList;
 import org.davshaw.classes.doublelinkedlist.Node;
 
@@ -43,6 +42,10 @@ public class MatrixLinkedList {
         return false;
     }
     
+    public boolean isValidPosition(int x, int y) {
+        return this.isValidPosition(new Position(x, y));
+    }
+
     public void moveFromTo(Position from, Position to) {
         try {
             if(!(this.isValidPosition(from))) {
@@ -161,6 +164,78 @@ public class MatrixLinkedList {
         this.getNodeAt(position).setValue(value);
     }
 
+    public void changeValueAt(int x, int y, String value) {
+        this.changeValueAt(new Position(x, y), value);
+    }
+
+    public void graphicRoute(SingleRouteList route) {
+        MatrixLinkedList copy = this;
+
+        for (int i = 1; i < route.getSize()-1; i++) {
+            Position currPosition = route.getNodeAtIndex(i);
+            copy.changeValueAt(currPosition, String.valueOf(i));
+            if (i == 0) {
+                copy.changeValueAt(currPosition, "X");
+            }
+
+            if(i == route.getSize()) {
+                copy.changeValueAt(currPosition, "Y");
+            }
+
+            else {
+                copy.changeValueAt(currPosition, String.valueOf(i));
+            }
+        }
+        copy.print();
+    }
+
+    public AllRouteList getAllRoutesXY(
+        Position x,
+        Position y,
+        SingleRouteList path,
+        AllRouteList routes) {
+
+        boolean checkValid = this.isValidPosition(x);
+        boolean checkVisited = !this.hasBeenVisited(x, path);
+        boolean checkBlocked = !this.isBlocked(x);
+        boolean checkArrive = !this.hasArrived(y,path);
+
+        if (checkValid && checkVisited && checkBlocked && checkArrive) {
+
+            SingleRouteList pathCopy = new SingleRouteList();
+            pathCopy.addAll(path);
+            pathCopy.addToTail(x);
+
+            if (x.equals(y)) {
+
+                SingleRouteList auxiliar = new SingleRouteList();
+                auxiliar.addAll(pathCopy);
+                routes.addToTail(auxiliar);
+            } else {
+                
+                Position x1 = new Position(x.getX() + 1, x.getY());
+                Position x2 = new Position(x.getX(), x.getY() + 1);
+                Position y1 = new Position(x.getX() - 1, x.getY());
+                Position y2 = new Position(x.getX(), x.getY() - 1);
+
+
+                getAllRoutesXY(x1, y, pathCopy, routes);
+                getAllRoutesXY(x2, y, pathCopy, routes);
+                getAllRoutesXY(y1, y, pathCopy, routes);
+                getAllRoutesXY(y2, y, pathCopy, routes);
+            }
+        }
+        return routes;
+    }
+
+    public boolean hasArrived(Position position, SingleRouteList path) {
+        return path.containsPosition(position);
+    }
+
+    public boolean hasArrived(int x, int y, SingleRouteList path) {
+        return this.hasArrived(new Position(x, y), path);
+    }
+
     public Position getPlayerCoords(String playerValue) {
 
         DoubleLinkedList current = this.getHead();
@@ -196,55 +271,36 @@ public class MatrixLinkedList {
         return true;
     }
     
-    public boolean hasBeenVisited(Position position, List<Position> route) {
-        return route.contains(position);
+    public boolean isBlocked(int x, int y) {
+        return this.isBlocked(new Position(x, y));
     }
 
-    public List<List<Position>> getRouteFromTo(List<Position> singleRoute,
-    List<List<Position>> allRoute,
-    Position start,
-    Position end) {
-        
-    List<Position> currentRoute = new ArrayList<>(singleRoute);
-
-    if ((!hasBeenVisited(start, currentRoute)) && (!isBlocked(start)) && (isValidPosition(start))) {
-        currentRoute.add(start);
-
-        // if start (next) position equals to the so we've finished 
-        if (start.equals(end)) {
-            allRoute.add(currentRoute);
-        }
-        
-        else {
-            // Increment x
-            Position next1 = new Position(start.getX() + 1, start.getY());
-            // Increment y
-            Position next2 = new Position(start.getX(), start.getY() + 1);
-            // Decrement x
-            Position next3 = new Position(start.getX() - 1, start.getY());
-            // Decrement y
-            Position next4 = new Position(start.getX(), start.getY() - 1);
-
-            getRouteFromTo(currentRoute, allRoute, next1, end);
-            getRouteFromTo(currentRoute, allRoute, next2, end);
-            getRouteFromTo(currentRoute, allRoute, next3, end);
-            getRouteFromTo(currentRoute, allRoute, next4, end);
-        }
+    public boolean hasBeenVisited(Position position, SingleRouteList route) {
+        return route.containsPosition(position);
     }
 
-    return allRoute;
-}
 
 
     public static void main(String[] args) {
         MatrixLinkedList matrix = new MatrixLinkedList();
+        matrix.generateMatrix(2,2);
 
-        matrix.generateMatrix(3,3);
+        Position x = new Position(1,1);
+        Position y = new Position(0,0);
+
+        matrix.changeValueAt(x, "X");
+        matrix.changeValueAt(y, "Y");
+        matrix.changeValueAt(1, 0, "#");
+
+        SingleRouteList l = new SingleRouteList();
+        AllRouteList r = new AllRouteList();
+
+        System.out.println("Con bloqueos");
+        matrix.getAllRoutesXY(x,y,l,r);
+        matrix.changeValueAt(0, 1, "#");
+
         matrix.print();
-
-        List<Position> singleRoute = new ArrayList<Position>();
-        List<List<Position>> allRoute = new ArrayList<List<Position>>();
-        matrix.getRouteFromTo(singleRoute, allRoute, new Position(0, 0), new Position(2, 2));
+        r.printList();
 
 
     }

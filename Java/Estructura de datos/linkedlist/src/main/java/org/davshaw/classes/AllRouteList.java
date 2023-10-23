@@ -49,11 +49,7 @@ public class AllRouteList {
     }
 
     public void printList() {
-        SingleRouteList current = head;
-        while (current != null) {
-            current.printList();
-            current = current.getNext();
-        }
+        System.out.println(this);
     }
 
 

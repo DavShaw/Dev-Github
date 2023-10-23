@@ -9,6 +9,17 @@ public class SingleRouteList {
         next = null;
     }
 
+    public int getSize() {
+        int size = 0;
+        Position current = head;
+        while (current != null) {
+            size++;
+            current = current.getNext();
+        }
+        return size;
+    }
+    
+
     public Position getHead() {
         return head;
     }
@@ -43,9 +54,18 @@ public class SingleRouteList {
         return null;
     }
     
-
-    public void addToTail(int x, int y) {
-        Position newNode = new Position(x, y);
+    public boolean containsPosition(Position position) {
+        Position current = head;
+        while (current != null) {
+            if (current.equals(position)) {
+                return true;
+            }
+            current = current.getNext();
+        }
+        return false;
+    }
+    
+    public void addToTail(Position newNode) {
         if (isEmpty()) {
             head = newNode;
         } else {
@@ -57,15 +77,22 @@ public class SingleRouteList {
         }
     }
 
-    public Position removeFromFront() {
-        if (isEmpty()) {
-            return null;
-        }
-        Position removedNode = head;
-        head = head.getNext();
-        return removedNode;
+    public void addToTail(int x, int y) {
+        this.addToTail(new Position(x, y));
     }
-
+    
+    public void addAll(SingleRouteList otherList) {
+        if (isEmpty()) {
+            head = otherList.head;
+        } else {
+            Position current = head;
+            while (current.getNext() != null) {
+                current = current.getNext();
+            }
+            current.setNext(otherList.head);
+        }
+    }
+    
     public void printList() {
         System.out.println(this);
     }
@@ -83,4 +110,5 @@ public class SingleRouteList {
         }
         return result.toString();
     }
+
 }
