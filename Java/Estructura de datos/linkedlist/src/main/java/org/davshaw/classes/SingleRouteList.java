@@ -29,6 +29,21 @@ public class SingleRouteList {
         return head == null;
     }
 
+    public Position getNodeAtIndex(int index) {
+        Position current = head;
+        int currentIndex = 0;
+    
+        while (current != null) {
+            if (currentIndex == index) {
+                return current;
+            }
+            currentIndex++;
+            current = current.getNext();
+        }
+        return null;
+    }
+    
+
     public void addToTail(int x, int y) {
         Position newNode = new Position(x, y);
         if (isEmpty()) {

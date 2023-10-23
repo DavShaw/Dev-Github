@@ -11,6 +11,22 @@ public class AllRouteList {
         return head == null;
     }
 
+    public SingleRouteList getNodeAtIndex(int index) {
+        SingleRouteList current = head;
+        int currentIndex = 0;
+    
+        while (current != null) {
+
+            if (currentIndex == index) {
+                return current;
+            }
+            currentIndex++;
+            current = current.getNext();
+        }
+        return null;
+    }
+    
+
     public void addToTail(SingleRouteList route) {
         if (isEmpty()) {
             head = route;
@@ -46,9 +62,11 @@ public class AllRouteList {
         StringBuilder result = new StringBuilder();
         SingleRouteList current = head;
         while (current != null) {
+            result.append("{ ");
             result.append(current.toString());
+            result.append(" }");
             if (current.getNext() != null) {
-                result.append(" -> ");
+                result.append(" ==> ");
             }
             current = current.getNext();
         }
@@ -56,18 +74,4 @@ public class AllRouteList {
     }
 
 
-    public static void main(String[] args) {
-        SingleRouteList l = new SingleRouteList();
-        l.addToTail(0, 0);
-        l.addToTail(1, 2);
-
-        SingleRouteList l2 = new SingleRouteList();
-        l2.addToTail(56, 62);
-        l2.addToTail(11, 21);
-
-        AllRouteList r = new AllRouteList();
-        r.addToTail(l);
-        r.addToTail(l2);
-        System.out.println(r);
-    }
 }
