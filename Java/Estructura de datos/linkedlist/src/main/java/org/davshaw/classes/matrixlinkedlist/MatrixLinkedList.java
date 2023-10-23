@@ -1,5 +1,8 @@
 package org.davshaw.classes.matrixlinkedlist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.davshaw.classes.Position;
 import org.davshaw.classes.doublelinkedlist.DoubleLinkedList;
 import org.davshaw.classes.doublelinkedlist.Node;
@@ -30,6 +33,49 @@ public class MatrixLinkedList {
             return (current != null) ? current : null;
         }
         return null;
+    }
+
+    public boolean isValidPosition(Position position) {
+        if (this.getRowAt(0) != null) {
+            return position.getX() >= 0 && position.getY() >= 0 &&
+               position.getX() <= this.getSize() - 1 && position.getY() <= this.getRowAt(0).size() - 1;
+        }
+        return false;
+    }
+    
+    public void moveFromTo(Position from, Position to) {
+        try {
+            if(!(this.isValidPosition(from))) {
+                throw new IllegalArgumentException("Out of the range.");
+            }
+
+            if(!(this.isValidPosition(to))) {
+                throw new IllegalArgumentException("Out of the range.");
+            }
+
+            if (this.isAnyPlayerThere(to)) {
+                throw new IllegalArgumentException("Any one else is on that position");
+            }
+
+            Node nodeFrom = this.getNodeAt(from);
+            Node nodeTo = this.getNodeAt(to);
+
+            nodeTo.setValue(nodeFrom.getValue());
+            nodeFrom.setValue(" ");
+
+        }
+
+        catch (IllegalArgumentException error) {
+            System.out.println("FATAL ERROR: " + error.getMessage());
+        }
+    }
+
+    public boolean isPlayerThere(Position position, String playerValue) {
+        return this.getNodeAt(position).getValue().equals(playerValue);
+    }
+
+    public boolean isAnyPlayerThere(Position position) {
+        return this.isPlayerThere(position, "x") || this.isPlayerThere(position, "y");
     }
 
     public int getSize() {
@@ -64,7 +110,7 @@ public class MatrixLinkedList {
         }
     }
     
-    public void showMatrix() {
+    public void print() {
         this.showMatrix(this.getHead());
     }
 
@@ -107,12 +153,12 @@ public class MatrixLinkedList {
         this.setHead(null);
     }
 
-    public Node getNodeAt(int row, int index) {
-        return this.getRowAt(row).getNodeAt(index);
+    public Node getNodeAt(Position position) {
+        return this.getRowAt(position.getX()).getNodeAt(position.getY());
     }
 
-    public void changeValueAt(int row, int index, String value) { 
-        this.getNodeAt(row, index).setValue(value);
+    public void changeValueAt(Position position, String value) { 
+        this.getNodeAt(position).setValue(value);
     }
 
     public Position getPlayerCoords(String playerValue) {
@@ -136,13 +182,73 @@ public class MatrixLinkedList {
         return false;
     }
     
+    public boolean isBlocked(Position position) {
+
+        if (isValidPosition(position)) {
+
+            Node node = this.getNodeAt(position);
+
+            if (node != null) {
+                return node.getValue().equals("#");
+            }
+
+        }
+        return true;
+    }
+    
+
+    public boolean hasBeenVisited(Position position, List<Position> route) {
+        return route.contains(position);
+    }
+
+    public List<List<Position>> getRouteFromTo(List<Position> singleRoute,
+    List<List<Position>> allRoute,
+    Position start,
+    Position end) {
+        
+    List<Position> currentRoute = new ArrayList<>(singleRoute);
+
+    if ((!hasBeenVisited(start, currentRoute)) && (!isBlocked(start)) && (isValidPosition(start))) {
+        currentRoute.add(start);
+
+        // if start (next) position equals to the so we've finished 
+        if (start.equals(end)) {
+            allRoute.add(currentRoute);
+        }
+        
+        else {
+            // Increment x
+            Position next1 = new Position(start.getX() + 1, start.getY());
+            // Increment y
+            Position next2 = new Position(start.getX(), start.getY() + 1);
+            // Decrement x
+            Position next3 = new Position(start.getX() - 1, start.getY());
+            // Decrement y
+            Position next4 = new Position(start.getX(), start.getY() - 1);
+
+            getRouteFromTo(currentRoute, allRoute, next1, end);
+            getRouteFromTo(currentRoute, allRoute, next2, end);
+            getRouteFromTo(currentRoute, allRoute, next3, end);
+            getRouteFromTo(currentRoute, allRoute, next4, end);
+        }
+    }
+
+    return allRoute;
+}
+
 
     public static void main(String[] args) {
         MatrixLinkedList matrix = new MatrixLinkedList();
-        matrix.generateMatrix(2, 2);
-        matrix.changeValueAt(0, 0, "x");
-        matrix.changeValueAt(1, 1, "y");
-        matrix.showMatrix();
+
+        matrix.generateMatrix(3,3);
+        matrix.print();
+
+        List<Position> singleRoute = new ArrayList<Position>();
+        List<List<Position>> allRoute = new ArrayList<List<Position>>();
+        matrix.getRouteFromTo(singleRoute, allRoute, new Position(0, 0), new Position(2, 2));
+        System.out.println(allRoute.get(0));
+
+
     }
-    
+
 }

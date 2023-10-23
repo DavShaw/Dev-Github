@@ -1,12 +1,14 @@
 package org.davshaw.classes;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Position {
     private int x;
     private int y;
