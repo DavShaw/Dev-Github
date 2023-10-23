@@ -16,14 +16,7 @@ public class DoubleLinkedList
     private DoubleLinkedList next;
     private DoubleLinkedList prev;
 
-    public void addNodeAtTail(int value)
-    {
-        String valString = String.valueOf(value);
-        this.addNodeAtTail(valString);
-    }
-
-    public void addNodeAtTail(String value)
-    {
+    public void addNodeAtTail(String value) {
         if (this.head == null)
         {
             //Instanciar nodo
@@ -45,14 +38,7 @@ public class DoubleLinkedList
         }
     }
 
-    public void addNodeAt(int index, int value)
-    {
-        String valueString = String.valueOf(value);
-        this.addNodeAt(index, valueString);
-    }
-
-    public void addNodeAt(int index, String value)
-    {
+    public void addNodeAt(int index, String value) {
         try
         {
             // Obtener el nodo en la posición index - 1
@@ -92,8 +78,7 @@ public class DoubleLinkedList
         }
     }
 
-    public int size()
-    {
+    public int size() {
         int counter = 0;
         Node currentNode = this.head;
         while (currentNode != null)

@@ -245,7 +245,6 @@ public class MatrixLinkedList {
         List<Position> singleRoute = new ArrayList<Position>();
         List<List<Position>> allRoute = new ArrayList<List<Position>>();
         matrix.getRouteFromTo(singleRoute, allRoute, new Position(0, 0), new Position(2, 2));
-        System.out.println(allRoute.get(0));
 
 
     }
