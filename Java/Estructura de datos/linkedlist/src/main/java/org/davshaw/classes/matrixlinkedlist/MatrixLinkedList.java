@@ -196,7 +196,6 @@ public class MatrixLinkedList {
         return true;
     }
     
-
     public boolean hasBeenVisited(Position position, List<Position> route) {
         return route.contains(position);
     }
