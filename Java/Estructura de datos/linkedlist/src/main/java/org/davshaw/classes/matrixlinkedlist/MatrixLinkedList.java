@@ -189,7 +189,14 @@ public class MatrixLinkedList {
         copy.print();
     }
 
-    public AllRouteList getAllRoutesXY(
+    public AllRouteList getAllRouteFromTo(Position from, Position to) {
+        SingleRouteList p = new SingleRouteList();
+        AllRouteList a = new AllRouteList();
+
+        return this.getAllRoutesXY(from, to, p, a);
+    }
+
+    private AllRouteList getAllRoutesXY(
         Position x,
         Position y,
         SingleRouteList path,
@@ -341,13 +348,11 @@ public class MatrixLinkedList {
 
         matrix.changeValueAt(x, "X");
         matrix.changeValueAt(y, "Y");
+        
+        AllRouteList allRouteList = matrix.getAllRouteFromTo(x,y);
+        System.out.println(allRouteList);
 
 
-        SingleRouteList p = new SingleRouteList();
-        AllRouteList a = new AllRouteList();
-
-        matrix.getAllRoutesXY(x, y, p, a);
-        System.out.println(a);
     }
 
 }
