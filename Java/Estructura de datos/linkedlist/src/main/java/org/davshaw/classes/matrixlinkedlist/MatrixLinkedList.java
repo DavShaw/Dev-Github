@@ -202,8 +202,7 @@ public class MatrixLinkedList {
 
         if (checkValid && checkVisited && checkBlocked && checkArrive) {
 
-            SingleRouteList pathCopy = new SingleRouteList();
-            pathCopy.addAll(path);
+            SingleRouteList pathCopy = path.copy();
             pathCopy.addToTail(x);
 
             if (x.equals(y)) {
@@ -253,10 +252,62 @@ public class MatrixLinkedList {
         return null;
     }
 
-    public boolean canWin(String playerValue) {
-        return false;
+    public DoubleLinkedList getFirstRow() {
+        return this.getHead();
+    }
+
+    public SingleRouteList getLastRowPositions() {
+        SingleRouteList path = new SingleRouteList();
+        for (int i = 0; i < this.getLastRow().size(); i++) {
+            Position current = new Position(this.getSize()-1, i);
+            path.addToTail(current);
+        }
+        return path;
+    }
+
+    public SingleRouteList getFirstRowPositions() {
+        SingleRouteList path = new SingleRouteList();
+        for (int i = 0; i < this.getLastRow().size(); i++) {
+            Position current = new Position(0, i);
+            path.addToTail(current);
+        }
+        return path;
+    }
+
+    public DoubleLinkedList getLastRow() {
+        return this.getRowAt(this.getSize()-1);
     }
     
+    public boolean firstRowContains(SingleRouteList path) {
+        DoubleLinkedList row = this.getFirstRow();
+        
+        for (int i = 0; i < row.size(); i++) {
+            if (path.containsPosition(new Position(0, i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean lastRowContains(SingleRouteList path) {
+        DoubleLinkedList row = this.getFirstRow();
+        
+        for (int i = 0; i < row.size(); i++) {
+            if (path.containsPosition(new Position(i, this.getSize()-1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canXWin() {
+        return this.lastRowContains(this.getLastRowPositions());
+    }
+
+    public boolean canYWin() {
+        return this.firstRowContains(this.getFirstRowPositions());
+    }
+
     public boolean isBlocked(Position position) {
 
         if (isValidPosition(position)) {
@@ -283,26 +334,20 @@ public class MatrixLinkedList {
 
     public static void main(String[] args) {
         MatrixLinkedList matrix = new MatrixLinkedList();
-        matrix.generateMatrix(2,2);
+        matrix.generateMatrix(3,3);
 
-        Position x = new Position(1,1);
-        Position y = new Position(0,0);
+        Position x = new Position(0,0);
+        Position y = new Position(2,2);
 
         matrix.changeValueAt(x, "X");
         matrix.changeValueAt(y, "Y");
-        matrix.changeValueAt(1, 0, "#");
-
-        SingleRouteList l = new SingleRouteList();
-        AllRouteList r = new AllRouteList();
-
-        System.out.println("Con bloqueos");
-        matrix.getAllRoutesXY(x,y,l,r);
-        matrix.changeValueAt(0, 1, "#");
-
-        matrix.print();
-        r.printList();
 
 
+        SingleRouteList p = new SingleRouteList();
+        AllRouteList a = new AllRouteList();
+
+        matrix.getAllRoutesXY(x, y, p, a);
+        System.out.println(a);
     }
 
 }

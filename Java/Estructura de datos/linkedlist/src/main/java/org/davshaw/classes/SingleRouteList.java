@@ -11,12 +11,29 @@ public class SingleRouteList {
 
     public int getSize() {
         int size = 0;
-        Position current = head;
+        Position current = this.head;
         while (current != null) {
             size++;
             current = current.getNext();
         }
         return size;
+    }
+    
+    public SingleRouteList copy() {
+        SingleRouteList copiedList = new SingleRouteList();
+
+        if (this.isEmpty()) {
+            return copiedList;
+        }
+    
+        Position current = this.getHead();
+        while (current != null) {
+            Position copiedNode = new Position(current.getX(), current.getY());
+            copiedList.addToTail(copiedNode);
+            current = current.getNext();
+        }
+    
+        return copiedList;
     }
     
 
@@ -110,5 +127,4 @@ public class SingleRouteList {
         }
         return result.toString();
     }
-
 }
