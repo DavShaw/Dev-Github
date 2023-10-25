@@ -38,7 +38,6 @@ public class AllRouteList {
         return count;
     }
     
-
     public void addToTail(SingleRouteList route) {
         if (isEmpty()) {
             head = route;
@@ -50,21 +49,12 @@ public class AllRouteList {
             current.setNext(route);
         }
     }
-
-    public SingleRouteList removeFromFront() {
-        if (isEmpty()) {
-            return null;
-        }
-        SingleRouteList removedRoute = head;
-        head = head.getNext();
-        return removedRoute;
-    }
-
+    
     public void printList() {
         System.out.println(this);
     }
 
-
+    // By ChatGPT
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();

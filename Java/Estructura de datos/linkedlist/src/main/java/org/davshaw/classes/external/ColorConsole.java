@@ -3,6 +3,7 @@ package org.davshaw.classes.external;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 
+// By ChatGPT
 public class ColorConsole {
 
     static {

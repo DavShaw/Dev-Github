@@ -59,7 +59,7 @@ public class ToucheTheEdge {
             e.printStackTrace();
         }
     }
-
+    // By ChatGPT
     public void moveX(String direction) {
 
         direction = direction.toUpperCase();
@@ -101,7 +101,7 @@ public class ToucheTheEdge {
                 break;
         }
     }
-
+    // By ChatGPT
     public void moveY(String direction) {
 
         direction = direction.toUpperCase();
@@ -143,11 +143,11 @@ public class ToucheTheEdge {
                 break;
         }
     }
-
+    // By ChatGPT
     public void blockingAt(int x, int y) {
         this.map.blockAt(new Position(x, y));
     }
-
+    // By ChatGPT
     public String selectRandomPlayer() {
 
         Random random = new Random();
@@ -213,7 +213,7 @@ public class ToucheTheEdge {
             // Do nothing, just prevent the error
         }
     }
-
+    // By ChatGPT
     public boolean canPlayerBlock() {
         Random random = new Random();
         return random.nextBoolean();

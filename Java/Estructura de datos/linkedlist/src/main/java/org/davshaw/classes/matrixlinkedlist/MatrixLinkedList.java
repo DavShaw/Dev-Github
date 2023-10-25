@@ -112,10 +112,12 @@ public class MatrixLinkedList {
         return 0;
     }
     
+    // By ChatGPT
     public void printList() {
         this.printList(this.getHead());
     }
 
+    // By ChatGPT
     public void printList(DoubleLinkedList row) {
         if (row != null) {
             System.out.println(row);
@@ -194,6 +196,7 @@ public class MatrixLinkedList {
         this.changeValueAt(coords, "Y");
     }
     
+    // By ChatGPT
     public void moveXUp() {
         
         Position playerPosition = this.getXPosition();
@@ -206,6 +209,7 @@ public class MatrixLinkedList {
         }
     }
 
+    // By ChatGPT
     public void moveXDown() {
         Position playerPosition = this.getXPosition();
         Position newPlayerPosition = new Position(playerPosition.getX() + 1, playerPosition.getY());
@@ -217,6 +221,7 @@ public class MatrixLinkedList {
         }
     }
     
+    // By ChatGPT
     public void moveXLeft() {
         Position playerPosition = this.getXPosition();
         Position newPlayerPosition = new Position(playerPosition.getX(), playerPosition.getY() -1);
@@ -228,6 +233,7 @@ public class MatrixLinkedList {
         }
     }
     
+    // By ChatGPT
     public void moveXRight() {
         Position playerPosition = this.getXPosition();
         Position newPlayerPosition = new Position(playerPosition.getX(), playerPosition.getY() +1);
@@ -239,6 +245,7 @@ public class MatrixLinkedList {
         }
     }
     
+    // By ChatGPT
     public void moveYUp() {
         
         Position playerPosition = this.getYPosition();
@@ -251,6 +258,7 @@ public class MatrixLinkedList {
         }
     }
 
+    // By ChatGPT
     public void moveYDown() {
         Position playerPosition = this.getYPosition();
         Position newPlayerPosition = new Position(playerPosition.getX() +1, playerPosition.getY());
@@ -262,6 +270,7 @@ public class MatrixLinkedList {
         }
     }
     
+    // By ChatGPT
     public void moveYLeft() {
         Position playerPosition = this.getYPosition();
         Position newPlayerPosition = new Position(playerPosition.getX(), playerPosition.getY() -1);
@@ -273,6 +282,7 @@ public class MatrixLinkedList {
         }
     }
     
+    // By ChatGPT
     public void moveYRight() {
         Position playerPosition = this.getYPosition();
         Position newPlayerPosition = new Position(playerPosition.getX(), playerPosition.getY() +1);
@@ -284,6 +294,7 @@ public class MatrixLinkedList {
         }
     }
     
+    // By ChatGPT
     public Position getXPosition() {
         for (int i = 0; i < getSize(); i++) {
             for (int j = 0; j < getRowsSize(); j++) {
@@ -295,6 +306,7 @@ public class MatrixLinkedList {
         return null;
     }
 
+    // By ChatGPT
     public Position getYPosition() {
         for (int i = 0; i < getSize(); i++) {
             for (int j = 0; j < getRowsSize(); j++) {
