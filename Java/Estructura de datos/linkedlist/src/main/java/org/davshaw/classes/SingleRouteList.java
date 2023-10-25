@@ -9,6 +9,13 @@ public class SingleRouteList {
         next = null;
     }
 
+    public Position getTail() {
+        if (!isEmpty()) {
+            return this.getNodeAtIndex(this.getSize() - 1);
+        }
+        return null;
+    }
+
     public int getSize() {
         int size = 0;
         Position current = this.head;

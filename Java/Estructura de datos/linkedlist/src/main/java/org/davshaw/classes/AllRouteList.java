@@ -26,6 +26,18 @@ public class AllRouteList {
         return null;
     }
     
+    public int getSize() {
+        int count = 0;
+        SingleRouteList current = head;
+        
+        while (current != null) {
+            count++;
+            current = current.getNext();
+        }
+        
+        return count;
+    }
+    
 
     public void addToTail(SingleRouteList route) {
         if (isEmpty()) {

@@ -17,7 +17,7 @@ public class MatrixLinkedList {
     
     private DoubleLinkedList head;
 
-    public DoubleLinkedList getRowAt(int index) {
+    private DoubleLinkedList getRowAt(int index) {
 
         if (index >= 0 && index < this.getSize()) {
 
@@ -34,7 +34,7 @@ public class MatrixLinkedList {
         return null;
     }
 
-    public boolean isValidPosition(Position position) {
+    private boolean isValidPosition(Position position) {
         if (this.getRowAt(0) != null) {
             return position.getX() >= 0 && position.getY() >= 0 &&
                position.getX() <= this.getSize() - 1 && position.getY() <= this.getRowAt(0).size() - 1;
@@ -42,11 +42,7 @@ public class MatrixLinkedList {
         return false;
     }
     
-    public boolean isValidPosition(int x, int y) {
-        return this.isValidPosition(new Position(x, y));
-    }
-
-    public void moveFromTo(Position from, Position to) {
+    private void moveFromTo(Position from, Position to) {
         try {
             if(!(this.isValidPosition(from))) {
                 throw new IllegalArgumentException("Out of the range.");
@@ -73,15 +69,33 @@ public class MatrixLinkedList {
         }
     }
 
-    public boolean isPlayerThere(Position position, String playerValue) {
+    private boolean isPlayerThere(Position position, String playerValue) {
         return this.getNodeAt(position).getValue().equals(playerValue);
     }
 
-    public boolean isAnyPlayerThere(Position position) {
-        return this.isPlayerThere(position, "x") || this.isPlayerThere(position, "y");
+    private boolean isAnyPlayerThere(Position position) {
+        return this.isPlayerThere(position, "X") || this.isPlayerThere(position, "Y");
     }
 
-    public int getSize() {
+    private SingleRouteList getFirstRowPositions() {
+        SingleRouteList firstRow = new SingleRouteList();
+        for (int i = 0; i < getRowsSize(); i++) {
+            firstRow.addToTail(new Position(0, i));
+        }
+        return firstRow;
+    }
+    
+    private SingleRouteList getLastRowPositions() {
+        SingleRouteList lastRow = new SingleRouteList();
+        int numRows = getSize();
+        int numColumns = getRowsSize();
+        for (int i = 0; i < numColumns; i++) {
+            lastRow.addToTail(new Position(numRows - 1, i));
+        }
+        return lastRow;
+    }
+    
+    private int getSize() {
         int counter = 0;
         DoubleLinkedList current = this.getHead();
         while (current != null) {
@@ -91,42 +105,29 @@ public class MatrixLinkedList {
         return counter;
     }
 
-    public int getRowsSize() {
+    private int getRowsSize() {
         if (this.getSize() > 0) {
             return this.getRowAt(0).size();
         } 
         return 0;
     }
-
-    public void addRow(String value) {
-        DoubleLinkedList node = new DoubleLinkedList();
-        node.addNodeAtTailAsList(value);
-        if (this.getHead() == null) {
-            this.setHead(node);
-        }
-        else {
-            DoubleLinkedList current = this.getHead();
-            while (current.getNext() != null) {
-                current = current.getNext();
-            }
-            current.setNext(node);
-        }
-    }
     
-    public void print() {
-        this.showMatrix(this.getHead());
+    private void printList() {
+        this.printList(this.getHead());
     }
 
-    private void showMatrix(DoubleLinkedList row) {
+    private void printList(DoubleLinkedList row) {
         if (row != null) {
             System.out.println(row);
-            this.showMatrix(row.getNext());
+            this.printList(row.getNext());
         }
         
     }
 
-    public void generateMatrix(int rows, int columns) {
+    private void generateMatrix(int rows, int columns) {
         this.clearMatrix();
+        this.setXPlayer();
+        this.setYPlayer();
     
         DoubleLinkedList currentRow = null;
         DoubleLinkedList prevRow = null;
@@ -152,24 +153,79 @@ public class MatrixLinkedList {
         }
     }
     
-    public void clearMatrix() {
+    private void clearMatrix() {
         this.setHead(null);
     }
 
-    public Node getNodeAt(Position position) {
+    private MatrixLinkedList copy() {
+        MatrixLinkedList copy = new MatrixLinkedList();
+
+        int rows = this.getSize();
+        int columns = this.getRowsSize();
+    
+        copy.generateMatrix(rows, columns);
+    
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Position currentPosition = new Position(i, j);
+                String value = this.getNodeAt(currentPosition).getValue();
+                copy.changeValueAt(currentPosition, value);
+            }
+        }
+        return copy;
+    }
+    
+    private void blockAt(Position position) {
+        this.changeValueAt(position, "#");
+    }
+
+    private void setXPlayer() {
+        this.changeValueAt(0,0,"X");
+    }
+
+    private void setYPlayer() {
+        int numRows = this.getRowsSize();
+        int numColumns = this.getSize();
+        Position coords = new Position(numRows - 1, numColumns - 1);
+        this.changeValueAt(coords, "Y");
+    }
+    
+    private Position getXPosition() {
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getRowsSize(); j++) {
+                if (this.isPlayerThere(new Position(i, j), "X")) {
+                    return new Position(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    private Position getYPosition() {
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getRowsSize(); j++) {
+                if (this.isPlayerThere(new Position(i, j), "Y")) {
+                    return new Position(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    private Node getNodeAt(Position position) {
         return this.getRowAt(position.getX()).getNodeAt(position.getY());
     }
 
-    public void changeValueAt(Position position, String value) { 
+    private void changeValueAt(Position position, String value) { 
         this.getNodeAt(position).setValue(value);
     }
 
-    public void changeValueAt(int x, int y, String value) {
+    private void changeValueAt(int x, int y, String value) {
         this.changeValueAt(new Position(x, y), value);
     }
 
     public void graphicRoute(SingleRouteList route) {
-        MatrixLinkedList copy = this;
+        MatrixLinkedList copy = this.copy();
 
         for (int i = 1; i < route.getSize()-1; i++) {
             Position currPosition = route.getNodeAtIndex(i);
@@ -186,17 +242,17 @@ public class MatrixLinkedList {
                 copy.changeValueAt(currPosition, String.valueOf(i));
             }
         }
-        copy.print();
+        copy.printList();
     }
 
-    public AllRouteList getAllRouteFromTo(Position from, Position to) {
+    private AllRouteList getAllRouteFromTo(Position from, Position to) {
         SingleRouteList p = new SingleRouteList();
         AllRouteList a = new AllRouteList();
 
-        return this.getAllRoutesXY(from, to, p, a);
+        return this.getAllRouteFromTo(from, to, p, a);
     }
 
-    private AllRouteList getAllRoutesXY(
+    private AllRouteList getAllRouteFromTo(
         Position x,
         Position y,
         SingleRouteList path,
@@ -225,97 +281,64 @@ public class MatrixLinkedList {
                 Position y2 = new Position(x.getX(), x.getY() - 1);
 
 
-                getAllRoutesXY(x1, y, pathCopy, routes);
-                getAllRoutesXY(x2, y, pathCopy, routes);
-                getAllRoutesXY(y1, y, pathCopy, routes);
-                getAllRoutesXY(y2, y, pathCopy, routes);
+                getAllRouteFromTo(x1, y, pathCopy, routes);
+                getAllRouteFromTo(x2, y, pathCopy, routes);
+                getAllRouteFromTo(y1, y, pathCopy, routes);
+                getAllRouteFromTo(y2, y, pathCopy, routes);
             }
         }
         return routes;
     }
 
-    public boolean hasArrived(Position position, SingleRouteList path) {
+    private boolean hasArrived(Position position, SingleRouteList path) {
         return path.containsPosition(position);
     }
 
-    public boolean hasArrived(int x, int y, SingleRouteList path) {
-        return this.hasArrived(new Position(x, y), path);
+    private boolean canXWin() {
+        Position x = this.getXPosition();
+        SingleRouteList lastRow = this.getLastRowPositions();
+
+        for (int i = 0; i < lastRow.getSize(); i++) {
+
+            Position y = lastRow.getNodeAtIndex(i);
+            AllRouteList route = this.getAllRouteFromTo(x, y);
+
+            for (int j = 0; j < route.getSize(); j++) {
+                
+                SingleRouteList currentPath = route.getNodeAtIndex(j);
+
+                if (currentPath.containsPosition(y)) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
     }
 
-    public Position getPlayerCoords(String playerValue) {
-
-        DoubleLinkedList current = this.getHead();
-        for (int i = 0; i < this.getSize(); i++) {
-
-            if(current != null) {
-                for(int j = 0; j < current.size(); j++) {
-                    if (current.getNodeAt(j).getValue().equals(playerValue)) {
-                        return new Position(i, j);
-                    }
+    private boolean canYWin() {
+        Position y = this.getYPosition();
+        SingleRouteList firstRow = this.getFirstRowPositions();
+    
+        for (int i = 0; i < firstRow.getSize(); i++) {
+            Position x = firstRow.getNodeAtIndex(i);
+            AllRouteList route = this.getAllRouteFromTo(x, y);
+    
+            for (int j = 0; j < route.getSize(); j++) {
+                SingleRouteList currentPath = route.getNodeAtIndex(j);
+                if (currentPath.containsPosition(x)) {
+                    return true;
                 }
-                current = current.getNext();
             }
         }
-        return null;
-    }
-
-    public DoubleLinkedList getFirstRow() {
-        return this.getHead();
-    }
-
-    public SingleRouteList getLastRowPositions() {
-        SingleRouteList path = new SingleRouteList();
-        for (int i = 0; i < this.getLastRow().size(); i++) {
-            Position current = new Position(this.getSize()-1, i);
-            path.addToTail(current);
-        }
-        return path;
-    }
-
-    public SingleRouteList getFirstRowPositions() {
-        SingleRouteList path = new SingleRouteList();
-        for (int i = 0; i < this.getLastRow().size(); i++) {
-            Position current = new Position(0, i);
-            path.addToTail(current);
-        }
-        return path;
-    }
-
-    public DoubleLinkedList getLastRow() {
-        return this.getRowAt(this.getSize()-1);
+        return false;
     }
     
-    public boolean firstRowContains(SingleRouteList path) {
-        DoubleLinkedList row = this.getFirstRow();
-        
-        for (int i = 0; i < row.size(); i++) {
-            if (path.containsPosition(new Position(0, i))) {
-                return true;
-            }
-        }
-        return false;
+    private boolean canBothWin() {
+        return this.canXWin() && canYWin();
     }
 
-    public boolean lastRowContains(SingleRouteList path) {
-        DoubleLinkedList row = this.getFirstRow();
-        
-        for (int i = 0; i < row.size(); i++) {
-            if (path.containsPosition(new Position(i, this.getSize()-1))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean canXWin() {
-        return this.lastRowContains(this.getLastRowPositions());
-    }
-
-    public boolean canYWin() {
-        return this.firstRowContains(this.getFirstRowPositions());
-    }
-
-    public boolean isBlocked(Position position) {
+    private boolean isBlocked(Position position) {
 
         if (isValidPosition(position)) {
 
@@ -329,29 +352,12 @@ public class MatrixLinkedList {
         return true;
     }
     
-    public boolean isBlocked(int x, int y) {
-        return this.isBlocked(new Position(x, y));
-    }
-
-    public boolean hasBeenVisited(Position position, SingleRouteList route) {
+    private boolean hasBeenVisited(Position position, SingleRouteList route) {
         return route.containsPosition(position);
     }
 
 
-
     public static void main(String[] args) {
-        MatrixLinkedList matrix = new MatrixLinkedList();
-        matrix.generateMatrix(3,3);
-
-        Position x = new Position(0,0);
-        Position y = new Position(2,2);
-
-        matrix.changeValueAt(x, "X");
-        matrix.changeValueAt(y, "Y");
-        
-        AllRouteList allRouteList = matrix.getAllRouteFromTo(x,y);
-        System.out.println(allRouteList);
-
 
     }
 
