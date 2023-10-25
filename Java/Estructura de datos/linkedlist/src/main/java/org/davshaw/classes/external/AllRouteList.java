@@ -1,4 +1,4 @@
-package org.davshaw.classes;
+package org.davshaw.classes.external;
 
 public class AllRouteList {
     private SingleRouteList head;

@@ -1,4 +1,4 @@
-package org.davshaw.classes;
+package org.davshaw.classes.external;
 
 import lombok.Getter;
 import lombok.Setter;

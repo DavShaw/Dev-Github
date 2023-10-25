@@ -1,10 +1,10 @@
 package org.davshaw.classes.matrixlinkedlist;
 
-import org.davshaw.classes.AllRouteList;
-import org.davshaw.classes.Position;
-import org.davshaw.classes.SingleRouteList;
 import org.davshaw.classes.doublelinkedlist.DoubleLinkedList;
 import org.davshaw.classes.doublelinkedlist.Node;
+import org.davshaw.classes.external.AllRouteList;
+import org.davshaw.classes.external.Position;
+import org.davshaw.classes.external.SingleRouteList;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +15,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MatrixLinkedList {
     
-    private DoubleLinkedList head;
+    public DoubleLinkedList head;
 
-    private DoubleLinkedList getRowAt(int index) {
+    public DoubleLinkedList getRowAt(int index) {
 
         if (index >= 0 && index < this.getSize()) {
 
@@ -34,7 +34,7 @@ public class MatrixLinkedList {
         return null;
     }
 
-    private boolean isValidPosition(Position position) {
+    public boolean isValidPosition(Position position) {
         if (this.getRowAt(0) != null) {
             return position.getX() >= 0 && position.getY() >= 0 &&
                position.getX() <= this.getSize() - 1 && position.getY() <= this.getRowAt(0).size() - 1;
@@ -42,7 +42,7 @@ public class MatrixLinkedList {
         return false;
     }
     
-    private void moveFromTo(Position from, Position to) {
+    public void moveFromTo(Position from, Position to) {
         try {
             if(!(this.isValidPosition(from))) {
                 throw new IllegalArgumentException("Out of the range.");
@@ -69,15 +69,15 @@ public class MatrixLinkedList {
         }
     }
 
-    private boolean isPlayerThere(Position position, String playerValue) {
+    public boolean isPlayerThere(Position position, String playerValue) {
         return this.getNodeAt(position).getValue().equals(playerValue);
     }
 
-    private boolean isAnyPlayerThere(Position position) {
+    public boolean isAnyPlayerThere(Position position) {
         return this.isPlayerThere(position, "X") || this.isPlayerThere(position, "Y");
     }
 
-    private SingleRouteList getFirstRowPositions() {
+    public SingleRouteList getFirstRowPositions() {
         SingleRouteList firstRow = new SingleRouteList();
         for (int i = 0; i < getRowsSize(); i++) {
             firstRow.addToTail(new Position(0, i));
@@ -85,7 +85,7 @@ public class MatrixLinkedList {
         return firstRow;
     }
     
-    private SingleRouteList getLastRowPositions() {
+    public SingleRouteList getLastRowPositions() {
         SingleRouteList lastRow = new SingleRouteList();
         int numRows = getSize();
         int numColumns = getRowsSize();
@@ -95,7 +95,7 @@ public class MatrixLinkedList {
         return lastRow;
     }
     
-    private int getSize() {
+    public int getSize() {
         int counter = 0;
         DoubleLinkedList current = this.getHead();
         while (current != null) {
@@ -105,18 +105,18 @@ public class MatrixLinkedList {
         return counter;
     }
 
-    private int getRowsSize() {
+    public int getRowsSize() {
         if (this.getSize() > 0) {
             return this.getRowAt(0).size();
         } 
         return 0;
     }
     
-    private void printList() {
+    public void printList() {
         this.printList(this.getHead());
     }
 
-    private void printList(DoubleLinkedList row) {
+    public void printList(DoubleLinkedList row) {
         if (row != null) {
             System.out.println(row);
             this.printList(row.getNext());
@@ -124,11 +124,9 @@ public class MatrixLinkedList {
         
     }
 
-    private void generateMatrix(int rows, int columns) {
+    public void generateMatrix(int rows, int columns) {
         this.clearMatrix();
-        this.setXPlayer();
-        this.setYPlayer();
-    
+
         DoubleLinkedList currentRow = null;
         DoubleLinkedList prevRow = null;
     
@@ -153,11 +151,11 @@ public class MatrixLinkedList {
         }
     }
     
-    private void clearMatrix() {
+    public void clearMatrix() {
         this.setHead(null);
     }
 
-    private MatrixLinkedList copy() {
+    public MatrixLinkedList copy() {
         MatrixLinkedList copy = new MatrixLinkedList();
 
         int rows = this.getSize();
@@ -175,22 +173,118 @@ public class MatrixLinkedList {
         return copy;
     }
     
-    private void blockAt(Position position) {
+    public void blockAt(Position position) {
         this.changeValueAt(position, "#");
+
+        boolean checkPlayers = (position.equals(this.getXPosition())) || (position.equals(this.getYPosition()));
+
+        if (!this.canBothWin() || checkPlayers) {
+            this.changeValueAt(position, " ");
+        }
     }
 
-    private void setXPlayer() {
+    public void setXPlayer() {
         this.changeValueAt(0,0,"X");
     }
 
-    private void setYPlayer() {
+    public void setYPlayer() {
         int numRows = this.getRowsSize();
         int numColumns = this.getSize();
         Position coords = new Position(numRows - 1, numColumns - 1);
         this.changeValueAt(coords, "Y");
     }
     
-    private Position getXPosition() {
+    public void moveXUp() {
+        
+        Position playerPosition = this.getXPosition();
+        Position newPlayerPosition = new Position(playerPosition.getX() - 1, playerPosition.getY());
+
+        // Check if the new position is valid
+        if (this.isValidPosition(newPlayerPosition) && !this.isBlocked(newPlayerPosition)) {
+            this.changeValueAt(playerPosition, " ");
+            this.changeValueAt(newPlayerPosition, "X");
+        }
+    }
+
+    public void moveXDown() {
+        Position playerPosition = this.getXPosition();
+        Position newPlayerPosition = new Position(playerPosition.getX() + 1, playerPosition.getY());
+    
+        // Check if the new position is valid
+        if (this.isValidPosition(newPlayerPosition) && !this.isBlocked(newPlayerPosition)) {
+            this.changeValueAt(playerPosition, " ");
+            this.changeValueAt(newPlayerPosition, "X");
+        }
+    }
+    
+    public void moveXLeft() {
+        Position playerPosition = this.getXPosition();
+        Position newPlayerPosition = new Position(playerPosition.getX(), playerPosition.getY() -1);
+    
+        // Check if the new position is valid
+        if (this.isValidPosition(newPlayerPosition) && !this.isBlocked(newPlayerPosition)) {
+            this.changeValueAt(playerPosition, " ");
+            this.changeValueAt(newPlayerPosition, "X");
+        }
+    }
+    
+    public void moveXRight() {
+        Position playerPosition = this.getXPosition();
+        Position newPlayerPosition = new Position(playerPosition.getX(), playerPosition.getY() +1);
+    
+        // Check if the new position is valid
+        if (this.isValidPosition(newPlayerPosition) && !this.isBlocked(newPlayerPosition)) {
+            this.changeValueAt(playerPosition, " ");
+            this.changeValueAt(newPlayerPosition, "X");
+        }
+    }
+    
+    public void moveYUp() {
+        
+        Position playerPosition = this.getYPosition();
+        Position newPlayerPosition = new Position(playerPosition.getX() -1, playerPosition.getY());
+
+        // Check if the new position is valid
+        if (this.isValidPosition(newPlayerPosition) && !this.isBlocked(newPlayerPosition)) {
+            this.changeValueAt(playerPosition, " ");
+            this.changeValueAt(newPlayerPosition, "Y");
+        }
+    }
+
+    public void moveYDown() {
+        Position playerPosition = this.getYPosition();
+        Position newPlayerPosition = new Position(playerPosition.getX() +1, playerPosition.getY());
+    
+        // Check if the new position is valid
+        if (this.isValidPosition(newPlayerPosition) && !this.isBlocked(newPlayerPosition)) {
+            this.changeValueAt(playerPosition, " ");
+            this.changeValueAt(newPlayerPosition, "Y");
+        }
+    }
+    
+    public void moveYLeft() {
+        Position playerPosition = this.getYPosition();
+        Position newPlayerPosition = new Position(playerPosition.getX(), playerPosition.getY() -1);
+    
+        // Check if the new position is valid
+        if (this.isValidPosition(newPlayerPosition) && !this.isBlocked(newPlayerPosition)) {
+            this.changeValueAt(playerPosition, " ");
+            this.changeValueAt(newPlayerPosition, "Y");
+        }
+    }
+    
+    public void moveYRight() {
+        Position playerPosition = this.getYPosition();
+        Position newPlayerPosition = new Position(playerPosition.getX(), playerPosition.getY() +1);
+    
+        // Check if the new position is valid
+        if (this.isValidPosition(newPlayerPosition) && !this.isBlocked(newPlayerPosition)) {
+            this.changeValueAt(playerPosition, " ");
+            this.changeValueAt(newPlayerPosition, "Y");
+        }
+    }
+    
+    public Position getXPosition() {
         for (int i = 0; i < getSize(); i++) {
             for (int j = 0; j < getRowsSize(); j++) {
                 if (this.isPlayerThere(new Position(i, j), "X")) {
@@ -201,7 +295,7 @@ public class MatrixLinkedList {
         return null;
     }
 
-    private Position getYPosition() {
+    public Position getYPosition() {
         for (int i = 0; i < getSize(); i++) {
             for (int j = 0; j < getRowsSize(); j++) {
                 if (this.isPlayerThere(new Position(i, j), "Y")) {
@@ -212,15 +306,15 @@ public class MatrixLinkedList {
         return null;
     }
 
-    private Node getNodeAt(Position position) {
+    public Node getNodeAt(Position position) {
         return this.getRowAt(position.getX()).getNodeAt(position.getY());
     }
 
-    private void changeValueAt(Position position, String value) { 
+    public void changeValueAt(Position position, String value) { 
         this.getNodeAt(position).setValue(value);
     }
 
-    private void changeValueAt(int x, int y, String value) {
+    public void changeValueAt(int x, int y, String value) {
         this.changeValueAt(new Position(x, y), value);
     }
 
@@ -245,14 +339,14 @@ public class MatrixLinkedList {
         copy.printList();
     }
 
-    private AllRouteList getAllRouteFromTo(Position from, Position to) {
+    public AllRouteList getAllRouteFromTo(Position from, Position to) {
         SingleRouteList p = new SingleRouteList();
         AllRouteList a = new AllRouteList();
 
         return this.getAllRouteFromTo(from, to, p, a);
     }
 
-    private AllRouteList getAllRouteFromTo(
+    public AllRouteList getAllRouteFromTo(
         Position x,
         Position y,
         SingleRouteList path,
@@ -290,11 +384,11 @@ public class MatrixLinkedList {
         return routes;
     }
 
-    private boolean hasArrived(Position position, SingleRouteList path) {
+    public boolean hasArrived(Position position, SingleRouteList path) {
         return path.containsPosition(position);
     }
 
-    private boolean canXWin() {
+    public boolean canXWin() {
         Position x = this.getXPosition();
         SingleRouteList lastRow = this.getLastRowPositions();
 
@@ -316,7 +410,7 @@ public class MatrixLinkedList {
         return false;
     }
 
-    private boolean canYWin() {
+    public boolean canYWin() {
         Position y = this.getYPosition();
         SingleRouteList firstRow = this.getFirstRowPositions();
     
@@ -334,11 +428,11 @@ public class MatrixLinkedList {
         return false;
     }
     
-    private boolean canBothWin() {
+    public boolean canBothWin() {
         return this.canXWin() && canYWin();
     }
 
-    private boolean isBlocked(Position position) {
+    public boolean isBlocked(Position position) {
 
         if (isValidPosition(position)) {
 
@@ -352,13 +446,8 @@ public class MatrixLinkedList {
         return true;
     }
     
-    private boolean hasBeenVisited(Position position, SingleRouteList route) {
+    public boolean hasBeenVisited(Position position, SingleRouteList route) {
         return route.containsPosition(position);
-    }
-
-
-    public static void main(String[] args) {
-
     }
 
 }
