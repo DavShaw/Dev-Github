@@ -3,6 +3,7 @@ package org.davshaw.Gui.Admin.Account;
 import javax.swing.JOptionPane;
 
 import org.davshaw.Controller.AccountController;
+import org.davshaw.Controller.UserController;
 import org.davshaw.Exception.DuplicateAccountOwnerException;
 import org.davshaw.External.Checker;
 import org.davshaw.External.ResultPack;
@@ -149,7 +150,33 @@ public class AccountPage extends javax.swing.JFrame {
     }//GEN-LAST:event_addBalanceButtonActionPerformed
 
     private void viewHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewHistoryButtonActionPerformed
-        // TODO add your handling code here:
+        String dniStr = JOptionPane.showInputDialog(this, "Enter User Dni: ", "Account History", JOptionPane.QUESTION_MESSAGE);
+
+        if (dniStr != null && dniStr.length() > 0) {
+
+            if(Checker.isDigit(dniStr)) {
+
+                    int dni = Integer.parseInt(dniStr);
+                    ResultPack<Boolean> r1 = UserController.userExist(dni);
+                    
+                    if(r1.getResult()) {
+
+                        ViewHistory frame = new ViewHistory();
+
+                        frame.setUserDni(dni);
+                        frame.executePostStart();
+                        frame.setVisible(true);
+                        this.dispose();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(this, r1.getMessage(), "Account History", JOptionPane.ERROR_MESSAGE);
+                    }
+
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Invalid dni.", "Account History", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_viewHistoryButtonActionPerformed
 
     private void withdrawBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawBalanceButtonActionPerformed

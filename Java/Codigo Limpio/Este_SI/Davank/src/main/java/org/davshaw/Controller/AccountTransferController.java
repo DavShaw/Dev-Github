@@ -202,8 +202,8 @@ public class AccountTransferController {
       int accountNumber = AccountController.getAccountNumber(userDni).getResult();
       String sql = "SELECT id FROM AccountTransfer WHERE (originAccountNumber = :accountNumber OR destinationAccountNumber = :accountNumber)";
       Query<Integer> query = session.createNativeQuery(sql, Integer.class);
-      query.setParameter("originAccountNumber", accountNumber);
-      query.setParameter("destinationAccountNumber", accountNumber);
+      query.setParameter("accountNumber", accountNumber);
+
 
       return new ResultPack<List<Integer>>(true, query.list(), "Transfers found.");
     }

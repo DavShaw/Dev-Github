@@ -7,7 +7,7 @@ import org.davshaw.Model.derivatedentities.TeamLoan;
 import org.davshaw.Model.pureentities.Team;
 import org.davshaw.Model.pureentities.User;
 
-public class getLoanReportAsText {
+public class GetLoanReportAsText {
     public static String getText(List<Integer> loanIdReportList) {
         String msg = "";
         for (Integer loanId : loanIdReportList) {

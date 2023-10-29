@@ -39,9 +39,34 @@ public class User
     private String password;
 
     public String getFullName() {
-        if (this.middleName != null || !this.firstName.equalsIgnoreCase("")) {
-            return String.format("%s %s %s %s", this.firstName, this.middleName, this.firstLastName, this.middleLastName);
+        StringBuilder fullName = new StringBuilder();
+    
+        if (this.firstName != null && !this.firstName.isEmpty()) {
+            fullName.append(this.firstName);
         }
-        return String.format("%s %s %s", this.firstName, this.firstLastName, this.middleLastName);
+    
+        if (this.middleName != null && !this.middleName.isEmpty()) {
+            if (fullName.length() > 0) {
+                fullName.append(" ");
+            }
+            fullName.append(this.middleName);
+        }
+    
+        if (this.firstLastName != null && !this.firstLastName.isEmpty()) {
+            if (fullName.length() > 0) {
+                fullName.append(" ");
+            }
+            fullName.append(this.firstLastName);
+        }
+    
+        if (this.middleLastName != null && !this.middleLastName.isEmpty()) {
+            if (fullName.length() > 0) {
+                fullName.append(" ");
+            }
+            fullName.append(this.middleLastName);
+        }
+    
+        return fullName.toString();
     }
+    
 }
