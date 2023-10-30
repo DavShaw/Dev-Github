@@ -1,8 +1,9 @@
 package org.davshaw.Gui.Admin.Admin;
 
 import org.davshaw.Gui.Admin.Account.AccountPage;
-import org.davshaw.Gui.Admin.Group.GroupPage;
+import org.davshaw.Gui.Admin.Team.TeamPage;
 import org.davshaw.Gui.Admin.User.UserPage;
+import org.davshaw.Gui.Main.MainPage;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -33,7 +34,7 @@ public class AdminPage extends javax.swing.JFrame {
 
         userManagerButton = new javax.swing.JButton();
         groupManager = new javax.swing.JButton();
-        exitButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
         accountManagerButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -54,11 +55,11 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
 
-        exitButton.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 20)); // NOI18N
-        exitButton.setText("Exit");
-        exitButton.addActionListener(new java.awt.event.ActionListener() {
+        backButton.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 20)); // NOI18N
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitButtonActionPerformed(evt);
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -79,7 +80,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(accountManagerButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(groupManager, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(userManagerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(150, 150, 150))
         );
@@ -93,7 +94,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addComponent(accountManagerButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
-                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(71, Short.MAX_VALUE))
         );
 
@@ -114,13 +115,14 @@ public class AdminPage extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_groupManagerActionPerformed
 
-    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_exitButtonActionPerformed
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        MainPage frame = new MainPage();
+        frame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backButtonActionPerformed
 
     private void accountManagerButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountManagerButton1ActionPerformed
-        GroupPage frame = new GroupPage();
+        TeamPage frame = new TeamPage();
         frame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_accountManagerButton1ActionPerformed
@@ -162,7 +164,7 @@ public class AdminPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accountManagerButton1;
-    private javax.swing.JButton exitButton;
+    private javax.swing.JButton backButton;
     private javax.swing.JButton groupManager;
     private javax.swing.JButton userManagerButton;
     // End of variables declaration//GEN-END:variables

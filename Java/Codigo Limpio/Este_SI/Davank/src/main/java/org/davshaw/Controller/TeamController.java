@@ -1,5 +1,7 @@
 package org.davshaw.Controller;
 
+import java.util.List;
+
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
@@ -102,6 +104,41 @@ public class TeamController {
       session.close();
       sessionFactory.close();
     }
+  }
+
+  public static ResultPack<List<Integer>> getTeamsId() {
+    
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(Team.class)
+      .buildSessionFactory();
+
+    Session session = sessionFactory.openSession();
+
+    try {
+
+      session.beginTransaction();
+      String sql = "SELECT id FROM Team";
+      Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+
+      List<Integer> id = query.getResultList();
+      if (id instanceof List<Integer>) {
+        return new ResultPack<List<Integer>>(true, id, "Team id found.");
+      }
+      return new ResultPack<List<Integer>>(true, null, "Team id not found.");
+
+    }
+    
+    catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<List<Integer>>(false, null, e.getMessage());
+    }
+    
+    finally {
+      session.close();
+      sessionFactory.close();
+    }
+
   }
 
   public static ResultPack<Double> getBalance(int id) {

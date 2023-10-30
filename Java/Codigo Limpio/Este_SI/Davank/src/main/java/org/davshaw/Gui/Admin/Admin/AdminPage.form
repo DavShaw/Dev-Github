@@ -28,7 +28,7 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="accountManagerButton1" min="-2" pref="180" max="-2" attributes="0"/>
                   <Component id="groupManager" min="-2" pref="180" max="-2" attributes="0"/>
-                  <Component id="exitButton" min="-2" pref="180" max="-2" attributes="0"/>
+                  <Component id="backButton" min="-2" pref="180" max="-2" attributes="0"/>
                   <Component id="userManagerButton" min="-2" pref="180" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
@@ -45,7 +45,7 @@
               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
               <Component id="accountManagerButton1" min="-2" pref="60" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-              <Component id="exitButton" min="-2" pref="60" max="-2" attributes="0"/>
+              <Component id="backButton" min="-2" pref="60" max="-2" attributes="0"/>
               <EmptySpace pref="71" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -74,15 +74,15 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="groupManagerActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="exitButton">
+    <Component class="javax.swing.JButton" name="backButton">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft Yi Baiti" size="20" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Exit"/>
+        <Property name="text" type="java.lang.String" value="Back"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="accountManagerButton1">

@@ -1,7 +1,7 @@
 package org.davshaw.Davank;
 
 import org.davshaw.External.Color;
-import org.davshaw.Gui.Admin.Admin.AdminPage;
+import org.davshaw.Gui.Main.MainPage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -19,6 +19,6 @@ public class DavankApplication {
       )
     );
 
-    new AdminPage().setVisible(true);
+    new MainPage().setVisible(true);
   }
 }

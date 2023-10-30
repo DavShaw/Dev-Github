@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package org.davshaw.Gui.Admin.Group;
+package org.davshaw.Gui.Admin.Team;
 
 import javax.swing.JOptionPane;
 
@@ -10,18 +10,21 @@ import org.davshaw.Controller.TeamController;
 import org.davshaw.External.Checker;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Gui.Admin.Admin.AdminPage;
+import org.davshaw.Model.pureentities.Team;
+import org.davshaw.Service.Team.GetTheWinner;
 
 /**
  *
  * @author Asus
  */
-public class GroupPage extends javax.swing.JFrame {
+public class TeamPage extends javax.swing.JFrame {
 
     /**
      * Creates new form GroupPage
      */
-    public GroupPage() {
+    public TeamPage() {
         initComponents();
+        this.setVisible(true);
     }
 
     /**
@@ -35,7 +38,7 @@ public class GroupPage extends javax.swing.JFrame {
 
         createGroupButton = new javax.swing.JButton();
         deleteGroupButton = new javax.swing.JButton();
-        editGroupButton = new javax.swing.JButton();
+        checkTeamWinnerButton = new javax.swing.JButton();
         viewGroupsButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
 
@@ -57,11 +60,11 @@ public class GroupPage extends javax.swing.JFrame {
             }
         });
 
-        editGroupButton.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 20)); // NOI18N
-        editGroupButton.setText("Check winner");
-        editGroupButton.addActionListener(new java.awt.event.ActionListener() {
+        checkTeamWinnerButton.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 20)); // NOI18N
+        checkTeamWinnerButton.setText("Check winner");
+        checkTeamWinnerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editGroupButtonActionPerformed(evt);
+                checkTeamWinnerButtonActionPerformed(evt);
             }
         });
 
@@ -91,7 +94,7 @@ public class GroupPage extends javax.swing.JFrame {
                     .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteGroupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(createGroupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editGroupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkTeamWinnerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(viewGroupsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(150, Short.MAX_VALUE))
         );
@@ -103,9 +106,9 @@ public class GroupPage extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addComponent(deleteGroupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
-                .addComponent(editGroupButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
                 .addComponent(viewGroupsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(checkTeamWinnerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70)
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(100, Short.MAX_VALUE))
@@ -171,12 +174,53 @@ public class GroupPage extends javax.swing.JFrame {
 
     }//GEN-LAST:event_deleteGroupButtonActionPerformed
 
-    private void editGroupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGroupButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editGroupButtonActionPerformed
+    private void checkTeamWinnerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkTeamWinnerButtonActionPerformed
+        
+        Integer teamWinnerId = GetTheWinner.getWinner();
+
+        if (teamWinnerId != null) {
+            
+            Team team = TeamController.getTeam(teamWinnerId).getResult();
+            
+            Double teamBalance = team.getBalance();
+            Double teamBalance10 = (0.1) * teamBalance;
+            Double newTeamBalance = teamBalance + teamBalance10;
+
+            TeamController.addBalance(team.getId(), teamBalance10);
+
+            String msg = "";
+
+            msg += "==================";
+            msg += "\n";
+            msg += "There's the winner!!!";
+            msg += "\n";
+            msg += "Team name: " + team.getName();
+            msg += "\n";
+            msg += "Team id: " + team.getId();
+            msg += "\n";
+            msg += "Team balance: " + team.getBalance();
+            msg += "\n";
+            msg += "==================";
+            msg += "\n";
+            msg += String.format("Reward: +10%% of team current balance (+%.2f)", teamBalance10);
+            msg += "\n";
+            msg += "New balance: " + newTeamBalance;
+            msg += "\n";
+            msg += "==================";
+
+            JOptionPane.showMessageDialog(this, msg, "Check winner", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "There's no team to check", "Check winner", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }//GEN-LAST:event_checkTeamWinnerButtonActionPerformed
 
     private void viewGroupsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewGroupsButtonActionPerformed
-        // TODO add your handling code here:
+        ViewTeams frame = new ViewTeams();
+        frame.executePostStart();
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_viewGroupsButtonActionPerformed
 
     /**
@@ -196,29 +240,29 @@ public class GroupPage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GroupPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TeamPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GroupPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TeamPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GroupPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TeamPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GroupPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TeamPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GroupPage().setVisible(true);
+                new TeamPage().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
+    private javax.swing.JButton checkTeamWinnerButton;
     private javax.swing.JButton createGroupButton;
     private javax.swing.JButton deleteGroupButton;
-    private javax.swing.JButton editGroupButton;
     private javax.swing.JButton viewGroupsButton;
     // End of variables declaration//GEN-END:variables
 }

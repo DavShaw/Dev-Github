@@ -1,10 +1,13 @@
 package org.davshaw.Controller;
 
+import java.util.List;
+
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
 import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamLog;
+import org.davshaw.Model.pureentities.Team;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -122,6 +125,43 @@ public class TeamLogController {
       session.close();
       sessionFactory.close();
     }
+  }
+
+  public static ResultPack<List<Integer>> getLogIdByTeamId(int teamId) {
+
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(TeamLog.class)
+      .buildSessionFactory();
+
+    Session session = sessionFactory.openSession();
+
+    try {
+
+      // Checking if team exists
+      if (!TeamController.teamExist(teamId).getResult()) {
+        throw new TeamNotFoundException();
+      }
+
+      session.beginTransaction();
+      String sql = "SELECT id FROM TeamLog WHERE teamId = :teamId";
+      Query<Integer> query = session.createNativeQuery(sql, Integer.class);
+      query.setParameter("teamId", teamId);
+
+      List<Integer> id = query.list();
+      if (id != null) {
+        return new ResultPack<List<Integer>>(true, id, "Log found.");
+      }
+      return new ResultPack<List<Integer>>(true, null, "Log not found.");
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<List<Integer>>(false, null, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
+    }
+
   }
 
   public static ResultPack<Integer> getOwnerDni(int id) {

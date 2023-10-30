@@ -29,7 +29,7 @@
                   <Component id="backButton" min="-2" pref="150" max="-2" attributes="0"/>
                   <Component id="deleteGroupButton" min="-2" pref="150" max="-2" attributes="0"/>
                   <Component id="createGroupButton" min="-2" pref="150" max="-2" attributes="0"/>
-                  <Component id="editGroupButton" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="checkTeamWinnerButton" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                   <Component id="viewGroupsButton" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="150" max="32767" attributes="0"/>
@@ -44,9 +44,9 @@
               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
               <Component id="deleteGroupButton" min="-2" pref="60" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-              <Component id="editGroupButton" min="-2" pref="60" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
               <Component id="viewGroupsButton" min="-2" pref="60" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+              <Component id="checkTeamWinnerButton" min="-2" pref="60" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
               <Component id="backButton" min="-2" pref="60" max="-2" attributes="0"/>
               <EmptySpace pref="100" max="32767" attributes="0"/>
@@ -77,7 +77,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteGroupButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="editGroupButton">
+    <Component class="javax.swing.JButton" name="checkTeamWinnerButton">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft Yi Baiti" size="20" style="1"/>
@@ -85,7 +85,7 @@
         <Property name="text" type="java.lang.String" value="Check winner"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editGroupButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkTeamWinnerButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="viewGroupsButton">

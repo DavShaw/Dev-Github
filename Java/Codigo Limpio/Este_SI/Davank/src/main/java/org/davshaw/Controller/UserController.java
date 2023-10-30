@@ -71,6 +71,40 @@ public class UserController {
     }
   }
 
+  public static ResultPack<Boolean> login(int dni, String pass) {
+    SessionFactory sessionFactory = new Configuration()
+      .configure("hibernate.cfg.xml")
+      .addAnnotatedClass(User.class)
+      .buildSessionFactory();
+
+    Session session = sessionFactory.openSession();
+
+    try {
+
+      // Checking if user exists
+      if(!(UserController.userExist(dni).getResult())) {
+        throw new UserNotFoundException();
+      }
+
+      session.beginTransaction();
+
+      User user = UserController.getUser(dni).getResult();
+
+      if(!(user.getPassword().equals(pass))) {
+        throw new InvalidLoginException();
+      }
+      
+      return new ResultPack<Boolean>(true, true, "User logged in successfully");
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResultPack<Boolean>(false, false, e.getMessage());
+    } finally {
+      session.close();
+      sessionFactory.close();
+    }
+  }
+
   public static ResultPack<Boolean> userExist(int dni) {
     SessionFactory sessionFactory = new Configuration()
       .configure("hibernate.cfg.xml")
