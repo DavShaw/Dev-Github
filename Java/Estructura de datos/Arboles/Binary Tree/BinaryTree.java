@@ -88,9 +88,49 @@ public class BinaryTree
         return balanceFactor(this.getRoot());
     }
 
-    public short balanceFactor(String value) {
-        BinaryNode node = this.getNode(value);
-        return balanceFactor(node);
+    private List<BinaryNode> getNodesAtLevel(int level, int counter, List<BinaryNode> nodes, BinaryNode current) {
+        
+        if (current == null) {
+            
+            return nodes;
+        }
+    
+        if (counter == level) {
+
+            nodes.add(current);
+        }
+        
+        else {
+
+            this.getNodesAtLevel(level, counter + 1, nodes, current.getLeftChild());
+            this.getNodesAtLevel(level, counter + 1, nodes, current.getRightChild());
+        }
+
+        return nodes;
+    }
+    
+    
+    public List<BinaryNode> getNodesAtLevel(int level) {
+        return this.getNodesAtLevel(level, 0, new ArrayList<BinaryNode>(), this.getRoot());
+    }
+
+    // Delete after challenge
+    public List<String> getNodeValuesFromList(List<BinaryNode> nodes) {
+
+        List<String> values = new ArrayList<String>();
+
+        for (BinaryNode node : nodes) {
+            if (node.getValue() != null) {
+                values.add(node.getValue());
+            }
+        }
+        return values;
+    }
+
+    // Delete after challenge
+    public Boolean reto(int nivel) {
+        List<String> values = this.getNodeValuesFromList(this.getNodesAtLevel(nivel));
+        return Help.listaConRepetidos(values);
     }
 
     private short balanceFactor(BinaryNode node) {
@@ -201,7 +241,24 @@ public class BinaryTree
             }
         }
     }
-    
 
-    
+    public static void main(String[] args) {
+        
+        BinaryTree tree = new BinaryTree();
+        
+        tree.setRoot("1");
+        tree.addRightAt("1", "2");
+        tree.addLeftAt("1", "3");
+        tree.addRightAt("2", "4");
+        tree.addLeftAt("2", "5");
+        tree.addRightAt("3", "5"); // 2
+        tree.addLeftAt("3","8");
+        tree.addRightAt("4","A");
+        tree.addLeftAt("8", "B"); // 3
+        tree.printTree();
+        System.out.println(tree.reto(3));
+
+
+
+    }
 }

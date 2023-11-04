@@ -1,7 +1,6 @@
 public class BinaryNode
 {
     private String value;
-    private short balanceFactor;
     private BinaryNode rightChild;
     private BinaryNode leftChild;
     
@@ -40,6 +39,16 @@ public class BinaryNode
         this.leftChild = leftChild;
     }
 
+    public BinaryNode copy() {
+        BinaryNode copiedNode = new BinaryNode(this.value);
+        if (this.leftChild != null) {
+            copiedNode.leftChild = this.leftChild.copy();
+        }
+        if (this.rightChild != null) {
+            copiedNode.rightChild = this.rightChild.copy();
+        }
+        return copiedNode;
+    }
 
     @Override
     public String toString() {
