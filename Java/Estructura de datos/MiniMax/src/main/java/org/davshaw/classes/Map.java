@@ -70,6 +70,20 @@ public class Map {
         return counter;
     }
 
+    public Map copy() {
+        int size = this.getSize();
+        Map copiedMap = new Map(size);
+    
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                String valueee = this.getCellData(i, j);
+                copiedMap.changeCellData(i, j, valueee);
+            }
+        }
+    
+        return copiedMap;
+    }
+    
     // Has been overloaded
     public boolean isValidPosition(Position position) {
 
@@ -95,10 +109,6 @@ public class Map {
         
         if (this.isValidPosition(x, y)) {
             this.map.get(x).set(y, data);
-        }
-        
-        else {
-            throw new IllegalArgumentException("Invalid position");
         }
     }
     
@@ -138,5 +148,19 @@ public class Map {
         }
     }
     
+    public List<Position> getVoidCells() {
+
+        List<Position> voidPositions = new ArrayList<Position>();
+
+        for (int i = 0; i < this.getSize(); i++) {
+            for (int j = 0; j < this.getSize(); j++) {
+                
+                if(this.getCellData(i, j).equals(" ")) {
+                    voidPositions.add(new Position(i,j));
+                }
+            }
+        }
+        return voidPositions;
+    }
     
 }

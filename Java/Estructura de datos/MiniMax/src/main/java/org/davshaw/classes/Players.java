@@ -1,18 +1,23 @@
 package org.davshaw.classes;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
 public class Players {
 
+    /*
+     * 
+     * X -> Jugador humano (-1)
+     * O -> Máquina (1)
+     * 
+    */
+
+
     // Singleton
     private static Players instance = null;
+    private Map map;
 
     public static Players getInstance() {
         if (instance == null) {
@@ -21,7 +26,8 @@ public class Players {
         return instance;
     }
 
-    private Map map;
+    private Players() {
+    }
 
     private void setPlayerAt(String player, Position position) {
         this.map.changeCellData(position, player);
@@ -69,5 +75,6 @@ public class Players {
         }
         return "O";
     }
+
 
 }
