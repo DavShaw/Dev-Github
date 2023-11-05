@@ -119,7 +119,10 @@ public class Map {
 
     // Has been overloaded
     public String getCellData(Position position) {
-        return this.map.get(position.getX()).get(position.getY());
+        if (this.isValidPosition(position)) {
+            return this.map.get(position.getX()).get(position.getY());
+        }
+        return null;
     }
 
     // Overloading

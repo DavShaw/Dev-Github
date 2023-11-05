@@ -81,29 +81,14 @@ public class GameCheckers {
     private boolean hasAnyWon(Map state, String playerValue) {
         for (int i = 0; i < state.getSize(); i++) {
             for (int j = 0; j < state.getSize(); j++) {
+
                 
-                boolean isValidPosition = state.isValidPosition(i, j);
-                String currentValue = state.getCellData(i, j);
 
-                if(isValidPosition && currentValue.equalsIgnoreCase(playerValue)) { 
-
-                    i++;
-                    isValidPosition = state.isValidPosition(i, j);
-                    currentValue = state.getCellData(i, j);
-
-                    if(isValidPosition && currentValue.equalsIgnoreCase(playerValue)) {
-
-                        j++;
-                        isValidPosition = state.isValidPosition(i, j);
-                        currentValue = state.getCellData(i, j);
-                        return true;
-                        
-                    }
-                }
             }
         }
         return false;
     }
+    
 
     private boolean hasXWon(Map state) {
         return this.hasAnyWon(state, "X");
@@ -178,38 +163,78 @@ public class GameCheckers {
         if (this.terminal(state)) {
             return this.value(state);
         }
-
-        // O turn (max -> AI)
+    
+        // Jugador AI (Max)
         if (this.player(state).equals("O")) {
-
-            Integer value = Integer.MIN_VALUE;
-
+            Integer bestValue = Integer.MIN_VALUE;
+    
             for (Position movement : this.actions(state)) {
-                value = Math.max(value, this.miniMax(this.result(state, movement, "O")));
+                Map nextState = this.result(state, movement, "O");
+                Integer value = miniMax(nextState);
+                bestValue = Math.max(bestValue, value);
             }
-            return value;
+            return bestValue;
         }
-
-        // X turn (min -> Human)
+    
+        // Jugador Humano (Min)
         if (this.player(state).equals("X")) {
-
-            Integer value = Integer.MAX_VALUE;
-
+            Integer bestValue = Integer.MAX_VALUE;
+    
             for (Position movement : this.actions(state)) {
-                value = Math.min(value, this.miniMax(this.result(state, movement, "X")));
+                Map nextState = this.result(state, movement, "X");
+                Integer value = miniMax(nextState);
+                bestValue = Math.min(bestValue, value);
             }
-            return value;
+            return bestValue;
         }
-
+    
         return null;
     }
+    
 
 
     public static void main(String[] args) {
         
         Map state = new Map(4);
         GameCheckers gameManager = new GameCheckers();
-        System.out.println(gameManager.miniMax(state));
+
+
+        state.changeCellData(0, 3, "O");
+        state.changeCellData(1, 1, "O");
+        state.changeCellData(3, 1, "O");
+        state.changeCellData(2, 1, "X");
+        state.changeCellData(1, 3, "O");
+        state.changeCellData(3, 2, "O");
+        state.changeCellData(0, 1, "O");
+        state.changeCellData(2, 2, "O");
+
+
+
+        state.changeCellData(0, 0, "X");
+        
+        state.changeCellData(0, 2, "X");
+        
+
+        state.changeCellData(1, 0, "O");
+        
+        state.changeCellData(1, 2, "X");
+        
+
+        state.changeCellData(2, 0, "X");
+        
+        
+        state.changeCellData(2, 3, "X");
+
+        state.changeCellData(3, 0, "X");
+        
+        
+        state.changeCellData(3, 3, "O");
+
+
+
+        state.view();
+
+        System.out.println(gameManager.terminal(state));
 
 
     }
