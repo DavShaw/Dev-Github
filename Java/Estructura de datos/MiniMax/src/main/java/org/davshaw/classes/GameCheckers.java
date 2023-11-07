@@ -1,6 +1,7 @@
 package org.davshaw.classes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameCheckers {
@@ -82,14 +83,32 @@ public class GameCheckers {
         for (int i = 0; i < state.getSize(); i++) {
             for (int j = 0; j < state.getSize(); j++) {
 
-                
+                Position current = new Position(i, j);
+
+                if (state.isValidPosition(current) && 
+                    state.getCellData(current).equals(playerValue)) {
+
+                    current.setX(current.getX() + 1);
+                    
+                    if (state.isValidPosition(current) && 
+                    state.getCellData(current).equals(playerValue)) {
+
+                        current.setY(current.getY() + 1);
+
+                        if (state.isValidPosition(current) && 
+                        state.getCellData(current).equals(playerValue)) {
+                            return true;
+                        }
+
+                    }
+
+                }
 
             }
         }
         return false;
     }
     
-
     private boolean hasXWon(Map state) {
         return this.hasAnyWon(state, "X");
     }
@@ -98,16 +117,20 @@ public class GameCheckers {
         return this.hasAnyWon(state, "O");
     }
 
-    public int value(Map state) {
+    public Integer value(Map state) {
 
         if (this.hasOWon(state)) {
             return 1;
         }
 
-        if (this.hasXWon(state)) {
+        else if (this.hasXWon(state)) {
             return -1;
         }
-        return 0;
+        
+        else if (this.countVoid(state) == 0) {
+            return 0;
+        }
+        return null;
     }
 
     public boolean terminal(Map state) {
@@ -115,13 +138,16 @@ public class GameCheckers {
     }
 
     public String player(Map state) {
-
         Integer xCount = this.countX(state);
         Integer oCount = this.countO(state);
 
+        if (xCount == 0 && oCount == 0) {
+            return "X";
+        }
+        
         return (xCount <= oCount) ? "X" : "O";
     }
-
+    
     public List<Position> actions(Map state) {
         
         List<Position> actions = new ArrayList<Position>();
@@ -142,52 +168,117 @@ public class GameCheckers {
         return actions;
     }
 
-    public Map result(Map state, Position action, String player) {
-        Map stateResult = state.copy();
-        System.out.println("El moviento a evaluar es:");
-        System.out.println(action);
-    
+    public Map result(Map state, Position action) {
+        Map stateCopied = state.copy();
+        String player = this.player(state);
+
         if (player.equals("X")) {
-            this.setX(stateResult, action);
+            this.setX(stateCopied, action);
         }
         
         else if (player.equals("O")) {
-            this.setO(stateResult, action);
+            this.setO(stateCopied, action);
         }
-        System.out.println("- - - - - - ");
-        stateResult.view();
-        return stateResult;
+        return stateCopied;
     }
-    
+
+    // By me
     public Integer miniMax(Map state) {
-        if (this.terminal(state)) {
+
+        if(this.terminal(state)) {
             return this.value(state);
         }
-    
-        // Jugador AI (Max)
+
         if (this.player(state).equals("O")) {
-            Integer bestValue = Integer.MIN_VALUE;
-    
-            for (Position movement : this.actions(state)) {
-                Map nextState = this.result(state, movement, "O");
-                Integer value = miniMax(nextState);
-                bestValue = Math.max(bestValue, value);
+
+            Integer value = -9999999;
+
+            for (Position action : this.actions(state)) {
+                this.result(state, action).view();
+                value = Math.max(value, this.miniMax(this.result(state, action)));
+
             }
-            return bestValue;
+            return value;
         }
-    
-        // Jugador Humano (Min)
+
         if (this.player(state).equals("X")) {
-            Integer bestValue = Integer.MAX_VALUE;
-    
-            for (Position movement : this.actions(state)) {
-                Map nextState = this.result(state, movement, "X");
-                Integer value = miniMax(nextState);
-                bestValue = Math.min(bestValue, value);
+
+            Integer value = 9999999;
+
+            for (Position action : this.actions(state)) {
+                this.result(state, action).view();
+                value = Math.min(value, this.miniMax(this.result(state, action)));
             }
-            return bestValue;
+            return value;
         }
+        return null;
+    }
+
+
+
+    public static void main(String[] args) {
+        
+        Map map = new Map(4);
+        GameCheckers gameManager = new GameCheckers();
+
+
+        String[][] matriz = {
+            // 3 x
+            // 3 O
+            {"O", "O", " ", "X"},
+            {"O", " ", "O", "O"},
+            {" ", "X", "O", " "},
+            {"O", "X", " ", " "}};
+
+        // Convierte la matriz en una lista de listas
+        List<List<String>> listaDeListas = new ArrayList<>();
+        for (String[] fila : matriz) {
+            listaDeListas.add(Arrays.asList(fila));
+        }
+
+        map.setMap(listaDeListas);
+
+        map.view();
+
+        System.out.println(gameManager.miniMax(map));
+        
+
+    }
     
+
+
+}
+
+
+
+/*
+
+public Integer miniMax(Map state) {
+
+        if(this.terminal(state)) {
+            return this.value(state);
+        }
+
+        // La máquina (+)
+        if (this.player(state).equals("O")) {
+
+            Integer value = -9999999;
+
+            for (Position action : this.actions(state)) {
+                value = Math.max(value, this.miniMax(this.result(state, action, "O")));
+            }
+            return value;
+        }
+
+        if (this.player(state).equals("X")) {
+
+            Integer value = 9999999;
+
+            for (Position action : this.actions(state)) {
+                value = Math.min(value, this.miniMax(this.result(state, action, "X")));
+            }
+            return value;
+        }
         return null;
     }
     
@@ -197,48 +288,36 @@ public class GameCheckers {
         
         Map state = new Map(4);
         GameCheckers gameManager = new GameCheckers();
-
-
-        state.changeCellData(0, 3, "O");
-        state.changeCellData(1, 1, "O");
-        state.changeCellData(3, 1, "O");
-        state.changeCellData(2, 1, "X");
-        state.changeCellData(1, 3, "O");
-        state.changeCellData(3, 2, "O");
-        state.changeCellData(0, 1, "O");
-        state.changeCellData(2, 2, "O");
-
-
-
-        state.changeCellData(0, 0, "X");
         
-        state.changeCellData(0, 2, "X");
-        
+        String[][] matriz = {
+        {" ", " ", " ", " "},
+        {"O", " ", "X", "X"},
+        {"O", " ", " ", " "},
+        {" ", "X", " ", " "}};
 
-        state.changeCellData(1, 0, "O");
-        
-        state.changeCellData(1, 2, "X");
-        
+        // Convierte la matriz en una lista de listas
+        List<List<String>> listaDeListas = new ArrayList<>();
+        for (String[] fila : matriz) {
+            listaDeListas.add(Arrays.asList(fila));
+        }
 
-        state.changeCellData(2, 0, "X");
-        
-        
-        state.changeCellData(2, 3, "X");
-
-        state.changeCellData(3, 0, "X");
-        
-        
-        state.changeCellData(3, 3, "O");
+        state.setMap(listaDeListas);
 
 
 
+        System.out.println("-------------------------------------");
         state.view();
-
-        System.out.println(gameManager.terminal(state));
+        System.out.println("-------------------------------------");
+        System.out.println(gameManager.player(state));
+        System.out.println("-------------------------------------");
+        System.out.println(gameManager.miniMax(state));
+        System.out.println("-------------------------------------");
+        
 
 
     }
 
 
 
-}
+
+*/

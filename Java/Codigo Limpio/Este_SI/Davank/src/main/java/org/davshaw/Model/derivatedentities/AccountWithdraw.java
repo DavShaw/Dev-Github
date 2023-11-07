@@ -24,8 +24,8 @@ import org.davshaw.Model.pureentities.Account;
 @ToString
 
 @Entity
-@Table(name = "AccountWithdrawal")
-public class AccountWithdrawal
+@Table(name = "AccountWithdraw")
+public class AccountWithdraw
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

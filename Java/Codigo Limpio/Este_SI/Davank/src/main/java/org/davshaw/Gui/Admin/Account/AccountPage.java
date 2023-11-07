@@ -4,7 +4,6 @@ import javax.swing.JOptionPane;
 
 import org.davshaw.Controller.AccountController;
 import org.davshaw.Controller.UserController;
-import org.davshaw.Exception.DuplicateAccountOwnerException;
 import org.davshaw.External.Checker;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Gui.Admin.Admin.AdminPage;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.davshaw.Controller.AccountWithdrawController;
-import org.davshaw.Model.derivatedentities.AccountWithdrawal;
+import org.davshaw.Model.derivatedentities.AccountWithdraw;
 
 public class GetAccountWithdraw {
     
@@ -13,11 +13,11 @@ public class GetAccountWithdraw {
         if(withdrawIdList != null && !withdrawIdList.isEmpty()) {
 
             // Get AccountTransfer by Id
-            List<AccountWithdrawal> withdrawIdLists = new ArrayList<AccountWithdrawal>();
+            List<AccountWithdraw> withdrawIdLists = new ArrayList<AccountWithdraw>();
             
             for (Integer id : withdrawIdList) {
                 
-                AccountWithdrawal withdraw = AccountWithdrawController.getWithdrawal(id).getResult();
+                AccountWithdraw withdraw = AccountWithdrawController.getWithdraw(id).getResult();
 
                 if(withdraw != null) {
                     withdrawIdLists.add(withdraw);
@@ -29,7 +29,7 @@ public class GetAccountWithdraw {
 
                 String msg = "";
 
-                for (AccountWithdrawal log : withdrawIdLists) {
+                for (AccountWithdraw log : withdrawIdLists) {
 
                     msg += "=======================";
                     msg += "\n";

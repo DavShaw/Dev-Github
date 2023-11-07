@@ -7,7 +7,6 @@ import org.davshaw.Exception.TeamNotFoundException;
 import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.TeamLog;
-import org.davshaw.Model.pureentities.Team;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

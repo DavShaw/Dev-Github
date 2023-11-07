@@ -18,7 +18,7 @@
 
     <mapping class="org.davshaw.Model.derivatedentities.AccountDeposit"/>
     <mapping class="org.davshaw.Model.derivatedentities.AccountTransfer"/>
-    <mapping class="org.davshaw.Model.derivatedentities.AccountWithdrawal"/>
+    <mapping class="org.davshaw.Model.derivatedentities.AccountWithdraw"/>
     <mapping class="org.davshaw.Model.derivatedentities.TeamDeposit"/>
     <mapping class="org.davshaw.Model.derivatedentities.TeamLoan"/>
     <mapping class="org.davshaw.Model.derivatedentities.TeamLog"/>

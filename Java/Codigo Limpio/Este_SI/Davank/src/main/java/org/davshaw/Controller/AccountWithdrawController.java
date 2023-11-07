@@ -11,7 +11,7 @@ import org.davshaw.Exception.UserNotFoundException;
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.derivatedentities.AccountDeposit;
 import org.davshaw.Model.derivatedentities.AccountTransfer;
-import org.davshaw.Model.derivatedentities.AccountWithdrawal;
+import org.davshaw.Model.derivatedentities.AccountWithdraw;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -45,7 +45,7 @@ public class AccountWithdrawController {
 
       AccountController.withdrawBalance(ownerDni, balance);
       //Registering withdraw
-      AccountWithdrawal withdraw = new AccountWithdrawal();
+      AccountWithdraw withdraw = new AccountWithdraw();
       withdraw.setDateTime(new Date());
       withdraw.setBalance(balance);
       withdraw.setAccountNumber(
@@ -71,13 +71,13 @@ public class AccountWithdrawController {
   public static ResultPack<Boolean> withdrawExist(int id) {
     SessionFactory sessionFactory = new Configuration()
       .configure("hibernate.cfg.xml")
-      .addAnnotatedClass(AccountWithdrawal.class)
+      .addAnnotatedClass(AccountWithdraw.class)
       .buildSessionFactory();
 
     Session session = sessionFactory.openSession();
 
     try {
-      String sql = "SELECT count(*) FROM AccountWithdrawal WHERE id = :id";
+      String sql = "SELECT count(*) FROM AccountWithdraw WHERE id = :id";
       Query<Long> query = session.createNativeQuery(sql, Long.class);
       query.setParameter("id", id);
       int count = ((Number) query.uniqueResult()).intValue();
@@ -100,10 +100,10 @@ public class AccountWithdrawController {
     }
   }
 
-  public static ResultPack<AccountWithdrawal> getWithdrawal(int id) {
+  public static ResultPack<AccountWithdraw> getWithdraw(int id) {
     SessionFactory sessionFactory = new Configuration()
       .configure("hibernate.cfg.xml")
-      .addAnnotatedClass(AccountWithdrawal.class)
+      .addAnnotatedClass(AccountWithdraw.class)
       .buildSessionFactory();
 
     Session session = sessionFactory.openSession();
@@ -116,28 +116,28 @@ public class AccountWithdrawController {
 
       session.beginTransaction();
 
-      AccountWithdrawal withdraw = session.get(AccountWithdrawal.class, id);
+      AccountWithdraw withdraw = session.get(AccountWithdraw.class, id);
 
       session.getTransaction().commit();
 
-      return new ResultPack<AccountWithdrawal>(
+      return new ResultPack<AccountWithdraw>(
         true,
         withdraw,
         "Withdraw found."
       );
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResultPack<AccountWithdrawal>(false, null, e.getMessage());
+      return new ResultPack<AccountWithdraw>(false, null, e.getMessage());
     } finally {
       session.close();
       sessionFactory.close();
     }
   }
 
-  public static ResultPack<Boolean> deleteWithdrawal(int id) {
+  public static ResultPack<Boolean> deleteWithdraw(int id) {
     SessionFactory sessionFactory = new Configuration()
       .configure("hibernate.cfg.xml")
-      .addAnnotatedClass(AccountWithdrawal.class)
+      .addAnnotatedClass(AccountWithdraw.class)
       .buildSessionFactory();
 
     Session session = sessionFactory.openSession();
@@ -149,8 +149,8 @@ public class AccountWithdrawController {
       }
       session.beginTransaction();
 
-      AccountWithdrawal withdraw = AccountWithdrawController
-        .getWithdrawal(id)
+      AccountWithdraw withdraw = AccountWithdrawController
+        .getWithdraw(id)
         .getResult();
 
       session.remove(withdraw);
@@ -192,7 +192,7 @@ public class AccountWithdrawController {
       //Get account number
       int accountNumber = AccountController.getAccountNumber(userDni).getResult();
       //FIXME
-      String sql = "SELECT id FROM AccountWithdrawal WHERE accountNumber = :accountNumber";
+      String sql = "SELECT id FROM AccountWithdraw WHERE accountNumber = :accountNumber";
       Query<Integer> query = session.createNativeQuery(sql, Integer.class);
       query.setParameter("accountNumber", accountNumber);
 
