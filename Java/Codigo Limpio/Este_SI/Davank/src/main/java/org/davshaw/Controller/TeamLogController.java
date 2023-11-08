@@ -53,7 +53,7 @@ public class TeamLogController {
         "The log has been created successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -88,7 +88,7 @@ public class TeamLogController {
         );
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -118,7 +118,7 @@ public class TeamLogController {
 
       return new ResultPack<TeamLog>(true, registro, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<TeamLog>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -154,7 +154,7 @@ public class TeamLogController {
       return new ResultPack<List<Integer>>(true, null, "Log not found.");
 
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<List<Integer>>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -184,7 +184,7 @@ public class TeamLogController {
 
       return new ResultPack<Integer>(true, userDni, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Integer>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -213,7 +213,7 @@ public class TeamLogController {
 
       return new ResultPack<Integer>(true, teamId, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Integer>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -250,7 +250,7 @@ public class TeamLogController {
         "The log has been deleted successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -293,7 +293,7 @@ public class TeamLogController {
 
       return new ResultPack<Boolean>(true, false, "User not found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();

@@ -68,7 +68,7 @@ public class TeamLoanController {
         "The loan has been done successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -103,7 +103,7 @@ public class TeamLoanController {
         );
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -132,7 +132,7 @@ public class TeamLoanController {
       session.getTransaction().commit();
       return new ResultPack<TeamLoan>(true, loan, "Loan found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<TeamLoan>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -165,7 +165,7 @@ public class TeamLoanController {
         "The loan has been deleted successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -210,7 +210,7 @@ public class TeamLoanController {
         "The team loan report has been given."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<List<Integer>>(false, null, e.getMessage());
     } finally {
       session.close();

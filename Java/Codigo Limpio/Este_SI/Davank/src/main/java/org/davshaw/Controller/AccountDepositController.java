@@ -55,7 +55,7 @@ public class AccountDepositController {
 
       return new ResultPack<Boolean>(true, true, "The deposit has been done.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(true, true, e.getMessage());
     } finally {
       session.close();
@@ -87,7 +87,7 @@ public class AccountDepositController {
         );
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -117,7 +117,7 @@ public class AccountDepositController {
 
       return new ResultPack<AccountDeposit>(true, deposit, "Deposit found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<AccountDeposit>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -154,7 +154,7 @@ public class AccountDepositController {
         "The deposit has been deleted."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -194,7 +194,7 @@ public class AccountDepositController {
     }
     
     catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<List<Integer>>(false, null, e.getMessage());
     }
     finally {

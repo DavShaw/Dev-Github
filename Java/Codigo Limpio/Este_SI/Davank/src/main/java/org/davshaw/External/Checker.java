@@ -4,17 +4,17 @@ public class Checker {
 
   public static Boolean isDigit(String value) {
     try {
-      // Intenta convertir a Integer
+      // Trying to casting to Integer
       Integer.parseInt(value);
       return true;
     } catch (NumberFormatException e1) {
       try {
-        // Intenta convertir a float
+        // Trying to casting to Float
         Float.parseFloat(value);
         return true;
       } catch (NumberFormatException e2) {
         try {
-          // Intenta convertir a Double
+          // Trying to casting to Double
           Double.parseDouble(value);
           return true;
         } catch (NumberFormatException e3) {

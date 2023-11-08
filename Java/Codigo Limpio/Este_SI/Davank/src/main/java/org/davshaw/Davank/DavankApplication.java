@@ -20,5 +20,6 @@ public class DavankApplication {
     );
 
     new MainPage().setVisible(true);
+
   }
 }

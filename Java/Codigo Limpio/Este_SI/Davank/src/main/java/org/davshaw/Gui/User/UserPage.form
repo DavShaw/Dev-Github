@@ -25,26 +25,38 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="myTeamsButton" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Component id="transferButton" min="-2" pref="150" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="myTeamsButton" min="-2" pref="150" max="-2" attributes="0"/>
+                              <Component id="transferButton" min="-2" pref="150" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="joinTeamButton" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                              <Component id="leaveTeamButton" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="joinTeamButton" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Component id="leaveTeamButton" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="backButton" min="-2" pref="150" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="changePasswordButton" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="backButton" min="-2" pref="150" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="changePasswordButton" min="-2" pref="150" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="viewLoansButton" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="teamDepositButton" alignment="1" min="-2" pref="150" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="teamLoanButton" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="payLoanButton" min="-2" pref="150" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
+              <EmptySpace pref="100" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -56,17 +68,32 @@
                   <Component id="joinTeamButton" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
                   <Component id="transferButton" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="myTeamsButton" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
                   <Component id="leaveTeamButton" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="teamDepositButton" min="-2" pref="60" max="-2" attributes="0"/>
+                      <EmptySpace pref="63" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="viewLoansButton" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
+                          <Component id="payLoanButton" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="teamLoanButton" min="-2" pref="60" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="backButton" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
                   <Component id="changePasswordButton" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="100" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -136,6 +163,50 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="changePasswordButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="teamDepositButton">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Microsoft Yi Baiti" size="20" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Team Deposit"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="teamDepositButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="teamLoanButton">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Microsoft Yi Baiti" size="20" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Team Loan"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="teamLoanButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="viewLoansButton">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Microsoft Yi Baiti" size="20" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="View Loans"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewLoansButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="payLoanButton">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Microsoft Yi Baiti" size="20" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Pay Loan"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="payLoanButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

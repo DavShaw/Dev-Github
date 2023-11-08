@@ -3,6 +3,7 @@ package org.davshaw.Model.derivatedentities;
 import org.davshaw.Model.pureentities.Team;
 import org.davshaw.Model.pureentities.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,16 +31,14 @@ public class TeamLog
     @Column(name = "id")
     private Integer id;
 
-    //? Foreign key to Team
-    @ManyToOne(targetEntity = Team.class)
+    @ManyToOne(targetEntity = Team.class, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "teamId", referencedColumnName = "id", insertable = false, updatable = false)
     private Team team;
 
     @Column(name = "teamId")
     private Integer teamId;
 
-    //? Foreign key to User
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "userDni", referencedColumnName = "dni", insertable = false, updatable = false)
     private User user;
 

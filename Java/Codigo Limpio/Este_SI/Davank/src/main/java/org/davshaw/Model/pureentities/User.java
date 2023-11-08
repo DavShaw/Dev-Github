@@ -38,35 +38,25 @@ public class User
     @Column(name = "password")
     private String password;
 
+    private void appendIfNotEmpty(StringBuilder fullName, String part) {
+        if (part != null && !part.isEmpty()) {
+            if (fullName.length() > 0) {
+                fullName.append(" ");
+            }
+            fullName.append(part);
+        }
+    }
+
     public String getFullName() {
         StringBuilder fullName = new StringBuilder();
     
-        if (this.firstName != null && !this.firstName.isEmpty()) {
-            fullName.append(this.firstName);
-        }
-    
-        if (this.middleName != null && !this.middleName.isEmpty()) {
-            if (fullName.length() > 0) {
-                fullName.append(" ");
-            }
-            fullName.append(this.middleName);
-        }
-    
-        if (this.firstLastName != null && !this.firstLastName.isEmpty()) {
-            if (fullName.length() > 0) {
-                fullName.append(" ");
-            }
-            fullName.append(this.firstLastName);
-        }
-    
-        if (this.middleLastName != null && !this.middleLastName.isEmpty()) {
-            if (fullName.length() > 0) {
-                fullName.append(" ");
-            }
-            fullName.append(this.middleLastName);
-        }
+        this.appendIfNotEmpty(fullName, this.firstName);
+        this.appendIfNotEmpty(fullName, this.middleName);
+        this.appendIfNotEmpty(fullName, this.firstLastName);
+        this.appendIfNotEmpty(fullName, this.middleLastName);
     
         return fullName.toString();
     }
+    
     
 }

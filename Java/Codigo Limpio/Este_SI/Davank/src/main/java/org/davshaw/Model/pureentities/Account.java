@@ -28,7 +28,7 @@ public class Account
     @Column(name = "accountNumber")
     private Integer accountNumber;
 
-    @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(targetEntity = User.class, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "ownerDni", referencedColumnName = "dni", insertable = false, updatable = false)
     private User owner;
 

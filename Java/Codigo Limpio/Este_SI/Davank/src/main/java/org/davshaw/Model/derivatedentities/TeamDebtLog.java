@@ -2,6 +2,7 @@ package org.davshaw.Model.derivatedentities;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,8 +32,7 @@ public class TeamDebtLog
     @Column(name = "id")
     private int id;
 
-    //? Foreign key to TeamLog
-    @OneToOne(targetEntity = TeamLog.class)
+    @OneToOne(targetEntity = TeamLog.class, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "logId", referencedColumnName = "id", insertable = false, updatable = false)
     private TeamLog log;
 

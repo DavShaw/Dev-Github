@@ -58,7 +58,7 @@ public class TeamDepositController {
         "The deposit has been done successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -90,7 +90,7 @@ public class TeamDepositController {
         );
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -118,7 +118,7 @@ public class TeamDepositController {
 
       return new ResultPack<TeamDeposit>(true, deposit, "Deposit found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<TeamDeposit>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -151,7 +151,7 @@ public class TeamDepositController {
         "The deposit has been deleted successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -190,7 +190,7 @@ public class TeamDepositController {
         new RecordNotFoundException().getMessage()
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Double>(false, null, e.getMessage());
     } finally {
       session.close();

@@ -63,7 +63,7 @@ public class UserController {
         "The user has been created successfully."
       );
     } catch (DuplicateUserDNIException e) {
-      //e.printStackTrace();
+      //
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -97,7 +97,7 @@ public class UserController {
       return new ResultPack<Boolean>(true, true, "User logged in successfully");
 
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -129,7 +129,7 @@ public class UserController {
         new RecordNotFoundException().getMessage()
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -163,7 +163,7 @@ public class UserController {
         "The user has been deleted successfully"
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -191,7 +191,7 @@ public class UserController {
 
       return new ResultPack<User>(true, user, "User found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<User>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -223,7 +223,7 @@ public class UserController {
       session.getTransaction().commit();
       return new ResultPack<Boolean>(true, null, "User found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -256,7 +256,7 @@ public class UserController {
 
       return new ResultPack<Boolean>(true, null, "User found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -292,7 +292,7 @@ public class UserController {
 
       return new ResultPack<Boolean>(true, null, "User found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -328,7 +328,7 @@ public class UserController {
 
       return new ResultPack<Boolean>(true, null, "User found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -361,7 +361,6 @@ public class UserController {
         .getUser(userDni)
         .getResult()
         .getPassword();
-      System.out.println("Current password -> " + currentPassword);
 
       if (!(currentPassword.equals(password))) {
         throw new InvalidLoginException();
@@ -377,7 +376,7 @@ public class UserController {
 
       return new ResultPack<Boolean>(true, null, "User found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -420,7 +419,7 @@ public class UserController {
         new RecordNotFoundException().getMessage()
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Integer>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -469,7 +468,7 @@ public class UserController {
         "The user has joined to the team successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -516,7 +515,7 @@ public class UserController {
         "The user has leave from the team successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -558,7 +557,7 @@ public class UserController {
 
       return new ResultPack<Integer>(true, id, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Integer>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -596,7 +595,7 @@ public class UserController {
         "Team log report has been given"
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<List<Integer>>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -632,7 +631,7 @@ public class UserController {
 
       return new ResultPack<>(true, result, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<>(false, null, e.getMessage());
     } finally {
       session.close();

@@ -46,8 +46,11 @@ public class AccountTransferController {
 
       session.beginTransaction();
 
+      //Balance + Bank interest
+      Double balancePlusBankInterest = balance + (0.1 * balance);
+
       //Withdraw balance from origin account
-      AccountController.withdrawBalance(originOwnerDni, balance);
+      AccountController.withdrawBalance(originOwnerDni, balancePlusBankInterest);
       //Deposit balance to destination account
       AccountController.addBalance(destinationOwnerDni, balance);
 
@@ -72,7 +75,7 @@ public class AccountTransferController {
 
       return new ResultPack<Boolean>(true, null, "The transfer has been done.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -104,7 +107,7 @@ public class AccountTransferController {
         );
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -131,7 +134,7 @@ public class AccountTransferController {
 
       return new ResultPack<AccountTransfer>(true, transfer, "Transfer found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<AccountTransfer>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -168,7 +171,7 @@ public class AccountTransferController {
         "The transfer has been deleted successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -209,7 +212,7 @@ public class AccountTransferController {
     }
     
     catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<List<Integer>>(false, null, e.getMessage());
     }
     finally {

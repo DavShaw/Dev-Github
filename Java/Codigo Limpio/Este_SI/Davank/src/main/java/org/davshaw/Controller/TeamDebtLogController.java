@@ -47,7 +47,7 @@ public class TeamDebtLogController {
         "The log has been created successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -79,7 +79,7 @@ public class TeamDebtLogController {
         );
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -109,7 +109,7 @@ public class TeamDebtLogController {
 
       return new ResultPack<TeamDebtLog>(true, log, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<TeamDebtLog>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -144,7 +144,7 @@ public class TeamDebtLogController {
 
       return new ResultPack<TeamDebtLog>(true, log, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<TeamDebtLog>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -174,7 +174,7 @@ public class TeamDebtLogController {
 
       return new ResultPack<Double>(true, amount, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Double>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -209,7 +209,7 @@ public class TeamDebtLogController {
         "The log has been deleted successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -242,7 +242,7 @@ public class TeamDebtLogController {
 
       return new ResultPack<Boolean>(true, null, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -294,7 +294,7 @@ public class TeamDebtLogController {
 
       return new ResultPack<Boolean>(true, null, "Log found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -327,7 +327,7 @@ public class TeamDebtLogController {
         "Logs has been deleted successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();

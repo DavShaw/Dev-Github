@@ -45,10 +45,10 @@ public class AccountController {
       }
     } catch (IllegalArgumentException e) {
       System.err.println(Color.color("RED", e.getMessage()));
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -80,7 +80,7 @@ public class AccountController {
         );
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -118,7 +118,7 @@ public class AccountController {
         new AccountNotFoundException().getMessage()
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Integer>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -151,10 +151,10 @@ public class AccountController {
       return new ResultPack<Account>(true, account, "Account found.");
     } catch (IllegalArgumentException e) {
       System.err.println(Color.color("RED", e.getMessage()));
-      e.printStackTrace();
+      
       return new ResultPack<Account>(false, null, "Account not found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Account>(false, null, "Account not found.");
     } finally {
       session.close();
@@ -197,10 +197,10 @@ public class AccountController {
       return new ResultPack<Boolean>(true, null, "Balance added successfully");
     } catch (IllegalArgumentException e) {
       System.err.println(Color.color("RED", e.getMessage()));
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -231,12 +231,7 @@ public class AccountController {
       if (!(AccountController.hasEnough(ownerDni, balance).getResult())) {
         throw new InsufficientBalanceException();
       }
-
-      System.out.println(
-        "hasEnough result: " +
-        AccountController.hasEnough(ownerDni, balance).getResult()
-      );
-
+      
       session.beginTransaction();
 
       Integer primarykey = AccountController
@@ -259,10 +254,10 @@ public class AccountController {
       );
     } catch (IllegalArgumentException e) {
       System.err.println(Color.color("RED", e.getMessage()));
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -292,10 +287,10 @@ public class AccountController {
       );
     } catch (IllegalArgumentException e) {
       System.err.println(Color.color("RED", e.getMessage()));
-      e.printStackTrace();
+      
       return new ResultPack<Double>(false, null, e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Double>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -330,10 +325,10 @@ public class AccountController {
       );
     } catch (IllegalArgumentException e) {
       System.err.println(Color.color("RED", e.getMessage()));
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();

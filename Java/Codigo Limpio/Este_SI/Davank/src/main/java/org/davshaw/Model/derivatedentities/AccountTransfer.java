@@ -1,5 +1,6 @@
 package org.davshaw.Model.derivatedentities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,16 +33,14 @@ public class AccountTransfer
     @Column(name = "id")
     private Integer id;
 
-    //? Foreign key to Account
-    @ManyToOne(targetEntity = Account.class)
+    @ManyToOne(targetEntity = Account.class, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "originAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account originAccount;
 
     @Column(name = "originAccountNumber")
     private Integer originAccountNumber;
 
-    //? Foreign key to Account
-    @ManyToOne(targetEntity = Account.class)
+    @ManyToOne(targetEntity = Account.class, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "destinationAccountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account destinationAccount;
 

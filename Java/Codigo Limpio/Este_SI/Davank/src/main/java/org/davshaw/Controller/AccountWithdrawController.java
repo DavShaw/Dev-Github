@@ -60,7 +60,7 @@ public class AccountWithdrawController {
         "The withdraw has been done successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -92,7 +92,7 @@ public class AccountWithdrawController {
         );
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -126,7 +126,7 @@ public class AccountWithdrawController {
         "Withdraw found."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<AccountWithdraw>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -159,7 +159,7 @@ public class AccountWithdrawController {
 
       return new ResultPack<Boolean>(true, null, "withdraw found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -200,7 +200,7 @@ public class AccountWithdrawController {
     }
     
     catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<List<Integer>>(false, null, e.getMessage());
     }
     finally {

@@ -1,5 +1,6 @@
 package org.davshaw.Model.derivatedentities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,8 +33,7 @@ public class AccountWithdraw
     @Column(name = "id")
     private Integer id;
 
-    //? Foreign key to Account
-    @ManyToOne(targetEntity = Account.class)
+    @ManyToOne(targetEntity = Account.class, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "accountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
     private Account account;
 

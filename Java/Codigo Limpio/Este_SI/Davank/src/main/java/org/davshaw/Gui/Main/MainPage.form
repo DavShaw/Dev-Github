@@ -52,7 +52,7 @@
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft Yi Baiti" size="80" style="1"/>
+          <Font name="Microsoft Yi Baiti" size="50" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="EXIT"/>
       </Properties>
@@ -63,7 +63,7 @@
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft Yi Baiti" size="80" style="1"/>
+          <Font name="Microsoft Yi Baiti" size="50" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="USER"/>
       </Properties>
@@ -74,7 +74,7 @@
     <Component class="javax.swing.JButton" name="jButton3">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft Yi Baiti" size="80" style="1"/>
+          <Font name="Microsoft Yi Baiti" size="50" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="ADMIN"/>
       </Properties>

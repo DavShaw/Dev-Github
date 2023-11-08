@@ -29,12 +29,4 @@ public class GetTheWinner {
         }
         return (teamId != null) ? teamId : null;
     }
-
-
-    public static void main(String[] args) {
-        Integer winner = getWinner();
-        System.out.println(winner);
-    }
-
-
 }

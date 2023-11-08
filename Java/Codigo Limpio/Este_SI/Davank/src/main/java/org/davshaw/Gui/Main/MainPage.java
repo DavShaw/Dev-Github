@@ -34,7 +34,7 @@ public class MainPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 80)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 50)); // NOI18N
         jButton1.setText("EXIT");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -42,7 +42,7 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 80)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 50)); // NOI18N
         jButton2.setText("USER");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -50,7 +50,7 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 80)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Microsoft Yi Baiti", 1, 50)); // NOI18N
         jButton3.setText("ADMIN");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

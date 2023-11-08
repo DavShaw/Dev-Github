@@ -37,7 +37,7 @@ public class TeamController {
         "Team has been created successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -69,7 +69,7 @@ public class TeamController {
         new RecordNotFoundException().getMessage()
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -98,7 +98,7 @@ public class TeamController {
         throw new TeamNotFoundException();
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Team>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -130,7 +130,7 @@ public class TeamController {
     }
     
     catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<List<Integer>>(false, null, e.getMessage());
     }
     
@@ -162,7 +162,7 @@ public class TeamController {
 
       return new ResultPack<Double>(true, team.getBalance(), "Team found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Double>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -201,7 +201,7 @@ public class TeamController {
 
       return new ResultPack<Boolean>(true, null, "Team found.");
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -240,7 +240,7 @@ public class TeamController {
         throw new TeamNotFoundException();
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -274,7 +274,7 @@ public class TeamController {
         "Team has been deleted successfully."
       );
     } catch (Exception e) {
-      e.printStackTrace();
+      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
