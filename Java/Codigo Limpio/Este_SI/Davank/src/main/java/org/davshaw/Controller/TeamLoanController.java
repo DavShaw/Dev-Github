@@ -50,7 +50,6 @@ public class TeamLoanController {
       loan.setBalance(balance);
       loan.setDateTime(new Date());
 
-      session.persist(loan);
 
       //Withdraw balance from team
       int teamId = TeamLogController.getLog(logId).getResult().getTeamId();
@@ -61,6 +60,9 @@ public class TeamLoanController {
 
       AccountController.addBalance(ownerDni, balance);
       session.getTransaction().commit();
+
+      //Add debt log
+      TeamDebtLogController.createLog(logId, balance);
 
       return new ResultPack<Boolean>(
         true,

@@ -37,6 +37,7 @@ public class PayDebtPage extends javax.swing.JFrame {
         String msg = GetDebtReportAsText.getText(teamLogId);
         this.showLoanTextArea.setText(msg);
         this.showLoanTextArea.setEditable(false);
+        TeamDebtLogController.deleteLogsIfDebtIsZero();
     }
 
     /**
