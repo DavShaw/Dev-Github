@@ -296,19 +296,36 @@ public class UserPage extends javax.swing.JFrame {
     }//GEN-LAST:event_changePasswordButtonActionPerformed
 
     private void teamDepositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamDepositButtonActionPerformed
-        // TODO add your handling code here:
+        TeamDepositPage frame = new TeamDepositPage();
+        frame.setUserDni(this.userDni);
+        frame.executePostStart();
+        frame.setVisible(true);
+        this.dispose();
+        
     }//GEN-LAST:event_teamDepositButtonActionPerformed
 
     private void viewLoansButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLoansButtonActionPerformed
-        // TODO add your handling code here:
+        ViewLoansPage frame = new ViewLoansPage();
+        frame.setUserDni(this.userDni);
+        frame.executePostStart();
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_viewLoansButtonActionPerformed
 
     private void teamLoanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamLoanButtonActionPerformed
-        // TODO add your handling code here:
+        TeamLoanPage frame = new TeamLoanPage();
+        frame.setUserDni(this.userDni);
+        frame.executePostStart();
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_teamLoanButtonActionPerformed
 
     private void payLoanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payLoanButtonActionPerformed
-        // TODO add your handling code here:
+        PayDebtPage frame = new PayDebtPage();
+        frame.setUserDni(this.userDni);
+        frame.executePostStart();
+        frame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_payLoanButtonActionPerformed
 
     /**
