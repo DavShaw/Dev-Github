@@ -94,11 +94,11 @@ public class UserController {
         throw new InvalidLoginException();
       }
       
-      return new ResultPack<Boolean>(true, true, "User logged in successfully");
+      return new ResultPack<Boolean>(true, null, "User logged in successfully");
 
     } catch (Exception e) {
       
-      return new ResultPack<Boolean>(false, false, e.getMessage());
+      return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
       sessionFactory.close();
