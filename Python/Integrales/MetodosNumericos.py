@@ -11,6 +11,9 @@ import math
 # Método numérico del Simpson 1/3 -> 
 # https://www.youtube.com/watch?v=QCbGH6r3Hw0
 
+# Método numérico del Simpson 3/8 ->
+# No sé, es lo mismo que el 1/3, pero distinto
+
 class Integral(metaclass = abc.ABCMeta):
 
     def __init__(self, a = None, b = None, n = 999) -> None:
@@ -47,7 +50,10 @@ class Integral(metaclass = abc.ABCMeta):
     @abc.abstractmethod
     def generar_resultado(self):
         pass
-        
+    
+    def obtener_x(self):
+        return sp.Symbol('x')
+
     def __repr__(self):
         
         return f"""[-* Datos integral *-]
@@ -63,10 +69,10 @@ class Integral(metaclass = abc.ABCMeta):
         print(self)
 
 class Trapecio(Integral):
-
+    
     def verificar_n(self):
         pass
-    
+
     def generar_resultado(self):
         self.generar_diferencial()
 
@@ -128,7 +134,10 @@ class Simpson38(Integral):
             xi = self.a + (i * self.deltax)
             fxi = self.f.subs(self.x, xi)
 
-            if (i % 3 == 0):
+            if (i in [0, self.n]):
+                fxi *= 1
+
+            elif (i % 3 == 0):
                 fxi *= 2
 
             else:
@@ -144,21 +153,9 @@ class Simpson38(Integral):
 
 
 
-
-
-x = sp.Symbol('x')
-
-f1 = Simpson38(1, 4, 999)
-f1.set_f((sp.E**x) * (sp.log(x, sp.E)))
+e = math.e
+x =  sp.Symbol('x')
+f1 = Simpson38(0, 3)
+f1.set_f(e**(x**2))
 f1.generar_resultado()
 f1.ver()
-
-f2 = Simpson13(1, 4, 12)
-f2.set_f((sp.E**x) * (sp.log(x, sp.E)))
-f2.generar_resultado()
-f2.ver()
-
-f3 = Trapecio(1, 4, 12)
-f3.set_f((sp.E**x) * (sp.log(x, sp.E)))
-f3.generar_resultado()
-f3.ver()
