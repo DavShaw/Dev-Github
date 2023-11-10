@@ -59,6 +59,7 @@ public class TestUserController {
     ResultPack<User> result = UserController.getUser(userDni);
 
     assertTrue(result.getOkay());
+    //assertEquals(result.getResult().getDni(), userDni);
     assertInstanceOf(User.class, result.getResult());
   }
 

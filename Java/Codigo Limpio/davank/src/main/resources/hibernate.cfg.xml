@@ -7,26 +7,22 @@
     <property name="connection.url">JDBC:mysql://root:david@localhost:3306/Davank</property>
     <property name="connection.username">root</property>
     <property name="connection.password">david</property>
-    <!-- 
-    ? Propriedda removida ?
-    
-    !<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-
-    -->
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
 
-
-
-
+    
     <!-- ? Clases a mapear ? -->
-    <mapping class="org.davshaw.Model.pureentities.Usuario"/>
-    <mapping class="org.davshaw.Model.pureentities.Cuenta"/>
-    <mapping class="org.davshaw.Model.derivatedentities.RegistroGrupo"/>
-    <mapping class="org.davshaw.Model.pureentities.Grupo"/>
-    <mapping class="org.davshaw.Model.derivatedentities.PrestamoGrupo"/>
-    <mapping class="org.davshaw.Model.derivatedentities.RetiroCuenta"/>
-    <mapping class="org.davshaw.Model.derivatedentities.DepositoCuenta"/>
+    <mapping class="org.davshaw.Model.pureentities.Account"/>
+    <mapping class="org.davshaw.Model.pureentities.Team"/>
+    <mapping class="org.davshaw.Model.pureentities.User"/>
+
+    <mapping class="org.davshaw.Model.derivatedentities.AccountDeposit"/>
+    <mapping class="org.davshaw.Model.derivatedentities.AccountTransfer"/>
+    <mapping class="org.davshaw.Model.derivatedentities.AccountWithdraw"/>
+    <mapping class="org.davshaw.Model.derivatedentities.TeamDeposit"/>
+    <mapping class="org.davshaw.Model.derivatedentities.TeamLoan"/>
+    <mapping class="org.davshaw.Model.derivatedentities.TeamLog"/>
+    <mapping class="org.davshaw.Model.derivatedentities.TeamDebtLog"/>
 
 
    </session-factory>
