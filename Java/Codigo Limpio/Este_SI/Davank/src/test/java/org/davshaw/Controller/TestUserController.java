@@ -4,124 +4,102 @@ import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import java.util.List;
-
 import org.davshaw.External.ResultPack;
 import org.davshaw.Model.pureentities.User;
 import org.junit.Test;
 
 public class TestUserController {
 
-    @Test
-    public void testValidLogin() {
+  @Test
+  public void testValidLogin() {
+    Integer userDni = 1245782;
+    String password = "Davkisnu";
 
-        // Login
-        Integer userDni = 1245782;
-        // Password
-        String password = "Davkisnu";
-        
-        ResultPack<Boolean> result = UserController.login(userDni, password);
+    ResultPack<Boolean> result = UserController.login(userDni, password);
 
-        assertTrue(result.getOkay());
-        assertNull(result.getResult());
-    }
+    assertTrue(result.getOkay());
+    assertNull(result.getResult());
+  }
 
-    @Test
-    public void testInvalidLogin() {
+  @Test
+  public void testInvalidLogin() {
+    Integer userDni = 1245782000;
+    String password = "Davkisnu";
 
-        // Login
-        Integer userDni = 1245782000;
-        // Password
-        String password = "Davkisnu";
-        
-        ResultPack<Boolean> result = UserController.login(userDni, password);
+    ResultPack<Boolean> result = UserController.login(userDni, password);
 
-        assertFalse(result.getOkay());
-        assertNull(result.getResult());
-    }
+    assertFalse(result.getOkay());
+    assertNull(result.getResult());
+  }
 
-    @Test
-    public void testValidUser() {
+  @Test
+  public void testValidUser() {
+    Integer userDni = 1245782;
 
-        // User dni
-        Integer userDni = 1245782;
+    ResultPack<Boolean> result = UserController.userExist(userDni);
 
-        ResultPack<Boolean> result = UserController.userExist(userDni);
-        
-        assertTrue(result.getOkay());
-        assertTrue(result.getResult());
-    }
+    assertTrue(result.getOkay());
+    assertTrue(result.getResult());
+  }
 
-    @Test
-    public void testInvalidUser() {
+  @Test
+  public void testInvalidUser() {
+    Integer userDni = 1245782512;
 
-        // User dni
-        Integer userDni = 1245782512;
+    ResultPack<Boolean> result = UserController.userExist(userDni);
 
-        ResultPack<Boolean> result = UserController.userExist(userDni);
+    assertTrue(result.getOkay());
+    assertFalse(result.getResult());
+  }
 
-        assertTrue(result.getOkay());
-        assertFalse(result.getResult());
-    }
+  @Test
+  public void testValidGetUser() {
+    Integer userDni = 1245782;
 
-    @Test
-    public void testValidGetUser() {
-            
-            // User dni
-            Integer userDni = 1245782;
-    
-            ResultPack<User> result = UserController.getUser(userDni);
-    
-            assertTrue(result.getOkay());
-            assertInstanceOf(User.class, result.getResult());
-    }
+    ResultPack<User> result = UserController.getUser(userDni);
 
-    @Test
-    public void testInvalidGetUser() {
-            
-            // User dni
-            Integer userDni = 1245782952;
-    
-            ResultPack<User> result = UserController.getUser(userDni);
-    
-            assertFalse(result.getOkay());
-            assertNull(result.getResult());
-    }
+    assertTrue(result.getOkay());
+    assertInstanceOf(User.class, result.getResult());
+  }
 
-    @Test
-    public void testValidTeamList() {
-            
-            // User dni
-            Integer userDni = 1245782;
-    
-            ResultPack<List<Integer>> result = UserController.getTeamList(userDni);
-    
-            assertTrue(result.getOkay());
-            assertInstanceOf(List.class, result.getResult());
-    }
+  @Test
+  public void testInvalidGetUser() {
+    Integer userDni = 1245782952;
 
-    @Test
-    public void testValidTeamList2() {
-            
-            // User dni
-            Integer userDni = 1245782;
-    
-            ResultPack<List<Integer>> result = UserController.getTeamList(userDni);
-    
-            assertTrue(result.getOkay());
-            assertInstanceOf(List.class, result.getResult());
-            assertTrue(result.getResult().size() >= 1);
-    }
+    ResultPack<User> result = UserController.getUser(userDni);
 
+    assertFalse(result.getOkay());
+    assertNull(result.getResult());
+  }
 
-    @Test
-    public void testInvalidTeamList() {
-            
-            // User dni
-            Integer userDni = 124578213;
-    
-            ResultPack<List<Integer>> result = UserController.getTeamList(userDni);
-    
-            assertFalse(result.getOkay());
-            assertNull(result.getResult());
-    }
+  @Test
+  public void testValidTeamList() {
+    Integer userDni = 1245782;
+
+    ResultPack<List<Integer>> result = UserController.getTeamList(userDni);
+
+    assertTrue(result.getOkay());
+    assertInstanceOf(List.class, result.getResult());
+  }
+
+  @Test
+  public void testValidTeamList2() {
+    Integer userDni = 1245782;
+
+    ResultPack<List<Integer>> result = UserController.getTeamList(userDni);
+
+    assertTrue(result.getOkay());
+    assertInstanceOf(List.class, result.getResult());
+    assertTrue(result.getResult().size() >= 1);
+  }
+
+  @Test
+  public void testInvalidTeamList() {
+    Integer userDni = 124578213;
+
+    ResultPack<List<Integer>> result = UserController.getTeamList(userDni);
+
+    assertFalse(result.getOkay());
+    assertNull(result.getResult());
+  }
 }

@@ -337,12 +337,26 @@ public class AccountController {
   }
 
   public static ResultPack<Boolean> hasEnough(int ownerDni, double balance) {
-    Boolean theResult =
-      (AccountController.getBalance(ownerDni).getResult() >= balance);
+
+    try {
+
+      Boolean theResult =
+        (AccountController.getBalance(ownerDni).getResult() >= balance);
+      return new ResultPack<Boolean>(
+        true,
+        theResult,
+        "Account has enough balance."
+      );
+    
+    }
+
+    catch (Exception e){
     return new ResultPack<Boolean>(
-      true,
-      theResult,
-      "Account has enough balance."
-    );
+            false,
+            null,
+            e.getMessage()
+          );
+    }
+
   }
 }

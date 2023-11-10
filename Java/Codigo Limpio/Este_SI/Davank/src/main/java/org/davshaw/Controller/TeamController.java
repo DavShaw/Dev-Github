@@ -1,7 +1,6 @@
 package org.davshaw.Controller;
 
 import java.util.List;
-
 import org.davshaw.Exception.NegativeAmountException;
 import org.davshaw.Exception.RecordNotFoundException;
 import org.davshaw.Exception.TeamNotFoundException;
@@ -23,6 +22,11 @@ public class TeamController {
     Session session = sessionFactory.openSession();
 
     try {
+      // Checking valid name
+      if (name == null || name.length() == 0) {
+        throw new IllegalArgumentException("Name cannot be empty.");
+      }
+
       session.beginTransaction();
 
       Team team = new Team();
@@ -37,7 +41,6 @@ public class TeamController {
         "Team has been created successfully."
       );
     } catch (Exception e) {
-      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -69,7 +72,6 @@ public class TeamController {
         new RecordNotFoundException().getMessage()
       );
     } catch (Exception e) {
-      
       return new ResultPack<Boolean>(false, false, e.getMessage());
     } finally {
       session.close();
@@ -98,7 +100,6 @@ public class TeamController {
         throw new TeamNotFoundException();
       }
     } catch (Exception e) {
-      
       return new ResultPack<Team>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -107,7 +108,6 @@ public class TeamController {
   }
 
   public static ResultPack<List<Integer>> getTeamsId() {
-    
     SessionFactory sessionFactory = new Configuration()
       .configure("hibernate.cfg.xml")
       .addAnnotatedClass(Team.class)
@@ -116,7 +116,6 @@ public class TeamController {
     Session session = sessionFactory.openSession();
 
     try {
-
       session.beginTransaction();
       String sql = "SELECT id FROM Team";
       Query<Integer> query = session.createNativeQuery(sql, Integer.class);
@@ -126,19 +125,12 @@ public class TeamController {
         return new ResultPack<List<Integer>>(true, id, "Team id found.");
       }
       return new ResultPack<List<Integer>>(true, null, "Team id not found.");
-
-    }
-    
-    catch (Exception e) {
-      
+    } catch (Exception e) {
       return new ResultPack<List<Integer>>(false, null, e.getMessage());
-    }
-    
-    finally {
+    } finally {
       session.close();
       sessionFactory.close();
     }
-
   }
 
   public static ResultPack<Double> getBalance(int id) {
@@ -162,7 +154,6 @@ public class TeamController {
 
       return new ResultPack<Double>(true, team.getBalance(), "Team found.");
     } catch (Exception e) {
-      
       return new ResultPack<Double>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -201,7 +192,6 @@ public class TeamController {
 
       return new ResultPack<Boolean>(true, null, "Team found.");
     } catch (Exception e) {
-      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -240,7 +230,6 @@ public class TeamController {
         throw new TeamNotFoundException();
       }
     } catch (Exception e) {
-      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
@@ -274,7 +263,6 @@ public class TeamController {
         "Team has been deleted successfully."
       );
     } catch (Exception e) {
-      
       return new ResultPack<Boolean>(false, null, e.getMessage());
     } finally {
       session.close();
