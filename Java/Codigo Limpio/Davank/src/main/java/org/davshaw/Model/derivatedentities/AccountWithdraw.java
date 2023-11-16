@@ -1,0 +1,49 @@
+package org.davshaw.Model.derivatedentities;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import java.util.Date;
+
+import org.davshaw.Model.pureentities.Account;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@ToString
+
+@Entity
+@Table(name = "AccountWithdraw")
+public class AccountWithdraw
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
+
+    @ManyToOne(targetEntity = Account.class, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "accountNumber", referencedColumnName = "accountNumber", insertable = false, updatable = false)
+    private Account account;
+
+    @Column(name = "accountNumber")
+    private Integer accountNumber;
+
+    @Column(name = "balance")
+    private Double balance;
+
+    @Column(name = "dateTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateTime;
+}
