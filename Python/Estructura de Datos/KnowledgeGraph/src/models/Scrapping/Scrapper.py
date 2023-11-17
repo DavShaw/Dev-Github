@@ -86,17 +86,22 @@ class Scrapper:
         html = self._soup.prettify()
         print(html)
 
-    def get_movies_url(self, limit: int = 0) -> list:
-        self._connect_checker()
-        
-        # ChatGPT has helped me with this: I only need href if those hrefs start with /m/
-        a_objects = self._soup.find_all('a', {'data-track': 'scores', 'data-qa': 'discovery-media-list-item-caption', 'href': lambda href: href and href.startswith('/m/')})
+    def get_movies_url(self, limit: int = 0, from_html = False, html = "") -> list:
+        a_objects = None
+        if (not from_html):
+            self._connect_checker()
+            # ChatGPT has helped me with this: I only need href if those hrefs start with /m/
+            a_objects = self._soup.find_all('a', {'data-track': 'scores', 'data-qa': 'discovery-media-list-item-caption', 'href': lambda href: href and href.startswith('/m/')})
+
+        else:
+            # ChatGPT has helped me with this: I only need href if those hrefs start with /m/
+            soup = self._get_formated_soup(html)
+            a_objects = soup.find_all('a', {'data-track': 'scores', 'data-qa': 'discovery-media-list-item-caption', 'href': lambda href: href and href.startswith('/m/')})
 
         if not isinstance(limit, int) or limit <= 0:
             a_objects = [a.get("href") for a in a_objects]
         else:
             a_objects = [a.get("href") for a in a_objects[:limit]]
-
         return self._reform_movies_url(a_objects)
     
     def get_movie_html(self, url) -> str:
@@ -155,7 +160,7 @@ class Scrapper:
 
                 if value_element != None:
                     return value_element.get_text(strip = True)
-        return "Label not found. (None)"
+        return f"Label ({label}) not found. (None)"
 
     def get_movie_category(self, html) -> str:
         result = self.get_movie_info_label(html, "Rating:")
