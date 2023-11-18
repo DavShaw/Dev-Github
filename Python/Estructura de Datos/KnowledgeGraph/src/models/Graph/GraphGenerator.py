@@ -1,12 +1,13 @@
 
+import re
 from src.models.Graph.Types import *
 from src.models.Graph.GraphComponents import *
 from src.models.External.JsonManager import JsonGenerator
 from dataclasses import dataclass, field
 import sys
 
-sys.path.append(
-    r'C:\Users\David\Desktop\Dev (Local)\Dev-Github\Python\Estructura de Datos\KnowledgeGraph')
+path = r'C:\Users\David\Desktop\Dev (Local)\Dev-Github\Python\Estructura de Datos\KnowledgeGraph'
+sys.path.append(path)
 
 
 @dataclass
@@ -15,7 +16,7 @@ class GraphGenerator:
     _data_dict: dict = field(default_factory = dict)
     _nodes: list = field(default_factory = list)
     _edges: list = field(default_factory = list)
-    
+
     _movies_nodes: list = field(default_factory = list)
     _director_nodes: list = field(default_factory = list)
     _actor_nodes: list = field(default_factory = list)
@@ -24,13 +25,10 @@ class GraphGenerator:
     _genre_nodes: list = field(default_factory = list)
     _language_nodes: list = field(default_factory = list)
     _distributor_nodes: list = field(default_factory = list)
-    
+
+    # private methods (Methods to get, set and filter nodes)
     def _data_dict_checker(self):
         return isinstance(self._data_dict, dict)
-
-    def set_dict_from_name(self, filename):
-        json_manager = JsonGenerator()
-        self._data_dict = json_manager.generate_dictionary(filename)
 
     def _get_dict(self):
         return self._data_dict
@@ -58,7 +56,29 @@ class GraphGenerator:
         self._language_nodes = list(set(self._language_nodes))
         self._distributor_nodes = list(set(self._distributor_nodes))
 
-    def generate_movie_nodes(self):
+    def _filter_category_nodes_before_parentesis(self, category):
+        # Example: function("ASD (Brief Suggestive Language|Action|Sequences of Sci-Fi Violence)") -> "ASD"
+
+        match = re.search(r'^([^()]*)', category)
+
+        if match:
+            return match.group(1).strip()
+        return ""
+
+    def _filter_category_nodes_after_parentesis(self, category):
+        # Example: function("ASD (Brief Suggestive Language|Action|Sequences of Sci-Fi Violence)") -> ["Brief Suggestive Language", "Action", "Sequences of Sci-Fi Violence"]
+
+        match = re.search(r'\(([^()]*)\)', category)
+
+        if match:
+            return match.group(1).split("|")
+        return []
+
+    def _filter_genre_nodes(self, genre):
+        # Example: function("Action, Adventure, Sci-Fi") -> ["Action", "Adventure", "Sci-Fi"]
+        return genre.split(", ")
+
+    def _generate_movie_nodes(self):
 
         movies_url_and_name = self._get_movies_url_and_name()
 
@@ -68,7 +88,7 @@ class GraphGenerator:
             self._nodes.append(node)
             self._movies_nodes.append(node)
 
-    def generate_director_nodes(self):
+    def _generate_director_nodes(self):
 
         if self._data_dict_checker():
 
@@ -80,7 +100,7 @@ class GraphGenerator:
                 self._nodes.append(node)
                 self._director_nodes.append(node)
 
-    def generate_actor_nodes(self):
+    def _generate_actor_nodes(self):
 
         if self._data_dict_checker():
 
@@ -94,19 +114,33 @@ class GraphGenerator:
                     self._nodes.append(node)
                     self._actor_nodes.append(node)
 
-    def generate_category_nodes(self):
+    def _generate_category_nodes(self):
 
         if self._data_dict_checker():
 
             for id in self._data_dict:
 
                 category = self._data_dict[id]['category']
-                node = Node()
-                node.value = category
-                self._nodes.append(node)
-                self._category_nodes.append(node)
 
-    def generate_platforms_nodes(self):
+                before_parentesis = self._filter_category_nodes_before_parentesis(
+                    category)
+                after_parentesis = self._filter_category_nodes_after_parentesis(
+                    category)
+
+                if before_parentesis != "":
+                    node = Node()
+                    node.value = before_parentesis
+                    self._nodes.append(node)
+                    self._category_nodes.append(node)
+
+                if after_parentesis != []:
+                    for category in after_parentesis:
+                        node = Node()
+                        node.value = category
+                        self._nodes.append(node)
+                        self._category_nodes.append(node)
+
+    def _generate_platforms_nodes(self):
 
         if self._data_dict_checker():
 
@@ -120,19 +154,22 @@ class GraphGenerator:
                     self._nodes.append(node)
                     self._platforms_nodes.append(node)
 
-    def generate_genre_nodes(self):
+    def _generate_genre_nodes(self):
 
         if self._data_dict_checker():
 
             for id in self._data_dict:
 
                 genres = self._data_dict[id]['genre']
-                node = Node()
-                node.value = genres
-                self._nodes.append(node)
-                self._genre_nodes.append(node)
+                filtered_genres = self._filter_genre_nodes(genres)
 
-    def generate_language_nodes(self):
+                for genre in filtered_genres:
+                    node = Node()
+                    node.value = genre
+                    self._nodes.append(node)
+                    self._genre_nodes.append(node)
+
+    def _generate_language_nodes(self):
 
         if self._data_dict_checker():
             for id in self._data_dict:
@@ -142,7 +179,7 @@ class GraphGenerator:
                 self._nodes.append(node)
                 self._language_nodes.append(node)
 
-    def generate_distributor_nodes(self):
+    def _generate_distributor_nodes(self):
 
         if self._data_dict_checker():
 
@@ -154,49 +191,65 @@ class GraphGenerator:
                 self._nodes.append(node)
                 self._distributor_nodes.append(node)
 
-    def generate_nodes(self):
-            self.generate_movie_nodes()
-            self.generate_director_nodes()
-            self.generate_actor_nodes()
-            self.generate_category_nodes()
-            self.generate_platforms_nodes()
-            self.generate_genre_nodes()
-            self.generate_language_nodes()
-            self.generate_distributor_nodes()
-            self._filter_nodes()
+    def _generate_nodes(self):
+        self.generate_movie_nodes()
+        self.generate_director_nodes()
+        self.generate_actor_nodes()
+        self.generate_category_nodes()
+        self.generate_platforms_nodes()
+        self.generate_genre_nodes()
+        self.generate_language_nodes()
+        self.generate_distributor_nodes()
+        self._filter_nodes()
+
+    def _get_movies_nodes(self):
+        self._filter_nodes()
+        return self._movies_nodes
+
+    def _get_director_nodes(self):
+        self._filter_nodes()
+        return self._director_nodes
+
+    def _get_actor_nodes(self):
+        self._filter_nodes()
+        return self._actor_nodes
+
+    def _get_category_nodes(self):
+        self._filter_nodes()
+        return self._category_nodes
+
+    def _get_platforms_nodes(self):
+        self._filter_nodes()
+        return self._platforms_nodes
+
+    def _get_genre_nodes(self):
+        self._filter_nodes()
+        return self._genre_nodes
+
+    def _get_language_nodes(self):
+        self._filter_nodes()
+        return self._language_nodes
+
+    def _get_distributor_nodes(self):
+        self._filter_nodes()
+        return self._distributor_nodes
+    
+    # private metods (Methods to get, set and filter edges)
+    
+    # movie -> 
+
+    # public methods
+    def set_dict_from_name(self, filename):
+        json_manager = JsonGenerator()
+        self._data_dict = json_manager.generate_dictionary(filename)
+
+    def get_dict(self):
+        return self._data_dict
 
     def get_nodes(self):
         self._filter_nodes()
         return self._nodes
-    
-    def get_movies_nodes(self):
-        self._filter_nodes()
-        return self._movies_nodes
 
-    def get_director_nodes(self):
-        self._filter_nodes()
-        return self._director_nodes
 
-    def get_actor_nodes(self):
-        self._filter_nodes()
-        return self._actor_nodes
 
-    def get_category_nodes(self):
-        self._filter_nodes()
-        return self._category_nodes
 
-    def get_platforms_nodes(self):
-        self._filter_nodes()
-        return self._platforms_nodes
-
-    def get_genre_nodes(self):
-        self._filter_nodes()
-        return self._genre_nodes
-
-    def get_language_nodes(self):
-        self._filter_nodes()
-        return self._language_nodes
-
-    def get_distributor_nodes(self):
-        self._filter_nodes()
-        return self._distributor_nodes

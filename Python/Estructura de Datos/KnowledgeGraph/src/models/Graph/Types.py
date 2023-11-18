@@ -1,36 +1,43 @@
-    # movies_data = {
-    # "https://rottentomatoes.com/movie_name/": {
-    #     'name': 'movie_name' DONE,
-    #     'director': "movie_directors" DONE,
-    #     'actors': ["movie_actors"] DONE,
-    #     'category': ["movie_category"] DONE,
-    #     'platforms': ["movie_platforms"] DONE,
-    #     'genre': ["movie_genders"] DONE,
-    #     'runtime': ["movie_runtime"] DONE,
-    #     'language': ["movie_language"] DONE,
-    #     'distributor': ["movie_distributor"] DONE,
-    #     'audience_score': ["movie_audience_score"] STAND BY (Doesnt working!!)
-    #   }
-    # } 
+from abc import ABC, abstractmethod
 
-class NodeTypes:
-    pass
+
+class NodeTypes(ABC):
+    @abstractmethod
+    def get_type(self):
+        pass
 
 class Movie(NodeTypes):
-    pass
+    def get_type(self):
+        return "movie"
+
 class Director(NodeTypes):
-    pass
+    def get_type(self):
+        return "director"
+
 class Actor(NodeTypes):
-    pass
+    def get_type(self):
+        return "actor"
+
 class Category(NodeTypes):
-    pass
+    def get_type(self):
+        return "category"
+
 class Platform(NodeTypes):
-    pass
+    def get_type(self):
+        return "platform"
+
 class Genre(NodeTypes):
-    pass
+    def get_type(self):
+        return "genre"
+
 class Language(NodeTypes):
-    pass
+    def get_type(self):
+        return "language"
+
 class Distributor(NodeTypes):
-    pass
+    def get_type(self):
+        return "distributor"
+
 class Runtime(NodeTypes):
-    pass
+    def get_type(self):
+        return "runtime"

@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 from src.models.Graph.Types import *
 
@@ -11,6 +11,9 @@ class Node:
 
 @dataclass
 class Edge:
-    from_node: Node = None
-    to_node: Node = None
-    type: Optional[NodeTypes] = None
+    from_node: Node = field(default_factory = Node)
+    to_node: Node = field(default_factory = Node)
+    type: NodeTypes = field(default_factory = NodeTypes)
+    
+    def __repr__(self) -> str:
+        return f"{self.from_node} ({self.type}) -> {self.to_node}"
