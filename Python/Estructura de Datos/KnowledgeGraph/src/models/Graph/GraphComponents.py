@@ -11,9 +11,11 @@ class Node:
 
 @dataclass
 class Edge:
-    from_node: Node = field(default_factory = Node)
-    to_node: Node = field(default_factory = Node)
-    type: NodeTypes = field(default_factory = NodeTypes)
-    
+    from_node: Node = field(default_factory=Node)
+    to_node: Node = field(default_factory=Node)
+    type: NodeTypes = field(default_factory=NodeTypes)
+
     def __repr__(self) -> str:
-        return f"{self.from_node} ({self.type}) -> {self.to_node}"
+        return f"{self.from_node} ({self.type.get_type()}) -> {self.to_node}"
+
+

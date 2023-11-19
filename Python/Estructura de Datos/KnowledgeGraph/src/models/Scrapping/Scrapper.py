@@ -16,7 +16,7 @@
 
 
 from src.models.External.JsonManager import JsonGenerator
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from deprecated import deprecated
 from bs4 import BeautifulSoup
 import requests
@@ -26,7 +26,8 @@ import re
 @dataclass
 class Scrapper:
     
-    url: str = "www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5"
+    url: str = "    https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5"
+    _url_list: list = field(default_factory = list)
     _domain: str = "https://www.rottentomatoes.com"
     _soup: BeautifulSoup = None
     _has_been_connected: bool = False
@@ -102,6 +103,7 @@ class Scrapper:
             a_objects = [a.get("href") for a in a_objects]
         else:
             a_objects = [a.get("href") for a in a_objects[:limit]]
+        self._url_list = self._reform_movies_url(a_objects)
         return self._reform_movies_url(a_objects)
     
     def get_movie_html(self, url) -> str:
@@ -121,30 +123,40 @@ class Scrapper:
     def get_movie_name(self, html) -> str:
         soup = self._get_formated_soup(html)
         result = soup.find('h1', {'slot':'title', 'class':'title', 'data-qa':'score-panel-title'})
-        return result.text.strip()
+        if result != None:
+            return result.text.strip()
+        return "Name not found. (None)"
     
     def get_movie_director(self, html) -> str:
         soup = self._get_formated_soup(html)
         result = soup.find('a', {'data-qa':'movie-info-director'})
-        return result.text.strip()
+        if result != None:
+            return result.text.strip()
+        return "Director not found. (None)"
     
     def get_movie_actors(self, html) -> str:
         soup = self._get_formated_soup(html)
         result = soup.find_all('div', {'class':'cast-and-crew-item', 'data-qa':'cast-crew-item'})
         new_result = []
-        for info in result:
-            new_result.append((info.text).strip())
-        return self._filter_actors_name(new_result)
+        if result != None:
+            for info in result:
+                new_result.append((info.text).strip())
+            return self._filter_actors_name(new_result)
+        return "Actors not found. (None)"
     
     def get_movie_classification(self, html) -> str:
         soup = self._get_formated_soup(html)
         result = soup.find('span', {'data-qa': 'movie-info-item-value'})
-        return result.text.strip()
+        if result != None:
+            return result.text.strip()
+        return "Classification not found. (None)"
 
     def get_movie_platformts(self, html) -> str:
         soup = self._get_formated_soup(html)
         result = soup.find_all('where-to-watch-bubble', {'slot':'bubble', 'tabindex':'-1'})
-        return self._filter_platforms(result)
+        if result != None:
+            return self._filter_platforms(result)
+        return "Platforms not found. (None)"
 
     def get_movie_info_label(self, html, label) -> str:
         soup = self._get_formated_soup(html)
@@ -164,34 +176,46 @@ class Scrapper:
 
     def get_movie_category(self, html) -> str:
         result = self.get_movie_info_label(html, "Rating:")
-        return result
+        if result != None:
+            return result
+        return "Category not found. (None)"
     
     def get_movie_genre(self, html) -> str:
         result = self.get_movie_info_label(html, "Genre:")
-        return self._filter_movie_genre(result)
-
+        if result != None:
+            return self._filter_movie_genre(result)
+        return "Genre not found. (None)"
+    
     def get_movie_runtime(self, html) -> str:
         result = self.get_movie_info_label(html, "Runtime:")
-        return result
-
+        if result != None:
+            return result
+        return "Runtime not found. (None)"
+    
     def get_movie_language(self, html) -> str:
         result = self.get_movie_info_label(html, "Original Language:")
-        return result
+        if result != None:
+            return result
+        return "Language not found. (None)"
 
     def get_movie_distributor(self, html) -> str:
         result = self.get_movie_info_label(html, "Distributor:")
-        return result
+        if result != None:
+            return result
+        return "Distributor not found. (None)"
 
     @deprecated(reason = "This method is not working. I will try to fix it later.")
     def get_movie_audience_score(self, html) -> str:
         soup = self._get_formated_soup(html)
         result = soup.find('div', {'class':'scores-container'})
-        return result
+        if result != None:
+            return result.text.strip()
+        return "Audience score not found. (None)"
 
     def get_movies_data(self, limit = 0) -> dict:
         self._connect_checker()
         movies_data = {}
-        movies_url = self.get_movies_url(limit)
+        movies_url = self._url_list
         movies_html = self.get_movies_html(movies_url)
 
         for index in range(len(movies_url)):
