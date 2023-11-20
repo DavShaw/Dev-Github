@@ -28,9 +28,6 @@ if __name__ == '__main__':
     graph = GraphGenerator()
     graph.set_dict_from_name('movies_dataNo3.json')
     graph.generate()
-    
-    list = graph.test()
-    
-    for index, element in enumerate(list):
-        print(f"{index} -> {element}")
-    print(len(list))
+    l = graph.get_edges()
+    for a in l:
+        print(a)
