@@ -14,19 +14,23 @@ sys.path.append(path)
 @dataclass
 class GraphGenerator:
 
-    _data_dict: dict = field(default_factory = dict)
-    
-    _edges: list = field(default_factory = list)
+    _data_dict: dict = field(default_factory=dict)
 
-    _nodes: list = field(default_factory = list)
-    _movies_nodes: list = field(default_factory = list)
-    _director_nodes: list = field(default_factory = list)
-    _actor_nodes: list = field(default_factory = list)
-    _category_nodes: list = field(default_factory = list)
-    _platforms_nodes: list = field(default_factory = list)
-    _genre_nodes: list = field(default_factory = list)
-    _language_nodes: list = field(default_factory = list)
-    _distributor_nodes: list = field(default_factory = list)
+    _edges: list = field(default_factory=list)
+    _actor_edges: list = field(default_factory=list)
+    _director_edges: list = field(default_factory=list)
+    _language_edges: list = field(default_factory=list)
+    _distributor_edges: list = field(default_factory=list)
+
+    _nodes: list = field(default_factory=list)
+    _movies_nodes: list = field(default_factory=list)
+    _director_nodes: list = field(default_factory=list)
+    _actor_nodes: list = field(default_factory=list)
+    _category_nodes: list = field(default_factory=list)
+    _platforms_nodes: list = field(default_factory=list)
+    _genre_nodes: list = field(default_factory=list)
+    _language_nodes: list = field(default_factory=list)
+    _distributor_nodes: list = field(default_factory=list)
 
     # private methods (Methods to get, set and filter nodes)
     def _data_dict_checker(self):
@@ -224,50 +228,59 @@ class GraphGenerator:
     def _get_distributor_nodes(self):
         self._filter_nodes()
         return self._distributor_nodes
-    
+
     # private metods (Methods to get, set and filter edges)
-    def generate_edge_actors_to_movies(self):
-        
+    
+    def _filter_edges(self):
+        self._edges = list(set(self._edges))
+        self._actor_edges = list(set(self._actor_edges))
+        self._director_edges = list(set(self._director_edges))
+        self._language_edges = list(set(self._language_edges))
+    
+    def _generate_edge_actors_to_movies(self):
+
         for movie in self._data_dict:
             actors = self._data_dict[movie]['actors']
             for actor in actors:
-                
+
                 movie_name = self._data_dict[movie]['name']
-                
+
                 edge = Edge(actor, movie_name, Actor())
                 self._edges.append(edge)
-                
-    def generate_edge_movies_to_actors(self):
+                self._actor_edges.append(edge)
+
+    def _generate_edge_language_to_movies(self):
+
+        for movie in self._data_dict:
+            language = self._data_dict[movie]['language']
+            movie_name = self._data_dict[movie]['name']
+
+            edge = Edge(language, movie_name, Language())
+            self._edges.append(edge)
+            self._language_edges.append(edge)
+
+    def _generate_edge_director_to_movies(self):
+
+        for movie in self._data_dict:
+            director = self._data_dict[movie]['director']
+            movie_name = self._data_dict[movie]['name']
+
+            edge = Edge(director, movie_name, Director())
+            self._edges.append(edge)
+            self._director_edges.append(edge)
+
+    def _generate_edge_distributor_to_movies(self):
         
         for movie in self._data_dict:
-            actors = self._data_dict[movie]['actors']
-            for actor in actors:
-                
-                movie_name = self._data_dict[movie]['name']
-                
-                edge = Edge(movie_name, actor, Movie())
-                self._edges.append(edge)
+            distributor = self._data_dict[movie]['distributor']
+            movie_name = self._data_dict[movie]['name']
 
-    def generate_edge_director_to_movies(self):
-            
-            for movie in self._data_dict:
-                director = self._data_dict[movie]['director']
-                movie_name = self._data_dict[movie]['name']
-    
-                edge = Edge(director, movie_name, Director())
-                self._edges.append(edge)
-                
-    def generate_edge_movies_to_director(self):
-                
-                for movie in self._data_dict:
-                    director = self._data_dict[movie]['director']
-                    movie_name = self._data_dict[movie]['name']
+            edge = Edge(distributor, movie_name, Distributor())
+            self._edges.append(edge)
+            self._distributor_edges.append(edge)
         
-                    edge = Edge(movie_name, director, Movie())
-                    self._edges.append(edge)
+    # public methods (Methods to get, set and filter nodes)
 
-    # public methods
-    
     def set_dict_from_name(self, filename):
         json_manager = JsonGenerator()
         self._data_dict = json_manager.generate_dictionary(filename)
@@ -287,14 +300,27 @@ class GraphGenerator:
         self._filter_nodes()
 
     def get_nodes(self):
+        self.generate_nodes()
         self._filter_nodes()
         return self._nodes
 
-    def generate_edges(self):
-        pass
+    # public methods (Methods to get, set and filter edges)
     
+    def generate_edges(self):
+        self._generate_edge_actors_to_movies()
+        self._generate_edge_director_to_movies()
+        self._generate_edge_language_to_movies()
+        self._generate_distributor_nodes()
+        
     def get_edges(self):
+        self.generate_edges()
+        self._filter_edges()
         return self._edges
 
+    def generate(self):
+        self.generate_nodes()
+        self.generate_edges()
 
 
+    def test(self):
+        return self._distributor_edges()

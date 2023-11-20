@@ -17,5 +17,8 @@ class Edge:
 
     def __repr__(self) -> str:
         return f"{self.from_node} ({self.type.get_type()}) -> {self.to_node}"
+    
+    def __hash__(self) -> int:
+        return hash((self.from_node, self.to_node, self.type))
 
 

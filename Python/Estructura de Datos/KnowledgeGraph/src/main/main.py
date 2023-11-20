@@ -27,14 +27,10 @@ if __name__ == '__main__':
     
     graph = GraphGenerator()
     graph.set_dict_from_name('movies_dataNo3.json')
-    graph.generate_nodes()
-    graph.generate_edge_actors_to_movies()
-    graph.generate_edge_movies_to_actors()
-    graph.generate_edge_director_to_movies()
-    graph.generate_edge_movies_to_director()
+    graph.generate()
     
-    list = graph.get_edges()
+    list = graph.test()
     
-    for element in list:
-        print(element)
+    for index, element in enumerate(list):
+        print(f"{index} -> {element}")
     print(len(list))
