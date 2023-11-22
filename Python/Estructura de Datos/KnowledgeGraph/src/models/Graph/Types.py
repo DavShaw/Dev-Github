@@ -3,8 +3,10 @@ from abc import ABC, abstractmethod
 
 class NodeTypes(ABC):
     @abstractmethod
-    def get_type(self):
+    def get_type(self) -> str:
         pass
+    def __repr__(self) -> str:
+        return str(self.get_type())
 
 class Movie(NodeTypes):
     def get_type(self):

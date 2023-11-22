@@ -1,17 +1,17 @@
-    # movies_data = {
-    # "https://rottentomatoes.com/movie_name/": {
-    #     'name': 'movie_name' DONE,
-    #     'director': "movie_directors" DONE,
-    #     'actors': ["movie_actors"] DONE,
-    #     'category': ["movie_category"] DONE,
-    #     'platforms': ["movie_platforms"] DONE,
-    #     'genre': ["movie_genders"] DONE,
-    #     'runtime': ["movie_runtime"] DONE,
-    #     'language': ["movie_language"] DONE,
-    #     'distributor': ["movie_distributor"] DONE,
-    #     'audience_score': ["movie_audience_score"] STAND BY (Doesnt working!!)
-    #   }
-    # } 
+# movies_data = {
+# "https://rottentomatoes.com/movie_name/": {
+#     'name': 'movie_name' DONE,
+#     'director': "movie_directors" DONE,
+#     'actors': ["movie_actors"] DONE,
+#     'category': ["movie_category"] DONE,
+#     'platforms': ["movie_platforms"] DONE,
+#     'genre': ["movie_genders"] DONE,
+#     'runtime': ["movie_runtime"] DONE,
+#     'language': ["movie_language"] DONE,
+#     'distributor': ["movie_distributor"] DONE,
+#     'audience_score': ["movie_audience_score"] STAND BY (Doesnt working!!)
+#   }
+# } 
 
 
 
@@ -26,7 +26,7 @@ import re
 @dataclass
 class Scrapper:
     
-    url: str = "    https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5"
+    url: str = "https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5"
     _url_list: list = field(default_factory = list)
     _domain: str = "https://www.rottentomatoes.com"
     _soup: BeautifulSoup = None
@@ -145,7 +145,9 @@ class Scrapper:
         return "Actors not found. (None)"
     
     def get_movie_classification(self, html) -> str:
+    
         soup = self._get_formated_soup(html)
+        
         result = soup.find('span', {'data-qa': 'movie-info-item-value'})
         if result != None:
             return result.text.strip()
@@ -252,10 +254,6 @@ class Scrapper:
     def get_movies_data_to_json(self, dict, file_name = 'output.json') -> None:
         json_generator: JsonGenerator = JsonGenerator()
         json_generator.generate_json(dict, file_name)
-        return None
-
-
-
 
 
 

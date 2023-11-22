@@ -8,6 +8,8 @@ class Node:
 
     def __hash__(self):
         return hash(self.value)
+    def __repr__(self) -> str:
+        return str(self.value)
 
 @dataclass
 class Edge:

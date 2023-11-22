@@ -4,10 +4,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-driver = webdriver.Edge()
+driver = webdriver.Chrome()
 
 url = 'https://www.rottentomatoes.com/browse/movies_at_home/sort:popular?page=5'
-driver.get(url)
 
 clicks = 13
 button_data_qa = 'dlp-load-more-button'
@@ -26,10 +25,9 @@ for i in range(clicks):
     elif i < 15:
         time.sleep(25)
     else:
-        time.sleep(60) 
+        time.sleep(60)
 
 current_html = driver.page_source
-print(current_html)
 
 with open("html.txt", "w", encoding="utf-8") as file:
     file.write(current_html)
