@@ -29,7 +29,7 @@ for i in range(clicks):
 
 current_html = driver.page_source
 
-with open("html.txt", "w", encoding="utf-8") as file:
+with open("html.html", "w", encoding="utf-8") as file:
     file.write(current_html)
 
 driver.quit()

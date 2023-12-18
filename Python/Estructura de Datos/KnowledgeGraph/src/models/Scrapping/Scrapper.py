@@ -9,9 +9,8 @@
 #     'runtime': ["movie_runtime"] DONE,
 #     'language': ["movie_language"] DONE,
 #     'distributor': ["movie_distributor"] DONE,
-#     'audience_score': ["movie_audience_score"] STAND BY (Doesnt working!!)
 #   }
-# } 
+# }
 
 
 

@@ -16,7 +16,10 @@ if __name__ == '__main__':
     cositas = GraphGenerator()
     cositas.set_dict_from_name(ruta)
     cositas._generate_adjacency_list()
-    list = cositas.get_adyacency_list()
+    list = cositas.get_adyacency_list()    
+    cositas.get_adyacency_list()
+    #
+    
     
     for key in list:
         print(f"{key} -> {list[key]}")

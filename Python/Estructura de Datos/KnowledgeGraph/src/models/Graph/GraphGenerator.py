@@ -174,6 +174,7 @@ class GraphGenerator:
 
                 before_parentesis = self._filter_category_before_parentesis(
                     category)
+                
                 after_parentesis = self._filter_category_after_parentesis(
                     category)
 
@@ -290,7 +291,9 @@ class GraphGenerator:
     def _generate_edge_actors_to_movies(self) -> None:
 
         for movie in self._data_dict:
+            
             actors = self._data_dict[movie]['actors']
+            
             for actor in actors:
 
                 movie_name = self._data_dict[movie]['name']
@@ -298,7 +301,9 @@ class GraphGenerator:
 
                 movie_node = self._get_nodes_by_value((movie, movie_name))
                 actor_node = self._get_nodes_by_value(actor_name)
+                
                 if movie_node != None and actor_node != None:
+                    
                     edge = Edge(actor_node, movie_node, Actor())
                     self._edges.append(edge)
                     self._actor_edges.append(edge)
@@ -402,6 +407,7 @@ class GraphGenerator:
             if node_from in self._adyacency_list:
                 nodes_to = self._adyacency_list[node_from]['to']
                 nodes_to.append(edge.to_node)
+                
             else:
                 node_to = edge.to_node
                 type = edge.type
@@ -454,6 +460,6 @@ class GraphGenerator:
         return self._edges
 
     def generate(self) -> None:
-        self.generate_nodes()
+        self._generate_nodes()
         self._filter_nodes()
-        self.generate_edges()
+        self._generate_edges()
