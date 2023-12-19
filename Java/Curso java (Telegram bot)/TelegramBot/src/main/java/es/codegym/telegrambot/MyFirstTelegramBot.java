@@ -26,12 +26,12 @@ public class MyFirstTelegramBot extends MultiSessionTelegramBot {
         String user_current_message = update.getMessage().getText();
 
         // Enviar mensaje main si el mensaje es ["start", "iniciar", "on", "ayuda", "help"]
-        if (user_current_message.matches("(?i)(start|iniciar|on|ayuda|help)")) {
+        if (user_current_message.matches("(?i)(/start|start|iniciar|/iniciar|/on|on|ayuda|/ayuda|help|/help)")) {
             sendTextMessageAsync(bot_main_message);
         }
 
         // Enviar mensaje main si el mensaje es ["1", "2", "3", "4"]
-        else if (user_current_message.matches("[1-9]")) {
+        else if (user_current_message.toLowerCase().matches("[0-9]")) {
 
             HashMap<String, String> map = new HashMap<>();
             map.put("1", "Hola, soy el desarrollador del bot. Me llamo David :D");
@@ -39,26 +39,24 @@ public class MyFirstTelegramBot extends MultiSessionTelegramBot {
             map.put("3", "Trabajando en esta opcion...");
             map.put("4", "Adios, espero que te haya gustado el bot :D");
 
-            switch (user_current_message) {
-                case "1":
-                    sendTextMessageAsync(map.get("1"));
-                    break;
-                case "2":
-                    sendTextMessageAsync(map.get("2"));
-                    break;
-                case "3":
-                    sendTextMessageAsync(map.get("3"));
-                    break;
-                case "4":
-                    sendTextMessageAsync(map.get("4"));
-                    break;
-                default:
-                    sendTextMessageAsync("Opcion no valida");
-                    break;
+            String result = map.get(user_current_message);
+
+            if (result != null) {
+                sendTextMessageAsync(result);
+            }
+            else {
+                sendTextMessageAsync("Opcion no valida");
             }
 
-
         }
+    
+        // Enviar un mensaje si el mensaje es ["me llamo"]
+        else if (user_current_message.contains("me llamo")) {
+            String msg = String.format("_Encantado de conocerte_ *@%s*, _yo soy_ *gato*", user.getUserName());
+            sendTextMessageAsync(msg);
+            sendTextMessageAsync("~Te contare un secreto, en realidad soy David, pero he hackeado a *Gato*~");
+        }
+
     }
 
     public static void main(String[] args) throws TelegramApiException {
