@@ -1,6 +1,7 @@
 package es.codegym.telegrambot;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -35,16 +36,21 @@ public class MyFirstTelegramBot extends MultiSessionTelegramBot {
 
             HashMap<String, String> map = new HashMap<>();
             map.put("1", "Hola, soy el desarrollador del bot. Me llamo David :D");
-            map.put("2", "Trabajando en esta opcion...");
+            map.put("2", "Iniciando");
             map.put("3", "Trabajando en esta opcion...");
             map.put("4", "Adios, espero que te haya gustado el bot :D");
 
             String result = map.get(user_current_message);
 
-            if (result != null) {
+            if (user_current_message.equalsIgnoreCase("1")) {
                 sendTextMessageAsync(result);
-            }
-            else {
+            } else if (user_current_message.equalsIgnoreCase("2")) {
+                sendTextMessageAsync("Proximamente");
+            } else if (user_current_message.equalsIgnoreCase("3")) {
+                sendTextMessageAsync(result);
+            } else if (user_current_message.equalsIgnoreCase("4")) {
+                sendTextMessageAsync(result);
+            } else {
                 sendTextMessageAsync("Opcion no valida");
             }
 
@@ -55,6 +61,36 @@ public class MyFirstTelegramBot extends MultiSessionTelegramBot {
             String msg = String.format("_Encantado de conocerte_ *@%s*, _yo soy_ *gato*", user.getUserName());
             sendTextMessageAsync(msg);
             sendTextMessageAsync("~Te contare un secreto, en realidad soy David, pero he hackeado a *Gato*~");
+        }
+
+
+        // Juego
+        if(user_current_message.toLowerCase().contains("play")) {
+            setUserGlory(0);
+            sendTextMessageAsync(TelegramBotContent.STEP_1_TEXT, 
+            Map.of("Hackear Nevera", "boton_hackear_nevera"));
+        }
+
+
+        // Verificar botones
+        if(getCallbackQueryButtonKey().equals("boton_hackear_nevera")) {
+
+            System.out.println("Éxito: el boton se encontró");
+            
+            setUserGlory(getUserGlory() + 5);
+
+            sendTextMessageAsync(TelegramBotContent.STEP_2_TEXT, 
+            Map.of(
+                "Destrozar todo (-5)", "boton_destrozar",
+                "Robar sardinas (+1)", "boton_robar_sardinas",
+                "Robar pan (+5)", "boton_robar_pan",
+                "Tomar agua (+20)", "boton_tomar_agua",
+                "Hacer compras (+25)", "boton_comprar"
+            ));
+
+        }
+        else {
+            System.out.println("Error: el boton no se encontró");
         }
 
     }
